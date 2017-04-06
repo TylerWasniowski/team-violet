@@ -1,0 +1,76 @@
+<project default="all">
+
+   <property file="build.properties" />
+   <property name="srcdir" value="${basedir}" />
+   <property name="classdir" value="${basedir}" />
+   <property name="jnlpfile" value="violet.jnlp" />
+   <property name="version.properties" value="com/horstmann/violet/UMLEditorVersion.properties" />
+   
+   <path id="classpath">
+      <pathelement location="${srcdir}" />
+      <pathelement location="${javaws.jar}" />
+   </path>
+
+   <target name="init">
+      <tstamp>
+         <format property="version.date" pattern="yyyy-MM-dd" locale="en"/>
+      </tstamp>
+      <property name="appname" value="violet-${version.number}" />
+      <property name="jarfile" value="${appname}.jar" />
+   </target>
+
+   <target name="props" depends="init" description="Set version-specific properties.">
+      <delete file="${version.properties}" />
+      <copy file="${version.properties}.template" tofile="${version.properties}" />
+      <replace file="${version.properties}">
+         <replacefilter token="@number@" value="${version.number}" />
+         <replacefilter token="@date@" value="${version.date}" />
+      </replace>
+   </target>
+   
+   <target name="compile" depends="props" description="Compile source files.">
+      <javac srcdir="${srcdir}" destdir="${classdir}" debug="true" deprecation="true" source="1.4" target="1.4">
+         <include name="**/*.java" />
+         <classpath refid="classpath" />
+      </javac>
+   </target>
+   
+   <target name="jar" depends="compile" description="Build JAR file.">
+      <delete file="${jarfile}" />
+      <jar jarfile="${jarfile}">
+         <manifest>
+            <attribute name="Main-Class" value="com.horstmann.violet.UMLEditor" />
+            <attribute name="permissions" value="sandbox"/>
+         </manifest>
+         <fileset dir="${basedir}">
+            <include name="violet.jnlp.template" />
+            <include name="build.xml" />
+            <include name="build.properties" />
+            <include name="com/**" />
+            <exclude name="**/CVS/**" />
+         </fileset>
+      </jar>
+   </target>
+   
+   <target name="jnlp" depends="jar" description="Build JNLP file.">
+      <delete file="${jnlpfile}" />
+      <copy file="${jnlpfile}.template" tofile="${jnlpfile}" />
+      <replace file="${jnlpfile}">
+         <replacefilter token="@codebase@" value="${jnlp.codebase}" />
+         <replacefilter token="@jnlphref@" value="${jnlpfile}" />
+         <replacefilter token="@jarhref@" value="${jarfile}" />
+      </replace>
+   </target>
+   
+   <target name="all" depends="jar,jnlp" />
+   
+   
+   <target name="clean" depends="init" description="Clean everything.">
+      <delete>
+         <fileset dir="${basedir}" includes="**/*.class" />
+         <fileset dir="${basedir}" includes="**/*.jar" />
+         <fileset dir="${basedir}" includes="${jnlpfile}" />
+      </delete>
+   </target>
+   
+</project>
