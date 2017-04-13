@@ -1,7 +1,9 @@
 .idea/
 out/
 *.iml
-
+violet-0.16c/*.classpath
+violet-0.16c/*.project
+violet-0.16c/com/horstmann/violet/*.class
 *.class
 *.jar
 *.war
