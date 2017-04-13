@@ -78,6 +78,7 @@ public class UMLEditor extends JApplet
       frame.addGraphType("state_diagram", StateDiagramGraph.class);
       frame.addGraphType("object_diagram", ObjectDiagramGraph.class);
       frame.addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
+      frame.addGraphType("team_sequence_diagram", TeamSequenceDiagramGraph.class);
       return frame;
    }
    
