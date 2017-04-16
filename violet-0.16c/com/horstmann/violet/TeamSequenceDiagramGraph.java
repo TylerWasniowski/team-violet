@@ -16,7 +16,7 @@ import com.horstmann.violet.framework.Node;
  * 
  *
  */
-public class TeamSequenceDiagramGraph extends Graph{
+public class TeamSequenceDiagramGraph extends SequenceDiagramGraph {
 
 
    
@@ -43,5 +43,39 @@ public class TeamSequenceDiagramGraph extends Graph{
       EDGE_PROTOTYPES[1] = new ReturnEdge();
       EDGE_PROTOTYPES[2] = new NoteEdge();
    }
-   
+
+   @Override
+   public void removeNode(Node n) {
+      super.removeNode(n);
+   }
+
+   @Override
+   public boolean connect(Edge e, Point2D p1, Point2D p2) {
+      return super.connect(e, p1, p2);
+   }
+
+   @Override
+   public boolean add(Node n, Point2D p) {
+      return super.add(n, p);
+   }
+
+   @Override
+   public void removeEdge(Edge e) {
+      super.removeEdge(e);
+   }
+
+   @Override
+   public void addNode(Node n, Point2D p) {
+      super.addNode(n, p);
+   }
+
+   @Override
+   public void connect(Edge e, Node start, Node end) {
+      super.connect(e, start, end);
+   }
+
+   @Override
+   public void setMinBounds(Rectangle2D newValue) {
+      super.setMinBounds(newValue);
+   }
 }
