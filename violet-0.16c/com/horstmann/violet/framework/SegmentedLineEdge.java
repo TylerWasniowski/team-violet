@@ -33,8 +33,8 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 
-import com.horstmann.violet.ArrowHead;
-import com.horstmann.violet.LineStyle;
+import com.horstmann.violet.edges.ArrowHead;
+import com.horstmann.violet.edges.LineStyle;
 
 /**
    An edge that is composed of multiple line segments

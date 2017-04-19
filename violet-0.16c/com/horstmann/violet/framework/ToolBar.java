@@ -43,7 +43,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
 
-import com.horstmann.violet.PointNode;
+import com.horstmann.violet.nodes.PointNode;
 
 
 /**

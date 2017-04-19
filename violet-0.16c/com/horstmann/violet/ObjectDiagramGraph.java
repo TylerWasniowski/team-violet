@@ -20,10 +20,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.horstmann.violet;
 
+import com.horstmann.violet.edges.BentStyle;
+import com.horstmann.violet.edges.ClassRelationshipEdge;
+import com.horstmann.violet.edges.NoteEdge;
+import com.horstmann.violet.edges.ObjectReferenceEdge;
 import com.horstmann.violet.framework.Edge;
 import com.horstmann.violet.framework.Graph;
 import com.horstmann.violet.framework.MultiLineString;
 import com.horstmann.violet.framework.Node;
+import com.horstmann.violet.nodes.FieldNode;
+import com.horstmann.violet.nodes.NoteNode;
+import com.horstmann.violet.nodes.ObjectNode;
 
 /**
    An UML-style object diagram that shows object references.

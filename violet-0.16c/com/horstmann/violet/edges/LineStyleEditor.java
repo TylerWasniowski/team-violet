@@ -18,35 +18,30 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package com.horstmann.violet;
+package com.horstmann.violet.edges;
 
 import com.horstmann.violet.framework.PropertySelector;
 
 /**
-   A property editor for the ArrowHead type.
+   A property editor for the LineStyle type.
 */
-public class ArrowHeadEditor extends PropertySelector
+public class LineStyleEditor extends PropertySelector
 {
-   public ArrowHeadEditor()
+   public LineStyleEditor()
    {
       super(names, values);
    }
 
    private static final String[] names = 
    { 
-      "None", 
-      "Triangle", 
-      "V", 
-      "Diamond", 
-      "Black Diamond" 
+      "Solid", 
+      "Dotted" 
    };
    
    private static final Object[] values = 
    {
-      ArrowHead.NONE,
-      ArrowHead.TRIANGLE,
-      ArrowHead.V,
-      ArrowHead.DIAMOND,
-      ArrowHead.BLACK_DIAMOND
+      LineStyle.SOLID,
+      LineStyle.DOTTED
    };
 }
+

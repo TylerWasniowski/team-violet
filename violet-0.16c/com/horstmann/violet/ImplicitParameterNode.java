@@ -35,6 +35,8 @@ import com.horstmann.violet.framework.Grid;
 import com.horstmann.violet.framework.MultiLineString;
 import com.horstmann.violet.framework.Node;
 import com.horstmann.violet.framework.RectangularNode;
+import com.horstmann.violet.nodes.CallNode;
+import com.horstmann.violet.nodes.PointNode;
 
 /**
    An object node in a scenario diagram.

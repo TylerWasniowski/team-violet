@@ -76,9 +76,9 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
-import com.horstmann.violet.ArrowHead;
-import com.horstmann.violet.BentStyle;
-import com.horstmann.violet.LineStyle;
+import com.horstmann.violet.edges.ArrowHead;
+import com.horstmann.violet.edges.BentStyle;
+import com.horstmann.violet.edges.LineStyle;
 
 /**
    This desktop frame contains panes that show graphs.

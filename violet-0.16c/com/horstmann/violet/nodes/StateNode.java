@@ -18,49 +18,63 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package com.horstmann.violet;
+package com.horstmann.violet.nodes;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Ellipse2D;
+import java.awt.geom.RoundRectangle2D;
 
+import com.horstmann.violet.framework.Graph;
+import com.horstmann.violet.framework.Grid;
 import com.horstmann.violet.framework.MultiLineString;
 import com.horstmann.violet.framework.RectangularNode;
 
 
 /**
-   A use case node in a use case diagram.
+   A node in a state diagram.
 */
-public class UseCaseNode extends RectangularNode
+public class StateNode extends RectangularNode
 {
    /**
-      Construct a use case node with a default size
+      Construct a state node with a default size
    */
-   public UseCaseNode()
+   public StateNode()
    {
       name = new MultiLineString();
-      setBounds(new Rectangle2D.Double(0, 0,
+      setBounds(new Rectangle2D.Double(0, 0, 
          DEFAULT_WIDTH, DEFAULT_HEIGHT));
    }
 
    public void draw(Graphics2D g2)
    {
-      super.draw(g2);      
+      super.draw(g2);
       g2.draw(getShape());
       name.draw(g2, getBounds());
    }
    
    public Shape getShape()
-   {
-      return new Ellipse2D.Double(
-            getBounds().getX(), getBounds().getY(),
-            getBounds().getWidth(), getBounds().getHeight());
+   {       
+      return new RoundRectangle2D.Double(getBounds().getX(),
+         getBounds().getY(), getBounds().getWidth(), 
+         getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
    }
-   
+
+   public void layout(Graph g, Graphics2D g2, Grid grid)
+   {
+      Rectangle2D b = name.getBounds(g2);
+      b = new Rectangle2D.Double(getBounds().getX(), 
+         getBounds().getY(),
+         Math.max(b.getWidth(), DEFAULT_WIDTH),
+         Math.max(b.getHeight(), DEFAULT_HEIGHT));
+
+      grid.snap(b);
+      setBounds(b);
+   }
+
    /**
       Sets the name property value.
-      @param newValue the new use case name
+      @param newValue the new state name
    */
    public void setName(MultiLineString newValue)
    {
@@ -69,7 +83,7 @@ public class UseCaseNode extends RectangularNode
 
    /**
       Gets the name property value.
-      @param the use case name
+      @param the state name
    */
    public MultiLineString getName()
    {
@@ -78,13 +92,14 @@ public class UseCaseNode extends RectangularNode
 
    public Object clone()
    {
-      UseCaseNode cloned = (UseCaseNode) super.clone();
-      cloned.name = (MultiLineString) name.clone();
+      StateNode cloned = (StateNode)super.clone();
+      cloned.name = (MultiLineString)name.clone();
       return cloned;
    }
 
    private MultiLineString name;
 
-   private static int DEFAULT_WIDTH = 110;
-   private static int DEFAULT_HEIGHT = 40;
+   private static int ARC_SIZE = 20;
+   private static int DEFAULT_WIDTH = 80;
+   private static int DEFAULT_HEIGHT = 60;
 }

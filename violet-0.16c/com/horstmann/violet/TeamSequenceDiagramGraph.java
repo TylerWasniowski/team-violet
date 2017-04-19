@@ -1,16 +1,15 @@
 package com.horstmann.violet;
 
-import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 
+import com.horstmann.violet.edges.CallEdge;
+import com.horstmann.violet.edges.NoteEdge;
+import com.horstmann.violet.edges.ReturnEdge;
 import com.horstmann.violet.framework.Edge;
-import com.horstmann.violet.framework.Graph;
-import com.horstmann.violet.framework.Grid;
 import com.horstmann.violet.framework.Node;
+import com.horstmann.violet.nodes.CallNode;
+import com.horstmann.violet.nodes.NoteNode;
 
 /**
  * 

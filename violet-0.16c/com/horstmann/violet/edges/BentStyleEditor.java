@@ -18,30 +18,35 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package com.horstmann.violet;
+package com.horstmann.violet.edges;
 
 import com.horstmann.violet.framework.PropertySelector;
 
 /**
-   A property editor for the LineStyle type.
+   A property editor for the BentStyle type.
 */
-public class LineStyleEditor extends PropertySelector
+public class BentStyleEditor extends PropertySelector
 {
-   public LineStyleEditor()
+   public BentStyleEditor()
    {
       super(names, values);
    }
 
    private static final String[] names = 
    { 
-      "Solid", 
-      "Dotted" 
+      "Straight", 
+      "HV", 
+      "VH", 
+      "HVH", 
+      "VHV" 
    };
    
    private static final Object[] values = 
    {
-      LineStyle.SOLID,
-      LineStyle.DOTTED
+      BentStyle.STRAIGHT,
+      BentStyle.HV,
+      BentStyle.VH,
+      BentStyle.HVH,
+      BentStyle.VHV
    };
 }
-

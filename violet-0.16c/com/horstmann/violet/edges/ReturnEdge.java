@@ -18,7 +18,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package com.horstmann.violet;
+package com.horstmann.violet.edges;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 import com.horstmann.violet.framework.Node;
 import com.horstmann.violet.framework.SegmentedLineEdge;
+import com.horstmann.violet.nodes.PointNode;
 
 /**
    An edge that joins two call nodes.

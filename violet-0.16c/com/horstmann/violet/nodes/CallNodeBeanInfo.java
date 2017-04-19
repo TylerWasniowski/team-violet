@@ -18,35 +18,31 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package com.horstmann.violet;
+package com.horstmann.violet.nodes;
 
-import com.horstmann.violet.framework.PropertySelector;
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
+import java.beans.SimpleBeanInfo;
 
 /**
-   A property editor for the BentStyle type.
+   The bean info for the CallNode type.
 */
-public class BentStyleEditor extends PropertySelector
+public class CallNodeBeanInfo extends SimpleBeanInfo
 {
-   public BentStyleEditor()
+   public PropertyDescriptor[] getPropertyDescriptors()
    {
-      super(names, values);
+      try
+      {
+         return new PropertyDescriptor[]
+            {
+               new PropertyDescriptor("openBottom", CallNode.class),
+               new PropertyDescriptor("implicitParameter", CallNode.class)
+            };
+      }
+      catch (IntrospectionException exception)
+      {
+         return null;
+      }
    }
-
-   private static final String[] names = 
-   { 
-      "Straight", 
-      "HV", 
-      "VH", 
-      "HVH", 
-      "VHV" 
-   };
-   
-   private static final Object[] values = 
-   {
-      BentStyle.STRAIGHT,
-      BentStyle.HV,
-      BentStyle.VH,
-      BentStyle.HVH,
-      BentStyle.VHV
-   };
 }
+

@@ -20,9 +20,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.horstmann.violet;
 
+import com.horstmann.violet.edges.NoteEdge;
+import com.horstmann.violet.edges.StateTransitionEdge;
 import com.horstmann.violet.framework.Edge;
 import com.horstmann.violet.framework.Graph;
 import com.horstmann.violet.framework.Node;
+import com.horstmann.violet.nodes.CircularStateNode;
+import com.horstmann.violet.nodes.NoteNode;
+import com.horstmann.violet.nodes.StateNode;
 
 
 /**

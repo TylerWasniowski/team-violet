@@ -22,9 +22,14 @@ package com.horstmann.violet;
 
 import java.awt.geom.Point2D;
 
+import com.horstmann.violet.edges.*;
 import com.horstmann.violet.framework.Edge;
 import com.horstmann.violet.framework.Graph;
 import com.horstmann.violet.framework.Node;
+import com.horstmann.violet.nodes.ClassNode;
+import com.horstmann.violet.nodes.InterfaceNode;
+import com.horstmann.violet.nodes.NoteNode;
+import com.horstmann.violet.nodes.PackageNode;
 
 /**
    A UML class diagram.
