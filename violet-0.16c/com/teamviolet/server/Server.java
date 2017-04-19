@@ -7,6 +7,9 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/*
+ * Based off https://www.cs.uic.edu/~troy/spring05/cs450/sockets/EchoServer.java
+ */ 
 public class Server {
     public static void main(String [] args) throws IOException {
         ServerSocket serverSocket = null; 
