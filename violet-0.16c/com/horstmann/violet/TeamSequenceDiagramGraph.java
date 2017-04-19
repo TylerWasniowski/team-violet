@@ -9,6 +9,7 @@ import com.horstmann.violet.edges.ReturnEdge;
 import com.horstmann.violet.framework.Edge;
 import com.horstmann.violet.framework.Node;
 import com.horstmann.violet.nodes.CallNode;
+import com.horstmann.violet.nodes.ImplicitParameterNode;
 import com.horstmann.violet.nodes.NoteNode;
 
 /**

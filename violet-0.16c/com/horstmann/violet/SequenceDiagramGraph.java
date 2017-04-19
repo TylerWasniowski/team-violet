@@ -35,6 +35,7 @@ import com.horstmann.violet.framework.Graph;
 import com.horstmann.violet.framework.Grid;
 import com.horstmann.violet.framework.Node;
 import com.horstmann.violet.nodes.CallNode;
+import com.horstmann.violet.nodes.ImplicitParameterNode;
 import com.horstmann.violet.nodes.NoteNode;
 
 

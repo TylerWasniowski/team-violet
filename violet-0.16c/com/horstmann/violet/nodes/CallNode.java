@@ -32,7 +32,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.horstmann.violet.edges.CallEdge;
-import com.horstmann.violet.ImplicitParameterNode;
 import com.horstmann.violet.edges.ReturnEdge;
 import com.horstmann.violet.framework.Direction;
 import com.horstmann.violet.framework.Edge;
