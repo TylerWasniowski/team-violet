@@ -27,6 +27,7 @@ import javax.swing.JApplet;
 
 import com.horstmann.violet.framework.EditorFrame;
 import com.horstmann.violet.framework.VersionChecker;
+import com.horstmann.violet.graphs.*;
 
 
 /**
