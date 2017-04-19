@@ -4,6 +4,7 @@ out/
 violet-0.16c/*.classpath
 violet-0.16c/*.project
 violet-0.16c/com/horstmann/violet/*.class
+violet-0.16c/com/teamviolet/server/*.class
 *.class
 *.jar
 *.war
