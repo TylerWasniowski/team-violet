@@ -1,3 +1,5 @@
 Build Instructions:
 
-Run script build present in directory /violet-0.16c
+Run 'ant -Djavaws.jar=your/path/to/javaws.jar'
+
+javaws.jar will be found in your JRE library.
