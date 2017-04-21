@@ -9,6 +9,7 @@
    <path id="classpath">
       <pathelement location="${srcdir}" />
       <pathelement location="${javaws.jar}" />
+      <pathelement location="${activemq.jar}" />
    </path>
 
    <target name="init">
@@ -68,7 +69,7 @@
    <target name="clean" depends="init" description="Clean everything.">
       <delete>
          <fileset dir="${basedir}" includes="**/*.class" />
-         <fileset dir="${basedir}" includes="**/*.jar" />
+         <fileset dir="${basedir}" includes="**/*.jar" excludes="lib/**/*.jar" />
          <fileset dir="${basedir}" includes="${jnlpfile}" />
       </delete>
    </target>
