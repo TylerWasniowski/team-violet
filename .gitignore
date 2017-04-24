@@ -5,6 +5,7 @@ violet-0.16c/*.classpath
 violet-0.16c/*.project
 violet-0.16c/com/horstmann/violet/*.class
 violet-0.16c/com/teamviolet/server/*.class
+violet-0.16c/com/teamviolet/violet-0.16c/build.properties
 *.class
 *.jar
 *.war
