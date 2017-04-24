@@ -969,6 +969,7 @@ public class EditorFrame extends JFrame
    */
    private static void saveFile(Graph graph, OutputStream out)
    {
+      // This serializes the file
       XMLEncoder encoder = new XMLEncoder(out);
          
       encoder.setExceptionListener(new 

@@ -16,24 +16,24 @@ import com.horstmann.violet.framework.Node;
  */
 public class TeamSequenceDiagramGraph extends SequenceDiagramGraph {
 
-   private static String id;
+   private static String id = "0";
 
    public TeamSequenceDiagramGraph() {
       super();
-      id = "0";
    }
 
    // Commands to both send and execute
    @Override
    public boolean add(Node n, Point2D p) {
       sendCommandToServer(new Command(CommandType.ADD_NODE, n, p));
-      return super.add(n, p);
+//      return super.add(n, p);
+      return true;
    }
 
    @Override
    public void removeNode(Node n) {
       sendCommandToServer(new Command(CommandType.REMOVE_NODE, n));
-      super.removeNode(n);
+//      super.removeNode(n);
    }
 
    @Override
@@ -73,6 +73,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph {
       try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))) {
          Command commandToExecute = (Command) objectInputStream.readObject();
          System.out.println(commandToExecute);
+         executeCommand(commandToExecute);
       } catch (IOException|ClassNotFoundException ex) {
          ex.printStackTrace();
       }
