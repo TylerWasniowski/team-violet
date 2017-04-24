@@ -26,8 +26,8 @@ import javax.jms.JMSException;
 public class TeamSequenceDiagramGraph extends SequenceDiagramGraph {
 
     private static String id = "0";
-    private Publisher publisher;
-    private Subscriber subscriber;
+    private transient Publisher publisher;
+    private transient Subscriber subscriber;
 
     public TeamSequenceDiagramGraph() {
         super();
