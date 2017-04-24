@@ -5,6 +5,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
+import javax.jms.TextMessage;
 import javax.jms.Topic;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
@@ -31,10 +32,11 @@ public class Publisher {
         } catch (JMSException e) {
             e.printStackTrace();
         }
-    }
+    } 
     
-    public void sendMessage(Message message) throws JMSException, InterruptedException {  
-        messageProducer.send(message); 
+    public void sendMessage(String message) throws JMSException, InterruptedException { 
+        TextMessage msg = session.createTextMessage(message);
+        messageProducer.send(msg); 
     }
     
     public void closePublisherConnection() {
