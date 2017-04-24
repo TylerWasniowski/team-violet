@@ -39,19 +39,20 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph {
    @Override
    public boolean connect(Edge e, Point2D p1, Point2D p2) {
       sendCommandToServer(new Command(CommandType.CONNECT_EDGE, e, p1, p2));
-      return super.connect(e, p1, p2);
+//      return super.connect(e, p1, p2);
+      return true;
    }
 
    @Override
    public void removeEdge(Edge e) {
       sendCommandToServer(new Command(CommandType.REMOVE_EDGE, e));
-      super.removeEdge(e);
+//      super.removeEdge(e);
    }
 
    @Override
    public void setMinBounds(Rectangle2D newValue) {
       sendCommandToServer(new Command(CommandType.SET_MIN_BOUNDS, newValue));
-      super.setMinBounds(newValue);
+//      super.setMinBounds(newValue);
    }
 
    // TODO: Implement this
