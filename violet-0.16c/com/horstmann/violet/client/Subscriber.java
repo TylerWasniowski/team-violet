@@ -9,6 +9,8 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
+import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
+
 /**
  * Created by CSingh on 4/21/2017.
  */
@@ -21,6 +23,11 @@ public class Subscriber {
     private Connection connection;
     private Session session;
     private MessageConsumer messageConsumer;
+    private static TeamSequenceDiagramGraph tDiagram;
+    
+    public Subscriber(TeamSequenceDiagramGraph tDiagram) {
+       Subscriber.tDiagram = tDiagram;
+    }
     
     public void start() {
         try {
@@ -41,7 +48,8 @@ public class Subscriber {
             if(message instanceof TextMessage) {
                 TextMessage textMessage = (TextMessage) message;
                 try {
-                    System.out.println("Consumer received message: " + textMessage.getText());
+                    tDiagram.executeCommand(textMessage.getText());
+                    //System.out.println("Consumer received message: " + textMessage.getText());
                 } catch (JMSException e) {
                     e.printStackTrace();
                 }
