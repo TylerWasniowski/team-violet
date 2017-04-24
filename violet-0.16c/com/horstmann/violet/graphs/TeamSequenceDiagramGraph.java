@@ -35,7 +35,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph {
         publisher = new Publisher();
         publisher.start();
 
-        subscriber = new Subscriber();
+        subscriber = new Subscriber(this);
         subscriber.start();
 
     }
@@ -75,14 +75,6 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph {
 
     // TODO: Implement this
     private void sendCommandToServer(Command command) {
-        final String FILE_NAME = "serializationTest_Ignore.txt";
-        File file = new File(FILE_NAME);
-        try {
-            file.createNewFile();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
         // Turn Command into String and send to server
         ByteArrayOutputStream byteArrayOutputStream;
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(
