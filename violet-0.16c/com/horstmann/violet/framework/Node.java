@@ -141,5 +141,11 @@ public interface Node extends Serializable, Cloneable
    */
    void removeChild(Node node);
 
+   /**
+    * Gets the ID of this node.
+    * @return the ID of this node.
+    */
+   String getID();
+
    Object clone();
 }

@@ -20,6 +20,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.horstmann.violet.framework;
 
+import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -37,11 +39,16 @@ import java.util.List;
 */
 public abstract class AbstractNode implements Node
 {
+   // These are for the syncing. We need to be able to identify unique nodes.
+   private String id;
+   private static int nodeCounter = 0;
+
    /**
       Constructs a node with no parents or children.
    */
    public AbstractNode()
    {
+      this.id = TeamSequenceDiagramGraph.getID() + this.getClass().toString() + ++nodeCounter;
       children = new ArrayList();
       parent = null;
    }
@@ -181,6 +188,11 @@ public abstract class AbstractNode implements Node
             }
          });
    }
+
+   public String getID() {
+      return id;
+   }
+
    private ArrayList children;
    private Node parent;
 }

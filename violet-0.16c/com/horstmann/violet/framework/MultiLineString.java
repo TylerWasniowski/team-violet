@@ -22,6 +22,7 @@ package com.horstmann.violet.framework;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -172,6 +173,12 @@ public class MultiLineString implements Cloneable, Serializable
    public void draw(Graphics2D g2, Rectangle2D r)
    {
       // setLabelText();
+      // Label is not to be serialized, so this method would throw a null pointer exception when called
+      if (label == null) {
+         label = new JLabel();
+         setLabelText();
+      }
+
       label.setFont(g2.getFont());
       label.setBounds(0, 0, (int) r.getWidth(), (int) r.getHeight());
       g2.translate(r.getX(), r.getY());

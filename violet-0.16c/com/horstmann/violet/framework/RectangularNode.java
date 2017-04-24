@@ -165,6 +165,11 @@ public abstract class RectangularNode extends AbstractNode
    {
       return bounds;
    }
-   
+
+   @Override
+   public String toString() {
+      return "RectangularNode Bounds: " + getBounds().toString();
+   }
+
    private transient Rectangle2D bounds;
 }
