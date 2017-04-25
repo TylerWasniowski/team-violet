@@ -44,6 +44,8 @@ import java.lang.reflect.Field;
 */
 public class SerializableEnumeration implements Serializable
 {
+   private static final long serialVersionUID = 4L;
+
    protected Object writeReplace() throws ObjectStreamException
    {
       if (name == null) toString();

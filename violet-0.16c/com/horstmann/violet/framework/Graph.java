@@ -36,6 +36,7 @@ import java.util.Collection;
 */
 public abstract class Graph implements Serializable
 {
+   private static final long serialVersionUID = 3L;
    /**
       Constructs a graph with no nodes or edges.
    */

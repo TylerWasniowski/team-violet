@@ -31,7 +31,8 @@ import java.awt.geom.Rectangle2D;
    a number of methods in the Edge interface
 */
 abstract class AbstractEdge implements Edge
-{  
+{
+   private static final long serialVersionUID = 2L;
    public Object clone()
    {
       try
