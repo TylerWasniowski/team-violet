@@ -148,8 +148,9 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph {
     private class Command implements Serializable {
 
         private CommandType commandType;
-
         private List<Object> commandInputs;
+
+        private static final long serialVersionUID = 42L;
 
         public Command(CommandType commandType, Object... commandInputs) {
             this.commandType = commandType;
