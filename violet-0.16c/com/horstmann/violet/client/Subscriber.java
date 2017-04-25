@@ -1,12 +1,7 @@
 package com.horstmann.violet.client;
 
-import javax.jms.Connection;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageListener;
-import javax.jms.Session;
-import javax.jms.TextMessage;
+import javax.jms.*;
+
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
@@ -29,7 +24,7 @@ public class Subscriber {
        Subscriber.tDiagram = tDiagram;
     }
     
-    public void start() {
+    public void start() throws JMSException {
         try {
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", BROKER_URL);
             connection = connectionFactory.createConnection();
@@ -45,11 +40,13 @@ public class Subscriber {
     private static class TeamVioletMessageListener implements MessageListener {
         @Override
         public void onMessage(Message message) {
-            if(message instanceof TextMessage) {
-                TextMessage textMessage = (TextMessage) message;
+            if(message instanceof ObjectMessage) {
+                ObjectMessage objectMessage = (ObjectMessage) message;
                 try {
-                    tDiagram.executeCommand(textMessage.getText());
-                    //System.out.println("Consumer received message: " + textMessage.getText());
+                    Object object = objectMessage.getObject();
+                    if (object instanceof TeamSequenceDiagramGraph.Command) {
+                        tDiagram.executeCommand((TeamSequenceDiagramGraph.Command) object);
+                    }
                 } catch (JMSException e) {
                     e.printStackTrace();
                 }

@@ -9,6 +9,8 @@ import javax.jms.TextMessage;
 import javax.jms.Topic;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
+import java.io.Serializable;
+
 /**
  * Created by CSingh on 4/21/2017.
  */
@@ -21,7 +23,7 @@ public class Publisher {
     private Session session;
     private MessageProducer messageProducer;
     
-    public void start() {
+    public void start() throws JMSException {
         try { 
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", BROKER_URL); 
             connection = connectionFactory.createConnection(); 
@@ -34,8 +36,8 @@ public class Publisher {
         }
     } 
     
-    public void sendMessage(String message) throws JMSException, InterruptedException { 
-        TextMessage msg = session.createTextMessage(message);
+    public void sendCommand(Serializable command) throws JMSException, InterruptedException {
+        Message msg = session.createObjectMessage(command);
         messageProducer.send(msg); 
     }
     

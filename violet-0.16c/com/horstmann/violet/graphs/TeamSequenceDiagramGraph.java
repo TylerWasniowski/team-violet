@@ -23,7 +23,7 @@ import javax.jms.JMSException;
  *
  *
  */
-public class TeamSequenceDiagramGraph extends SequenceDiagramGraph {
+public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Closeable {
 
     private static String id = "0";
     private transient Publisher publisher;
@@ -33,10 +33,14 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph {
         super();
 
         publisher = new Publisher();
-        publisher.start();
-
         subscriber = new Subscriber(this);
-        subscriber.start();
+
+        try {
+            publisher.start();
+            subscriber.start();
+        } catch (JMSException ex) {
+            ex.printStackTrace();
+        }
 
     }
 
@@ -73,15 +77,10 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph {
 //      super.setMinBounds(newValue);
     }
 
-    // TODO: Implement this
     private void sendCommandToServer(Command command) {
-        // Turn Command into String and send to server
-        ByteArrayOutputStream byteArrayOutputStream;
-        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(
-                byteArrayOutputStream = new ByteArrayOutputStream())) {
-            objectOutputStream.writeObject(command);
-            publisher.sendMessage(Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray()));
-        } catch (IOException|InterruptedException|JMSException ex) {
+        try {
+            publisher.sendCommand(command);
+        } catch (InterruptedException|JMSException ex) {
             ex.printStackTrace();
         }
     }
@@ -112,32 +111,26 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph {
         super.setMinBounds(newValue);
     }
 
-    public void executeCommand(String commandString) {
-        /*
-         *  Decode String into ByteArray and read command from ByteArray with the ObjectInputStream,
-         *  and then interpret Command and execute the correct methods
-         */
-        try (ObjectInputStream objectInputStream = new ObjectInputStream(
-                new ByteArrayInputStream(Base64.getDecoder().decode(commandString)))) {
-            Command command = (Command) objectInputStream.readObject();
+    public void executeCommand(Command command) {
+        CommandType commandType = command.getCommandType();
+        List<Object> commandInputs = command.getCommandInputs();
 
-            CommandType commandType = command.getCommandType();
-            List<Object> commandInputs = command.getCommandInputs();
-
-            if (commandType == CommandType.ADD_NODE) {
-                addLocal((Node) commandInputs.get(0), (Point2D) commandInputs.get(1));
-            } else if (commandType == CommandType.REMOVE_NODE) {
-                removeNodeLocal((Node) commandInputs.get(0));
-            } else if (commandType == CommandType.CONNECT_EDGE) {
-                connectLocal((Edge) commandInputs.get(0), (Point2D) commandInputs.get(1), (Point2D) commandInputs.get(2));
-            } else if (commandType == CommandType.REMOVE_EDGE) {
-                removeEdgeLocal((Edge) commandInputs.get(1));
-            } else if (commandType == CommandType.SET_MIN_BOUNDS) {
-                setMinBoundsLocal((Rectangle2D) commandInputs.get(1));
-            }
-        } catch (IOException | ClassNotFoundException ex) {
-            ex.printStackTrace();
+        if (commandType == CommandType.ADD_NODE) {
+            addLocal((Node) commandInputs.get(0), (Point2D) commandInputs.get(1));
+        } else if (commandType == CommandType.REMOVE_NODE) {
+            removeNodeLocal((Node) commandInputs.get(0));
+        } else if (commandType == CommandType.CONNECT_EDGE) {
+            connectLocal((Edge) commandInputs.get(0), (Point2D) commandInputs.get(1), (Point2D) commandInputs.get(2));
+        } else if (commandType == CommandType.REMOVE_EDGE) {
+            removeEdgeLocal((Edge) commandInputs.get(1));
+        } else if (commandType == CommandType.SET_MIN_BOUNDS) {
+            setMinBoundsLocal((Rectangle2D) commandInputs.get(1));
         }
+    }
+
+    public void close() {
+        publisher.closePublisherConnection();
+        subscriber.closeSubscriberConnection();
     }
 
 
@@ -145,7 +138,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph {
         return id;
     }
 
-    private class Command implements Serializable {
+    public class Command implements Serializable {
 
         private CommandType commandType;
         private List<Object> commandInputs;
@@ -170,8 +163,8 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph {
         @Override
         public String toString() {
             String ret = "";
-            ret += "Command Type: " + commandType + "\n";
-            ret += "Command Inputs: " + commandInputs;
+            ret += "com.horstmann.violet.commands.Command Type: " + commandType + "\n";
+            ret += "com.horstmann.violet.commands.Command Inputs: " + commandInputs;
             return ret;
         }
 
