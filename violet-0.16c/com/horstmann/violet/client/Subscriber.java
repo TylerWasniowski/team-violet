@@ -4,9 +4,11 @@ import javax.jms.*;
 
 import com.horstmann.violet.Command;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.command.ActiveMQObjectMessage;
 
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -31,15 +33,9 @@ public class Subscriber {
     public void start() throws JMSException {
         try {
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", BROKER_URL);
+            connectionFactory.setTrustAllPackages(true);
             connection = connectionFactory.createConnection();
             connection.start();
-
-            // Allows these packages to be deserialized
-            connectionFactory.setTrustedPackages(new ArrayList<>(
-                    Arrays.asList("java.lang,javax.security,java.util",
-                            "org.apache.activemq", "fusesource.hawtbuf", "com.thoughtworks.xstream.mapper",
-                            "com.horstmann.violet")));
-
             session = connection.createSession(NON_TRANSACTED, Session.AUTO_ACKNOWLEDGE);
             messageConsumer = session.createConsumer(session.createTopic("VIOLET.TOPIC"));
             messageConsumer.setMessageListener(new TeamVioletMessageListener());
@@ -51,16 +47,15 @@ public class Subscriber {
     private static class TeamVioletMessageListener implements MessageListener {
         @Override
         public void onMessage(Message message) {
-            if(message instanceof ObjectMessage) {
-                ObjectMessage objectMessage = (ObjectMessage) message;
-                try {
-                    Object object = objectMessage.getObject();
-                    if (object instanceof Command) {
-                        tDiagram.executeCommand((Command) object);
-                    }
-                } catch (JMSException e) {
-                    e.printStackTrace();
+            try {
+                Serializable obj = null;
+                ActiveMQObjectMessage mq = (ActiveMQObjectMessage) message;
+                obj = mq.getObject();
+                if (obj instanceof Command) {
+                    tDiagram.executeCommand((Command) obj);
                 }
+            } catch (JMSException e) {
+                e.printStackTrace();
             }
         }
     }

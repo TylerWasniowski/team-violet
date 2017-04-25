@@ -4,10 +4,13 @@ import javax.jms.Connection;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
+import javax.jms.ObjectMessage;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.jms.Topic;
 import org.apache.activemq.ActiveMQConnectionFactory;
+
+import com.horstmann.violet.Command;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,13 +31,7 @@ public class Publisher {
     public void start() throws JMSException {
         try { 
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", BROKER_URL);
-
-            // Allows these packages to be deserialized
-            connectionFactory.setTrustedPackages(new ArrayList<>(
-                    Arrays.asList("java.lang,javax.security,java.util",
-                            "org.apache.activemq", "fusesource.hawtbuf", "com.thoughtworks.xstream.mapper",
-                            "com.horstmann.violet")));
-
+            connectionFactory.setTrustAllPackages(true);
             connection = connectionFactory.createConnection(); 
             connection.start(); 
             session = connection.createSession(NON_TRANSACTED, Session.AUTO_ACKNOWLEDGE);
@@ -45,8 +42,9 @@ public class Publisher {
         }
     } 
     
-    public void sendCommand(Serializable command) throws JMSException, InterruptedException {
-        Message msg = session.createObjectMessage(command);
+    public void sendCommand(Command command) throws JMSException, InterruptedException {
+        ObjectMessage msg = session.createObjectMessage();
+        msg.setObject((Serializable) command);
         messageProducer.send(msg); 
     }
     
