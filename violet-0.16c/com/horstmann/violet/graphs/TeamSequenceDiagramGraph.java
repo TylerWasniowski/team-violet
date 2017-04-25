@@ -4,11 +4,13 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.*;
 import java.io.ByteArrayOutputStream;
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
+import com.horstmann.violet.Command;
 import com.horstmann.violet.client.Publisher;
 import com.horstmann.violet.client.Subscriber;
 import com.horstmann.violet.framework.Edge;
@@ -29,7 +31,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
     private transient Publisher publisher;
     private transient Subscriber subscriber;
 
-    public TeamSequenceDiagramGraph() {
+    public TeamSequenceDiagramGraph() throws JMSException {
         super();
 
         publisher = new Publisher();
@@ -39,7 +41,9 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
             publisher.start();
             subscriber.start();
         } catch (JMSException ex) {
-            ex.printStackTrace();
+            publisher.closePublisherConnection();
+            subscriber.closeSubscriberConnection();
+            throw ex;
         }
 
     }
@@ -138,39 +142,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
         return id;
     }
 
-    public class Command implements Serializable {
-
-        private CommandType commandType;
-        private List<Object> commandInputs;
-
-        private static final long serialVersionUID = 42L;
-
-        public Command(CommandType commandType, Object... commandInputs) {
-            this.commandType = commandType;
-
-            this.commandInputs = new ArrayList<>();
-            this.commandInputs.addAll(Arrays.asList(commandInputs));
-        }
-
-        public CommandType getCommandType() {
-            return commandType;
-        }
-
-        public List<Object> getCommandInputs() {
-            return commandInputs;
-        }
-
-        @Override
-        public String toString() {
-            String ret = "";
-            ret += "com.horstmann.violet.commands.Command Type: " + commandType + "\n";
-            ret += "com.horstmann.violet.commands.Command Inputs: " + commandInputs;
-            return ret;
-        }
-
-    }
-
-    private enum CommandType {
+    public enum CommandType {
         ADD_NODE, REMOVE_NODE, UPDATE_NODE,
         CONNECT_EDGE, REMOVE_EDGE, UPDATE_EDGE,
         SET_MIN_BOUNDS
