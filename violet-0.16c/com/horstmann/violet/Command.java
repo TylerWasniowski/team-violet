@@ -13,8 +13,8 @@ public class Command implements Serializable {
     private TeamSequenceDiagramGraph.CommandType commandType;
     private List<Object> commandInputs;
     
-    private static final long serialVersionUID = 1L;
-    //private static final long serialVersionUID = 42L;
+    //private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 42L;
 
     public Command(TeamSequenceDiagramGraph.CommandType commandType, Object... commandInputs) {
         this.commandType = commandType;
