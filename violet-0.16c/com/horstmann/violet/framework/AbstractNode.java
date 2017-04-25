@@ -39,7 +39,6 @@ import java.util.List;
 */
 public abstract class AbstractNode implements Node
 {
-   private static final long serialVersionUID = 1L;
    // These are for the syncing. We need to be able to identify unique nodes.
    private String id;
    private static int nodeCounter = 0;

@@ -32,6 +32,7 @@ import java.util.List;
 */
 public interface Node extends Serializable, Cloneable
 {
+   long serialVersionUID = 1L;
    /**
       Draw the node.
       @param g2 the graphics context

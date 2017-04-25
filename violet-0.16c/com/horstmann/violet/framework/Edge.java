@@ -32,6 +32,7 @@ import java.io.Serializable;
 */
 public interface Edge extends Serializable, Cloneable
 {
+   long serialVersionUID = 2L;
    /**
       Draw the edge.
       @param g2 the graphics context
