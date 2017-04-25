@@ -37,7 +37,7 @@ public class Subscriber {
             // Allows these packages to be deserialized
             connectionFactory.setTrustedPackages(new ArrayList<>(
                     Arrays.asList("java.lang,javax.security,java.util",
-                            "org.apache.activemq",
+                            "org.apache.activemq", "fusesource.hawtbuf", "com.thoughtworks.xstream.mapper",
                             "com.horstmann.violet")));
 
             session = connection.createSession(NON_TRANSACTED, Session.AUTO_ACKNOWLEDGE);

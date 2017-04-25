@@ -32,8 +32,8 @@ public class Publisher {
             // Allows these packages to be deserialized
             connectionFactory.setTrustedPackages(new ArrayList<>(
                     Arrays.asList("java.lang,javax.security,java.util",
-                    "org.apache.activemq",
-                    "com.horstmann.violet")));
+                            "org.apache.activemq", "fusesource.hawtbuf", "com.thoughtworks.xstream.mapper",
+                            "com.horstmann.violet")));
 
             connection = connectionFactory.createConnection(); 
             connection.start(); 
