@@ -5,12 +5,12 @@ import javax.jms.*;
 import com.horstmann.violet.commands.*;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQObjectMessage;
-
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * Created by CSingh on 4/21/2017.
@@ -24,6 +24,7 @@ public class Subscriber {
     private Connection connection;
     private Session session;
     private MessageConsumer messageConsumer;
+    public static Queue<ActiveMQObjectMessage> recievedMsgs = new LinkedList<ActiveMQObjectMessage>();
     private static TeamSequenceDiagramGraph tDiagram;
     
     public Subscriber(TeamSequenceDiagramGraph tDiagram) {
@@ -47,18 +48,36 @@ public class Subscriber {
     private static class TeamVioletMessageListener implements MessageListener {
         @Override
         public void onMessage(Message message) {
-            try {
-                Serializable obj = null;
-                ActiveMQObjectMessage mq = (ActiveMQObjectMessage) message;
-                obj = mq.getObject();
-                if (obj instanceof Command) {
-                    Command command = (Command) obj;
-                    command.execute(tDiagram);
+            synchronized (this) {
+                try {
+                    Serializable obj;
+                    ActiveMQObjectMessage mq = (ActiveMQObjectMessage) message;
+                    obj = mq.getObject();
+                    if (obj instanceof Command) {
+                        recievedMsgs.add(mq);
+                        Command command = (Command) obj;
+                        command.execute(tDiagram);
+                    }
+                } catch (JMSException e) {
+                    e.printStackTrace();
                 }
-            } catch (JMSException e) {
-                e.printStackTrace();
             }
         }
+    }
+    
+    public synchronized List<Command> receiveCommands() throws Exception {
+        List<Command> lst = new ArrayList<Command>();
+        Serializable obj = null;
+        if(!recievedMsgs.isEmpty()) {
+            ActiveMQObjectMessage mq = recievedMsgs.poll();
+            obj = mq.getObject();
+            if (obj instanceof Command) {
+                lst.add((Command) obj);
+            } else {
+                throw new Exception("Unknown Message");
+            }
+        }
+        return lst;
     }
     
     public void closeSubscriberConnection() {
