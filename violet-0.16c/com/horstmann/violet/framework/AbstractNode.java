@@ -51,7 +51,6 @@ public abstract class AbstractNode implements Node
    public AbstractNode()
    {
       this.id = this.getClass().toString() + incrementCountInMap();
-      System.out.println(classNameToNumberOfObjects);
       children = new ArrayList();
       parent = null;
    }

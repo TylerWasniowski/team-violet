@@ -28,6 +28,8 @@ import javax.jms.JMSException;
  */
 public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Closeable {
 
+    private static final long serialVersionUID = -9088160815514315525L;
+
     private static String id = "0";
     private transient Publisher publisher;
     private transient Subscriber subscriber;
@@ -54,7 +56,6 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
     public boolean add(Node n, Point2D p) {
         addLocal(n, p);
         n.setGraphID(id);
-        System.out.println(n.getID());
         return sendCommandToServer(new AddNodeCommand(n, p));
     }
 
@@ -73,7 +74,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
 
     @Override
     public void removeEdge(Edge e) {
-        removeEdge(e);
+        removeEdgeLocal(e);
         sendCommandToServer(new RemoveEdgeCommand(e));
     }
 
