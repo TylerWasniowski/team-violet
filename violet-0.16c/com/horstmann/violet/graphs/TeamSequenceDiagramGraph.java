@@ -67,12 +67,9 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
 
     @Override
     public boolean connect(Edge e, Point2D p1, Point2D p2) {
+        connectLocal(e, p1, p2);
         e.setGraphID(id);
-        Node start = findNode(p1);
-        Node end = findNode(p2);
-        super.connect(e, start, end);
-
-        return sendCommandToServer(new ConnectEdgeCommand(e, start, end));
+        return sendCommandToServer(new ConnectEdgeCommand(e, p1, p2));
     }
 
     @Override
@@ -116,10 +113,9 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
         }
     }
 
-    public boolean connectLocal(Edge e, Node start, Node end) {
+    public boolean connectLocal(Edge e, Point2D p1, Point2D p2) {
         if (!getEdges().contains(e)) {
-            super.connect(e, start, end);
-            return true;
+            return super.connect(e, p1, p2);
         }
 
         return false;
