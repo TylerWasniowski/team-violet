@@ -35,7 +35,9 @@ import com.horstmann.violet.graphs.*;
  */
 public class UMLEditor extends JApplet
 {
-   public static void main(String[] args)
+    private static final long serialVersionUID = 7672410892827376431L;
+
+    public static void main(String[] args)
    {
       VersionChecker checker = new VersionChecker();
       checker.check(JAVA_VERSION);

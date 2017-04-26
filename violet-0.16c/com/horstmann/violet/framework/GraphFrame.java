@@ -37,6 +37,8 @@ import javax.swing.JScrollPane;
 */
 public class GraphFrame extends JInternalFrame
 {
+   private static final long serialVersionUID = -8835885173847214389L;
+
    /**
       Constructs a graph frame with an empty tool bar
       @param aGraph the initial graph

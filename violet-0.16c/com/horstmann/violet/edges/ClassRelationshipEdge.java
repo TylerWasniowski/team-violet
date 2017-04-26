@@ -30,6 +30,8 @@ import com.horstmann.violet.framework.SegmentedLineEdge;
 */
 public class ClassRelationshipEdge extends SegmentedLineEdge
 {
+   private static final long serialVersionUID = 5449368257663676162L;
+
    /**
       Constructs a straight edge.
    */

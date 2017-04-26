@@ -50,6 +50,8 @@ import java.util.Set;
  */
 public class GraphPanel extends JPanel
 {
+   private static final long serialVersionUID = -6784187653877104152L;
+
    /**
     * Constructs a graph.
     * @param aToolBar the tool bar with the node and edge tools

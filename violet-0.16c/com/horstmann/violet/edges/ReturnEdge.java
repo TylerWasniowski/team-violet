@@ -33,6 +33,8 @@ import com.horstmann.violet.nodes.PointNode;
 */
 public class ReturnEdge extends SegmentedLineEdge
 {
+   private static final long serialVersionUID = -4321907366561159737L;
+
    public ReturnEdge()
    {
       setEndArrowHead(ArrowHead.V);

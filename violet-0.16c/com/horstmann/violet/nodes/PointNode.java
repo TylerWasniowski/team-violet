@@ -35,6 +35,8 @@ import com.horstmann.violet.framework.Direction;
 */
 public class PointNode extends AbstractNode
 {
+   private static final long serialVersionUID = -7770181404461767597L;
+
    /**
       Constructs a point node with coordinates (0, 0)
    */

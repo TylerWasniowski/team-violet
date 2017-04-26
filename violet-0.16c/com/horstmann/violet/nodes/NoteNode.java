@@ -38,6 +38,8 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class NoteNode extends RectangularNode
 {
+   private static final long serialVersionUID = -3564240503715495322L;
+
    /**
       Construct a note node with a default size and color
    */

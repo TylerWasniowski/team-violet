@@ -9,6 +9,8 @@ import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
  */
 public class RemoveNodeCommand implements Command {
 
+    private static final long serialVersionUID = -6116885171081680050L;
+
     private Node node;
 
     public RemoveNodeCommand(Node node) {

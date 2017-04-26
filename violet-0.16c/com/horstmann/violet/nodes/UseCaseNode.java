@@ -34,6 +34,8 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class UseCaseNode extends RectangularNode
 {
+   private static final long serialVersionUID = -8331585548701912911L;
+
    /**
       Construct a use case node with a default size
    */

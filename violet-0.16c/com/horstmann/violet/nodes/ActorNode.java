@@ -34,6 +34,8 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class ActorNode extends RectangularNode
 {
+   private static final long serialVersionUID = -2877973956875956861L;
+
    /**
       Construct an actor node with a default size and name
    */

@@ -36,6 +36,8 @@ import com.horstmann.violet.framework.ShapeEdge;
 */
 public class NoteEdge extends ShapeEdge
 {
+   private static final long serialVersionUID = -7756290730620392535L;
+
    public void draw(Graphics2D g2)
    {
       Stroke oldStroke = g2.getStroke();

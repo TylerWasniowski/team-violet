@@ -35,6 +35,8 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class InterfaceNode extends RectangularNode
 {
+   private static final long serialVersionUID = 2750407532775709556L;
+
    /**
       Construct an interface node with a default size and
       the text <<interface>>.

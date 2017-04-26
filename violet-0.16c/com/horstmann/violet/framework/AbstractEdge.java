@@ -35,6 +35,8 @@ import java.util.Objects;
 */
 abstract class AbstractEdge implements Edge
 {
+   private static final long serialVersionUID = 9000165480500528416L;
+
    // These are for the syncing. We need to be able to identify unique edges.
    private String id;
    private String graphID;

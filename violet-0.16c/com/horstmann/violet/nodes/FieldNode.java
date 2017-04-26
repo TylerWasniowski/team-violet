@@ -39,6 +39,8 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class FieldNode extends RectangularNode
 {
+   private static final long serialVersionUID = 1434565809710223792L;
+
    public FieldNode()
    {
       name = new MultiLineString();

@@ -36,6 +36,8 @@ import javax.swing.JLabel;
 */
 public class MultiLineString implements Cloneable, Serializable
 {
+   private static final long serialVersionUID = 8405909917941610403L;
+
    /**
       Constructs an empty, centered, normal size multiline
       string that is not underlined.

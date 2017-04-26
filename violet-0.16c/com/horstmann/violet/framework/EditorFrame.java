@@ -85,6 +85,8 @@ import com.horstmann.violet.edges.LineStyle;
 */
 public class EditorFrame extends JFrame
 {
+   private static final long serialVersionUID = -8259777379460050404L;
+
    /**
       Constructs a blank frame with a desktop pane
       but no graph windows.

@@ -35,6 +35,8 @@ import com.horstmann.violet.nodes.PointNode;
 */
 public class CallEdge extends SegmentedLineEdge
 {
+   private static final long serialVersionUID = 2640004413418817563L;
+
    public CallEdge()
    {
       setSignal(false);

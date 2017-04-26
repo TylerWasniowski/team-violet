@@ -37,7 +37,9 @@ import java.awt.geom.Rectangle2D;
    BasicStroke.createStrokedShape returns shitty-looking shapes. 
 */
 public abstract class ShapeEdge extends AbstractEdge
-{  
+{
+   private static final long serialVersionUID = 1L;
+
    /**
       Returns the path that should be stroked to
       draw this edge. The path does not include

@@ -41,6 +41,9 @@ import com.horstmann.violet.edges.LineStyle;
 */
 public abstract class SegmentedLineEdge extends ShapeEdge
 {
+
+   private static final long serialVersionUID = 1L;
+
    /**
       Costructs an edge with no adornments.
    */

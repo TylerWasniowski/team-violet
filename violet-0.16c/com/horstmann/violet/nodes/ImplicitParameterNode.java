@@ -41,6 +41,8 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class ImplicitParameterNode extends RectangularNode
 {
+   private static final long serialVersionUID = -2476326471844873402L;
+
    /**
       Construct an object node with a default size
    */

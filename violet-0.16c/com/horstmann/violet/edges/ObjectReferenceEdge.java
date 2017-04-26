@@ -36,6 +36,8 @@ import com.horstmann.violet.framework.ShapeEdge;
 */
 public class ObjectReferenceEdge extends ShapeEdge
 {
+   private static final long serialVersionUID = -2013032578969977304L;
+
    public void draw(Graphics2D g2)
    {
       g2.draw(getShape());

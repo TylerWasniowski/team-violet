@@ -29,6 +29,8 @@ import javax.swing.JPanel;
  */
 public class PrintDialog extends JDialog
 {
+   private static final long serialVersionUID = -3172629727317985180L;
+
    /**
     * Constructs a print dialog.
     * @param gr the graph to be printed

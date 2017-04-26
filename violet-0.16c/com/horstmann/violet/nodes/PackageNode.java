@@ -41,6 +41,8 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class PackageNode extends RectangularNode
 {
+   private static final long serialVersionUID = -3765240635588230678L;
+
    /**
       Construct a package node with a default size
    */

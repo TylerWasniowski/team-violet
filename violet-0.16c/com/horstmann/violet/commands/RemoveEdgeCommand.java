@@ -9,6 +9,8 @@ import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
  */
 public class RemoveEdgeCommand implements Command {
 
+    private static final long serialVersionUID = 5533608612833602004L;
+
     private Edge edge;
 
     public RemoveEdgeCommand(Edge edge) {

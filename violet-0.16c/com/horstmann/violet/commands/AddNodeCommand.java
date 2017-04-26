@@ -11,6 +11,8 @@ import java.awt.geom.Point2D;
  */
 public class AddNodeCommand implements Command {
 
+    private static final long serialVersionUID = 7311600224150423820L;
+
     private Node node;
     private Point2D point;
 

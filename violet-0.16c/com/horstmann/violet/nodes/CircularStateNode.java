@@ -34,6 +34,8 @@ import com.horstmann.violet.framework.RectangularNode;
 */
 public class CircularStateNode extends RectangularNode
 {
+   private static final long serialVersionUID = -7487281716489555122L;
+
    /**
       Construct a node with a default size
    */

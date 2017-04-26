@@ -52,6 +52,9 @@ import com.horstmann.violet.nodes.PointNode;
 */
 public class ToolBar extends JPanel
 {
+
+   private static final long serialVersionUID = -1711494253968383036L;
+
    /**
       Constructs a tool bar with no icons.
    */
