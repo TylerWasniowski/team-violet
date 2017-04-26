@@ -4,24 +4,20 @@ import com.horstmann.violet.framework.Graph;
 import com.horstmann.violet.framework.Node;
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
 
-import java.awt.geom.Point2D;
-
 /**
- * Created by Tyler on 4/25/2017.
+ * Created by Tyler on 4/26/2017.
  */
-public class AddNodeCommand implements Command {
+public class RemoveNodeCommand implements Command {
 
     private Node node;
-    private Point2D point;
 
-    public AddNodeCommand(Node node, Point2D point) {
+    public RemoveNodeCommand(Node node) {
         this.node = node;
-        this.point = point;
     }
 
     @Override
     public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn) {
-        return graphToExecuteCommandOn.addLocal(node, point);
+        graphToExecuteCommandOn.removeNodeLocal(node);
+        return !graphToExecuteCommandOn.getNodes().contains(node);
     }
-
 }

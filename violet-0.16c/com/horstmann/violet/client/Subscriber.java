@@ -2,7 +2,7 @@ package com.horstmann.violet.client;
 
 import javax.jms.*;
 
-import com.horstmann.violet.Command;
+import com.horstmann.violet.commands.*;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQObjectMessage;
 
@@ -52,7 +52,8 @@ public class Subscriber {
                 ActiveMQObjectMessage mq = (ActiveMQObjectMessage) message;
                 obj = mq.getObject();
                 if (obj instanceof Command) {
-                    tDiagram.executeCommand((Command) obj);
+                    Command command = (Command) obj;
+                    command.execute(tDiagram);
                 }
             } catch (JMSException e) {
                 e.printStackTrace();

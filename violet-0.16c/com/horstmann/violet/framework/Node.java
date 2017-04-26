@@ -32,7 +32,7 @@ import java.util.List;
 */
 public interface Node extends Serializable, Cloneable
 {
-   long serialVersionUID = 1L;
+   long serialVersionUID = 3L;
    /**
       Draw the node.
       @param g2 the graphics context
@@ -147,6 +147,12 @@ public interface Node extends Serializable, Cloneable
     * @return the ID of this node.
     */
    String getID();
+
+   /**
+    * Sets the ID of this node.
+    * @param graphID the ID of the graph that this node belongs to
+    */
+   void setGraphID(String graphID);
 
    Object clone();
 }

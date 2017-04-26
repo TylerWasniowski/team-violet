@@ -10,7 +10,7 @@ import javax.jms.TextMessage;
 import javax.jms.Topic;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
-import com.horstmann.violet.Command;
+import com.horstmann.violet.commands.Command;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class Publisher {
     
     public void sendCommand(Command command) throws JMSException, InterruptedException {
         ObjectMessage msg = session.createObjectMessage();
-        msg.setObject((Serializable) command);
+        msg.setObject(command);
         messageProducer.send(msg); 
     }
     

@@ -29,8 +29,7 @@ import java.awt.geom.Point2D;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -41,14 +40,14 @@ public abstract class AbstractNode implements Node
 {
    // These are for the syncing. We need to be able to identify unique nodes.
    private String id;
-   private static int nodeCounter = 0;
+   private static Map<String, Integer> classNameToNumberOfObjects = new HashMap<>(); // Counts number of objects of each class of Node
 
    /**
       Constructs a node with no parents or children.
    */
    public AbstractNode()
    {
-      this.id = TeamSequenceDiagramGraph.getID() + this.getClass().toString() + ++nodeCounter;
+      this.id = this.getClass().toString() + incrementCountInMap();
       children = new ArrayList();
       parent = null;
    }
@@ -106,6 +105,25 @@ public abstract class AbstractNode implements Node
       return false;
    }
 
+   public boolean equals(Object o) {
+      if (!(o instanceof AbstractNode))
+         return false;
+
+      AbstractNode that = (AbstractNode) o;
+      if (!this.id.equals(that.id))
+         return false;
+      else if (!this.children.equals(that.children))
+         return false;
+      else if (!this.parent.equals(that.parent))
+         return false;
+      else
+         return true;
+   }
+
+   public int hashCode() {
+      return Objects.hash(id, children, parent);
+   }
+
    public Node getParent() { return parent; }
 
    public void setParent(Node node) { parent = node; }
@@ -154,7 +172,23 @@ public abstract class AbstractNode implements Node
    
    private static final Color SHADOW_COLOR = Color.LIGHT_GRAY;
    public static final int SHADOW_GAP = 4;
-   
+
+   /**
+    * Increments the value linked to the class name, or initializes the value to 1 if the value linked to the
+    * class name was 0.
+    * @return The new number linked to the class name
+    */
+   private Integer incrementCountInMap() {
+      Integer numberOfObjectsOfThisClass = classNameToNumberOfObjects.get(this.getClass().toString());
+      if (numberOfObjectsOfThisClass == null) {
+         classNameToNumberOfObjects.put(this.getClass().toString(), 1);
+      } else {
+         classNameToNumberOfObjects.put(this.getClass().toString(), numberOfObjectsOfThisClass + 1);
+      }
+
+      return numberOfObjectsOfThisClass;
+   }
+
    /**
        @return the shape to be used for computing the drop shadow
     */
@@ -189,8 +223,14 @@ public abstract class AbstractNode implements Node
          });
    }
 
+   @Override
    public String getID() {
       return id;
+   }
+
+   @Override
+   public void setGraphID(String graphID) {
+      id = graphID + this.getClass().toString() + classNameToNumberOfObjects.get(this.getClass().toString());
    }
 
    private ArrayList children;

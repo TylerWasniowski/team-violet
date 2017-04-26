@@ -311,13 +311,13 @@ public abstract class Graph implements Serializable
       Gets the nodes of this graph.
       @return an unmodifiable collection of the nodes
    */
-   public Collection getNodes() { return nodes; }
+   public Collection<Node> getNodes() { return nodes; }
 
    /**
       Gets the edges of this graph.
       @return an unmodifiable collection of the edges
    */
-   public Collection getEdges() { return edges; }
+   public Collection<Edge> getEdges() { return edges; }
 
    /**
       Adds a node to this graph. This method should

@@ -24,6 +24,9 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -32,6 +35,18 @@ import java.awt.geom.Rectangle2D;
 */
 abstract class AbstractEdge implements Edge
 {
+   // These are for the syncing. We need to be able to identify unique edges.
+   private String id;
+   private static Map<String, Integer> classNameToNumberOfObjects = new HashMap<>(); // Counts number of objects of each class of edge
+
+   public AbstractEdge() {
+      this.id = this.getClass().toString() + incrementCountInMap();
+   }
+
+   public AbstractEdge(String graphID) {
+      this.id = graphID + this.getClass().toString() + incrementCountInMap();
+   }
+
    public Object clone()
    {
       try
@@ -48,6 +63,41 @@ abstract class AbstractEdge implements Edge
    {  
       start = s;
       end = e;
+   }
+
+   /**
+    * Increments the value linked to the class name, or initializes the value to 1 if the value linked to the
+    * class name was 0.
+    * @return The new number linked to the class name
+    */
+   private Integer incrementCountInMap() {
+      Integer numberOfObjectsOfThisClass = classNameToNumberOfObjects.get(this.getClass().toString());
+      if (numberOfObjectsOfThisClass == null) {
+         classNameToNumberOfObjects.put(this.getClass().toString(), 1);
+      } else {
+         classNameToNumberOfObjects.put(this.getClass().toString(), numberOfObjectsOfThisClass + 1);
+      }
+
+      return numberOfObjectsOfThisClass;
+   }
+
+   public boolean equals(Object o) {
+      if (!(o instanceof AbstractEdge))
+         return false;
+
+      AbstractEdge that = (AbstractEdge) o;
+      if (!this.id.equals(that.id))
+         return false;
+      else if (!this.start.equals(that.start))
+         return false;
+      else if (!this.end.equals(that.end))
+         return false;
+      else
+         return true;
+   }
+
+   public int hashCode() {
+      return Objects.hash(id, start, end);
    }
 
    public Node getStart()
@@ -81,6 +131,14 @@ abstract class AbstractEdge implements Edge
       return new Line2D.Double(
          start.getConnectionPoint(toEnd),
          end.getConnectionPoint(toEnd.turn(180)));
+   }
+
+   public String getID() {
+      return id;
+   }
+
+   public void setGraphID(String graphID) {
+      id = graphID + this.getClass().toString() + classNameToNumberOfObjects.get(this.getClass().toString());
    }
 
    private Node start;
