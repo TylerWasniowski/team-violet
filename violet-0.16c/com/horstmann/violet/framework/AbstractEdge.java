@@ -85,21 +85,20 @@ abstract class AbstractEdge implements Edge
          return false;
 
       AbstractEdge that = (AbstractEdge) o;
-      return this.id.equals(that.id);
-//      if ((this.id != null && that.id == null) || (this.id == null && that.id != null))
-//         return false;
-//      else if (this.id != null && !this.id.equals(that.id))
-//         return false;
-//      else if ((this.start != null && that.start == null) || (this.start == null && that.start != null))
-//         return false;
-//      else if (this.start != null && !this.start.equals(that.start))
-//         return false;
-//      else if ((this.end != null && that.end == null) || (this.end == null && that.end != null))
-//         return false;
-//      else if (this.end != null && !this.end.equals(that.end))
-//         return false;
-//      else
-//         return true;
+      if ((this.id != null && that.id == null) || (this.id == null && that.id != null))
+         return false;
+      else if (this.id != null && !this.id.equals(that.id))
+         return false;
+      else if ((this.start != null && that.start == null) || (this.start == null && that.start != null))
+         return false;
+      else if (this.start != null && !this.start.equals(that.start))
+         return false;
+      else if ((this.end != null && that.end == null) || (this.end == null && that.end != null))
+         return false;
+      else if (this.end != null && !this.end.equals(that.end))
+         return false;
+      else
+         return true;
    }
 
    public int hashCode() {

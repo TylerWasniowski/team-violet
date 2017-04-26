@@ -114,21 +114,20 @@ public abstract class AbstractNode implements Node
          return false;
 
       AbstractNode that = (AbstractNode) o;
-      return this.id.equals(that.id);
-//      if ((this.id != null && that.id == null) || (this.id == null && that.id != null))
-//         return false;
-//      else if (this.id != null && !this.id.equals(that.id))
-//         return false;
-//      else if ((this.children != null && that.children == null) || (this.children == null && that.children != null))
-//         return false;
-//      else if (this.children != null && !this.children.equals(that.children))
-//         return false;
-//      else if ((this.parent != null && that.parent == null) || (this.parent == null && that.parent != null))
-//         return false;
-//      else if (this.parent != null && !this.parent.equals(that.parent))
-//         return false;
-//      else
-//         return true;
+      if ((this.id != null && that.id == null) || (this.id == null && that.id != null))
+         return false;
+      else if (this.id != null && !this.id.equals(that.id))
+         return false;
+      else if ((this.children != null && that.children == null) || (this.children == null && that.children != null))
+         return false;
+      else if (this.children != null && !this.children.equals(that.children))
+         return false;
+      else if ((this.parent != null && that.parent == null) || (this.parent == null && that.parent != null))
+         return false;
+      else if (this.parent != null && !this.parent.equals(that.parent))
+         return false;
+      else
+         return true;
    }
 
    public int hashCode() {
