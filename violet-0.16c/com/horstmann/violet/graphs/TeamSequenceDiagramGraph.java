@@ -38,36 +38,42 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
         publisher = new Publisher();
         subscriber = new Subscriber(this);
 
-        try {
-            publisher.start();
-            subscriber.start();
-        } catch (JMSException ex) {
-            publisher.closePublisherConnection();
-            subscriber.closeSubscriberConnection();
-            throw ex;
-        }
+//        try {
+//            publisher.start();
+//            subscriber.start();
+//        } catch (JMSException ex) {
+//            publisher.closePublisherConnection();
+//            subscriber.closeSubscriberConnection();
+//            throw ex;
+//        }
 
     }
 
     // Commands to both send and execute
     @Override
     public boolean add(Node n, Point2D p) {
-        addLocal(n, p);
+//        addLocal(n, p);
+        n.setGraphID(id);
+        System.out.println(n.getID());
         return sendCommandToServer(new AddNodeCommand(n, p));
     }
 
     @Override
     public void removeNode(Node n) {
+//        removeNodeLocal(n);
         sendCommandToServer(new RemoveNodeCommand(n));
     }
 
     @Override
     public boolean connect(Edge e, Point2D p1, Point2D p2) {
+//        connectLocal(e, p1, p2);
+        e.setGraphID(id);
         return sendCommandToServer(new ConnectEdgeCommand(e, p1, p2));
     }
 
     @Override
     public void removeEdge(Edge e) {
+//        removeEdge(e);
         sendCommandToServer(new RemoveEdgeCommand(e));
     }
 
@@ -77,12 +83,13 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
     }
 
     private boolean sendCommandToServer(Command command) {
-        try {
-            publisher.sendCommand(command);
-        } catch (InterruptedException|JMSException ex) {
-            ex.printStackTrace();
-            return false;
-        }
+//        try {
+//            publisher.sendCommand(command);
+//        } catch (InterruptedException|JMSException ex) {
+//            ex.printStackTrace();
+//            return false;
+//        }
+        command.execute(this);
 
         return true;
     }
@@ -90,7 +97,6 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
     // Commands to just execute locally and not send to server
     public boolean addLocal(Node n, Point2D p) {
         if (!getNodes().contains(n)) {
-            n.setGraphID(id);
             return super.add(n, p);
         }
 
@@ -108,7 +114,6 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
 
     public boolean connectLocal(Edge e, Point2D p1, Point2D p2) {
         if (!getEdges().contains(e)) {
-            e.setGraphID(id);
             return super.connect(e, p1, p2);
         }
 

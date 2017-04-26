@@ -16,21 +16,21 @@ import java.util.Queue;
  * Created by CSingh on 4/21/2017.
  */
 public class Subscriber {
-    
-    private static final String BROKER_HOST = "tcp://35.185.234.194:%d";
-    private static final int BROKER_PORT = 61616; 
-    private static final String BROKER_URL = String.format(BROKER_HOST, BROKER_PORT); 
+
+    private static final String BROKER_HOST = "tcp://35.185.222.80:%d";
+    private static final int BROKER_PORT = 61616;
+    private static final String BROKER_URL = String.format(BROKER_HOST, BROKER_PORT);
     private static final Boolean NON_TRANSACTED = false;
     private Connection connection;
     private Session session;
     private MessageConsumer messageConsumer;
-    public static Queue<ActiveMQObjectMessage> recievedMsgs = new LinkedList<ActiveMQObjectMessage>();
+    public static Queue<ActiveMQObjectMessage> recievedMsgs = new LinkedList<>();
     private static TeamSequenceDiagramGraph tDiagram;
-    
+
     public Subscriber(TeamSequenceDiagramGraph tDiagram) {
        Subscriber.tDiagram = tDiagram;
     }
-    
+
     public void start() throws JMSException {
         try {
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", BROKER_URL);
@@ -44,7 +44,7 @@ public class Subscriber {
             e.printStackTrace();
         }
     }
-    
+
     private static class TeamVioletMessageListener implements MessageListener {
         @Override
         public void onMessage(Message message) {
@@ -64,7 +64,7 @@ public class Subscriber {
             }
         }
     }
-    
+
     public synchronized List<Command> receiveCommands() throws Exception {
         List<Command> lst = new ArrayList<Command>();
         Serializable obj = null;

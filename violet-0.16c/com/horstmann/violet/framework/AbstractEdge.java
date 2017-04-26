@@ -37,21 +37,20 @@ abstract class AbstractEdge implements Edge
 {
    // These are for the syncing. We need to be able to identify unique edges.
    private String id;
+   private String graphID;
    private static Map<String, Integer> classNameToNumberOfObjects = new HashMap<>(); // Counts number of objects of each class of edge
 
    public AbstractEdge() {
       this.id = this.getClass().toString() + incrementCountInMap();
    }
 
-   public AbstractEdge(String graphID) {
-      this.id = graphID + this.getClass().toString() + incrementCountInMap();
-   }
-
    public Object clone()
    {
       try
       {
-         return super.clone();
+         AbstractEdge cloned = (AbstractEdge)super.clone();
+         cloned.id = this.graphID + cloned.getClass().toString() + incrementCountInMap();
+         return cloned;
       }
       catch (CloneNotSupportedException exception)
       {
@@ -86,18 +85,25 @@ abstract class AbstractEdge implements Edge
          return false;
 
       AbstractEdge that = (AbstractEdge) o;
-      if (!this.id.equals(that.id))
-         return false;
-      else if (!this.start.equals(that.start))
-         return false;
-      else if (!this.end.equals(that.end))
-         return false;
-      else
-         return true;
+      return this.id.equals(that.id);
+//      if ((this.id != null && that.id == null) || (this.id == null && that.id != null))
+//         return false;
+//      else if (this.id != null && !this.id.equals(that.id))
+//         return false;
+//      else if ((this.start != null && that.start == null) || (this.start == null && that.start != null))
+//         return false;
+//      else if (this.start != null && !this.start.equals(that.start))
+//         return false;
+//      else if ((this.end != null && that.end == null) || (this.end == null && that.end != null))
+//         return false;
+//      else if (this.end != null && !this.end.equals(that.end))
+//         return false;
+//      else
+//         return true;
    }
 
    public int hashCode() {
-      return Objects.hash(id, start, end);
+      return Objects.hash(id);
    }
 
    public Node getStart()
@@ -138,6 +144,7 @@ abstract class AbstractEdge implements Edge
    }
 
    public void setGraphID(String graphID) {
+      this.graphID = graphID;
       id = graphID + this.getClass().toString() + classNameToNumberOfObjects.get(this.getClass().toString());
    }
 

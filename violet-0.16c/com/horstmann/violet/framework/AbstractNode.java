@@ -40,6 +40,7 @@ public abstract class AbstractNode implements Node
 {
    // These are for the syncing. We need to be able to identify unique nodes.
    private String id;
+   private String graphID;
    private static Map<String, Integer> classNameToNumberOfObjects = new HashMap<>(); // Counts number of objects of each class of Node
 
    /**
@@ -48,6 +49,7 @@ public abstract class AbstractNode implements Node
    public AbstractNode()
    {
       this.id = this.getClass().toString() + incrementCountInMap();
+      System.out.println(classNameToNumberOfObjects);
       children = new ArrayList();
       parent = null;
    }
@@ -64,6 +66,8 @@ public abstract class AbstractNode implements Node
             cloned.children.set(i, n.clone());
             n.setParent(cloned);
          }
+
+         cloned.id = this.graphID + cloned.getClass().toString() + incrementCountInMap();
          return cloned;
       }
       catch (CloneNotSupportedException exception)
@@ -110,18 +114,25 @@ public abstract class AbstractNode implements Node
          return false;
 
       AbstractNode that = (AbstractNode) o;
-      if (!this.id.equals(that.id))
-         return false;
-      else if (!this.children.equals(that.children))
-         return false;
-      else if (!this.parent.equals(that.parent))
-         return false;
-      else
-         return true;
+      return this.id.equals(that.id);
+//      if ((this.id != null && that.id == null) || (this.id == null && that.id != null))
+//         return false;
+//      else if (this.id != null && !this.id.equals(that.id))
+//         return false;
+//      else if ((this.children != null && that.children == null) || (this.children == null && that.children != null))
+//         return false;
+//      else if (this.children != null && !this.children.equals(that.children))
+//         return false;
+//      else if ((this.parent != null && that.parent == null) || (this.parent == null && that.parent != null))
+//         return false;
+//      else if (this.parent != null && !this.parent.equals(that.parent))
+//         return false;
+//      else
+//         return true;
    }
 
    public int hashCode() {
-      return Objects.hash(id, children, parent);
+      return Objects.hash(id);
    }
 
    public Node getParent() { return parent; }
@@ -230,6 +241,7 @@ public abstract class AbstractNode implements Node
 
    @Override
    public void setGraphID(String graphID) {
+      this.graphID = graphID;
       id = graphID + this.getClass().toString() + classNameToNumberOfObjects.get(this.getClass().toString());
    }
 
