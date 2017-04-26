@@ -37,6 +37,8 @@ import com.horstmann.violet.nodes.ObjectNode;
 */
 public class ObjectDiagramGraph extends Graph
 {
+   private static final long serialVersionUID = -6057218924599212626L;
+
    public Node[] getNodePrototypes()
    {
       return NODE_PROTOTYPES;

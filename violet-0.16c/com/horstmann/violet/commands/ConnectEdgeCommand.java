@@ -2,6 +2,7 @@ package com.horstmann.violet.commands;
 
 import com.horstmann.violet.framework.Edge;
 import com.horstmann.violet.framework.Graph;
+import com.horstmann.violet.framework.Node;
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
 
 import java.awt.geom.Point2D;
@@ -14,17 +15,17 @@ public class ConnectEdgeCommand implements Command {
     private static final long serialVersionUID = 8094178111891105571L;
 
     private Edge edge;
-    private Point2D point1;
-    private Point2D point2;
+    private Node start;
+    private Node end;
 
-    public ConnectEdgeCommand(Edge edge, Point2D point1, Point2D point2) {
+    public ConnectEdgeCommand(Edge edge, Node start, Node end) {
         this.edge = edge;
-        this.point1 = point1;
-        this.point2 = point2;
+        this.start = start;
+        this.end = end;
     }
 
     @Override
     public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn) {
-        return graphToExecuteCommandOn.connectLocal(edge, point1, point2);
+        return graphToExecuteCommandOn.connectLocal(edge, start, end);
     }
 }

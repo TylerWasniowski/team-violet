@@ -37,6 +37,8 @@ import com.horstmann.violet.nodes.PackageNode;
 public class ClassDiagramGraph extends Graph
 {
 
+   private static final long serialVersionUID = 7089103638372475069L;
+
    public boolean connect(Edge e, Point2D p1, Point2D p2)
    {
       Node n1 = findNode(p1);

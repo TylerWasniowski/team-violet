@@ -87,7 +87,7 @@ abstract class AbstractEdge implements Edge
          return false;
 
       AbstractEdge that = (AbstractEdge) o;
-      
+
       return this.id.equals(that.getID());
    }
 

@@ -44,6 +44,8 @@ import com.horstmann.violet.nodes.NoteNode;
 */
 public class SequenceDiagramGraph extends Graph
 {
+   private static final long serialVersionUID = -3922943337339918566L;
+
    public boolean add(Node n, Point2D p)
    {
       if (n instanceof CallNode) // must be inside an object
