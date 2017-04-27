@@ -20,7 +20,7 @@
 
 package com.horstmann.violet.framework;
 
-import com.horstmann.violet.commands.TranslateNodeCommand;
+import com.horstmann.violet.commands.MoveNodeCommand;
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
 
 import java.awt.Color;
@@ -196,7 +196,7 @@ public class GraphPanel extends JPanel
                         double newY = selectedNode.getBounds().getY();
 
                         ((TeamSequenceDiagramGraph) graph).sendCommandToServer(
-                                new TranslateNodeCommand(((Node) selectedItem).getID(), new Point2D.Double(newX, newY)));
+                                new MoveNodeCommand(((Node) selectedItem).getID(), new Point2D.Double(newX, newY)));
                      }
                   }
                }
@@ -626,7 +626,6 @@ public class GraphPanel extends JPanel
    private Object lastSelected;
    private Set selectedItems;
 
-   private Rectangle2D previousBounds;
    private Point2D lastMousePoint;
    private Point2D mouseDownPoint;
    private int dragMode;

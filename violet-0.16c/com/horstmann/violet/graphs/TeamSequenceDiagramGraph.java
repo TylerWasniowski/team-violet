@@ -55,26 +55,26 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
     @Override
     public boolean add(Node n, Point2D p) {
         n.setGraphID(id);
-//        super.add(n, p);
+        super.add(n, p);
         return sendCommandToServer(new AddNodeCommand(n, p));
     }
 
     @Override
     public void removeNode(Node n) {
-//        super.removeNode(n);
+        super.removeNode(n);
         sendCommandToServer(new RemoveNodeCommand(n.getID()));
     }
 
     @Override
     public boolean connect(Edge e, Point2D p1, Point2D p2) {
         e.setGraphID(id);
-//        super.connect(e, p1, p2);
+        super.connect(e, p1, p2);
         return sendCommandToServer(new ConnectEdgeCommand(e, p1, p2));
     }
 
     @Override
     public void removeEdge(Edge e) {
-//        super.removeEdge(e);
+        super.removeEdge(e);
         sendCommandToServer(new RemoveEdgeCommand(e.getID()));
     }
 
