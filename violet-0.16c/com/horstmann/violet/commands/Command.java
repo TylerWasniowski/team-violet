@@ -1,6 +1,7 @@
 package com.horstmann.violet.commands;
 
 import com.horstmann.violet.framework.Graph;
+import com.horstmann.violet.framework.Node;
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
 
 import java.io.Serializable;
@@ -17,5 +18,15 @@ public interface Command extends Serializable {
      * @return true if command was executed, false if it wasn't executed
      */
     public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn);
+
+    static Node findNodeFromID(TeamSequenceDiagramGraph graphToSearch, String idOfNodeToFind) {
+        for (Node node: graphToSearch.getNodes()) {
+            if (idOfNodeToFind.equals(node.getID())) {
+                return node;
+            }
+        }
+
+        return null;
+    }
 
 }

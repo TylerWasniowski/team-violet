@@ -11,18 +11,22 @@ import java.awt.geom.Point2D;
 public class TranslateNodeCommand implements Command {
     private static final long serialVersionUID = -5786588578050501402L;
 
-    private Node nodeToTranslate;
+    private String idOfNodeToTranslate;
     private Point2D newLocation;
 
-    public TranslateNodeCommand(Node nodeToTranslate, Point2D newLocation) {
-        this.nodeToTranslate = nodeToTranslate;
+    public TranslateNodeCommand(String idOfNodeToTranslate, Point2D newLocation) {
+        this.idOfNodeToTranslate = idOfNodeToTranslate;
         this.newLocation = newLocation;
     }
 
     @Override
     public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn) {
-        nodeToTranslate.setLocation(newLocation);
 
+        Node nodeToTranslate = Command.findNodeFromID(graphToExecuteCommandOn, idOfNodeToTranslate);
+        if (nodeToTranslate == null)
+            return false;
+
+        nodeToTranslate.setLocation(newLocation);
         return (nodeToTranslate.getBounds().getX() == newLocation.getX()
                 && nodeToTranslate.getBounds().getY() == newLocation.getY());
     }

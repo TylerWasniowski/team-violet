@@ -11,15 +11,15 @@ public class RemoveNodeCommand implements Command {
 
     private static final long serialVersionUID = -6116885171081680050L;
 
-    private Node node;
+    private String idOfNodeToRemove;
 
-    public RemoveNodeCommand(Node node) {
-        this.node = node;
+    public RemoveNodeCommand(String idOfNodeToRemove) {
+        this.idOfNodeToRemove = idOfNodeToRemove;
     }
 
     @Override
     public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn) {
-        graphToExecuteCommandOn.removeNodeLocal(node);
-        return !graphToExecuteCommandOn.getNodes().contains(node);
+        graphToExecuteCommandOn.removeNodeLocal(idOfNodeToRemove);
+        return !graphToExecuteCommandOn.getNodes().contains(idOfNodeToRemove);
     }
 }

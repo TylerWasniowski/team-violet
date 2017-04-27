@@ -11,15 +11,15 @@ public class RemoveEdgeCommand implements Command {
 
     private static final long serialVersionUID = 5533608612833602004L;
 
-    private Edge edge;
+    private String idOfEdgeToRemove;
 
-    public RemoveEdgeCommand(Edge edge) {
-        this.edge = edge;
+    public RemoveEdgeCommand(String idOfEdgeToRemove) {
+        this.idOfEdgeToRemove = idOfEdgeToRemove;
     }
 
     @Override
     public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn) {
-        graphToExecuteCommandOn.removeEdgeLocal(edge);
-        return !graphToExecuteCommandOn.getEdges().contains(edge);
+        graphToExecuteCommandOn.removeEdgeLocal(idOfEdgeToRemove);
+        return !graphToExecuteCommandOn.getEdges().contains(idOfEdgeToRemove);
     }
 }

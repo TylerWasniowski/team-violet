@@ -192,14 +192,11 @@ public class GraphPanel extends JPanel
                      if (selectedItem instanceof Node) {
                         Node selectedNode = (Node) selectedItem;
 
-                        double dx = lastMousePoint.getX() - mouseDownPoint.getX();
-                        double dy = lastMousePoint.getY() - mouseDownPoint.getY();
-
-                        double newX = selectedNode.getBounds().getX() + dx;
-                        double newY = selectedNode.getBounds().getY() + dy;
+                        double newX = selectedNode.getBounds().getX();
+                        double newY = selectedNode.getBounds().getY();
 
                         ((TeamSequenceDiagramGraph) graph).sendCommandToServer(
-                                new TranslateNodeCommand((Node) selectedItem, new Point2D.Double(newX, newY)));
+                                new TranslateNodeCommand(((Node) selectedItem).getID(), new Point2D.Double(newX, newY)));
                      }
                   }
                }
@@ -629,8 +626,9 @@ public class GraphPanel extends JPanel
    private Object lastSelected;
    private Set selectedItems;
 
+   private Rectangle2D previousBounds;
    private Point2D lastMousePoint;
-   private Point2D mouseDownPoint;   
+   private Point2D mouseDownPoint;
    private int dragMode;
       
    private static final int DRAG_NONE = 0;

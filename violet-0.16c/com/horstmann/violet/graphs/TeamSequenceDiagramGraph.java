@@ -54,28 +54,28 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
     // Commands to both send and execute
     @Override
     public boolean add(Node n, Point2D p) {
-        addLocal(n, p);
         n.setGraphID(id);
+//        super.add(n, p);
         return sendCommandToServer(new AddNodeCommand(n, p));
     }
 
     @Override
     public void removeNode(Node n) {
-        removeNodeLocal(n);
-        sendCommandToServer(new RemoveNodeCommand(n));
+//        super.removeNode(n);
+        sendCommandToServer(new RemoveNodeCommand(n.getID()));
     }
 
     @Override
     public boolean connect(Edge e, Point2D p1, Point2D p2) {
-        connectLocal(e, p1, p2);
         e.setGraphID(id);
+//        super.connect(e, p1, p2);
         return sendCommandToServer(new ConnectEdgeCommand(e, p1, p2));
     }
 
     @Override
     public void removeEdge(Edge e) {
-        removeEdgeLocal(e);
-        sendCommandToServer(new RemoveEdgeCommand(e));
+//        super.removeEdge(e);
+        sendCommandToServer(new RemoveEdgeCommand(e.getID()));
     }
 
     @Override
@@ -104,9 +104,9 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
         return false;
     }
 
-    public void removeNodeLocal(Node n) {
+    public void removeNodeLocal(String idOfNodeToRemove) {
         for (Node node : getNodes()) {
-            if (n.getID().equals(node.getID())) {
+            if (node.getID().equals(idOfNodeToRemove)) {
                 super.removeNode(node);
                 return;
             }
@@ -121,9 +121,9 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
         return false;
     }
 
-    public void removeEdgeLocal(Edge e) {
+    public void removeEdgeLocal(String idOfEdgeToRemove) {
         for (Edge edge : getEdges()) {
-            if (e.getID().equals(edge.getID())) {
+            if (edge.getID().equals(idOfEdgeToRemove)) {
                 super.removeEdge(edge);
                 return;
             }
