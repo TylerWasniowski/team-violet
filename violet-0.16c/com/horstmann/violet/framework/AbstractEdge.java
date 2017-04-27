@@ -33,7 +33,7 @@ import java.util.Objects;
    A class that supplies convenience implementations for 
    a number of methods in the Edge interface
 */
-abstract class AbstractEdge implements Edge
+public abstract class AbstractEdge implements Edge
 {
    private static final long serialVersionUID = 9000165480500528416L;
 

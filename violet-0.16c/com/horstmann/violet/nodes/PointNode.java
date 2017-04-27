@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.horstmann.violet.nodes;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -65,6 +65,10 @@ public class PointNode extends AbstractNode
    {
       return new Rectangle2D.Double(point.getX(), 
          point.getY(), 0, 0);
+   }
+
+   public void setBounds(Rectangle rect) {
+
    }
 
    public Point2D getConnectionPoint(Direction d)

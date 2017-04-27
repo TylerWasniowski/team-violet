@@ -83,7 +83,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
         super.setMinBounds(newValue);
     }
 
-    private boolean sendCommandToServer(Command command) {
+    public boolean sendCommandToServer(Command command) {
         try {
             publisher.sendCommand(command);
         } catch (InterruptedException|JMSException ex) {

@@ -70,6 +70,12 @@ public interface Node extends Serializable, Cloneable
    Rectangle2D getBounds();
 
    /**
+    * Sets the location of the node to the given point
+    * @param point the point to set the location of the node to
+    */
+   void setLocation(Point2D point);
+
+   /**
       Adds an edge that originates at this node.
       @param p the point that the user selected as
       the starting point. This may be used as a hint if 

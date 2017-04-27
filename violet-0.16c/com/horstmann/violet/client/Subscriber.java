@@ -57,6 +57,7 @@ public class Subscriber {
                         recievedMsgs.add(mq);
                         Command command = (Command) obj;
                         command.execute(tDiagram);
+
                     }
                 } catch (JMSException e) {
                     e.printStackTrace();

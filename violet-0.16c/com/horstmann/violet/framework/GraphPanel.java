@@ -20,6 +20,9 @@
 
 package com.horstmann.violet.framework;
 
+import com.horstmann.violet.commands.TranslateNodeCommand;
+import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -184,6 +187,23 @@ public class GraphPanel extends JPanel
             }
             else if (dragMode == DRAG_MOVE)
             {
+               if (graph instanceof TeamSequenceDiagramGraph) {
+                  for (Object selectedItem: selectedItems) {
+                     if (selectedItem instanceof Node) {
+                        Node selectedNode = (Node) selectedItem;
+
+                        double dx = lastMousePoint.getX() - mouseDownPoint.getX();
+                        double dy = lastMousePoint.getY() - mouseDownPoint.getY();
+
+                        double newX = selectedNode.getBounds().getX() + dx;
+                        double newY = selectedNode.getBounds().getY() + dy;
+
+                        ((TeamSequenceDiagramGraph) graph).sendCommandToServer(
+                                new TranslateNodeCommand((Node) selectedItem, new Point2D.Double(newX, newY)));
+                     }
+                  }
+               }
+
                graph.layout();
                setModified(true);
             }
@@ -232,7 +252,7 @@ public class GraphPanel extends JPanel
                   if (selected instanceof Node)
                   {
                      Node n = (Node) selected;
-                     n.translate(dx, dy);                           
+//                     n.translate(dx, dy);
                   }
                }
                // we don't want continuous layout any more because of multiple selection
@@ -251,11 +271,11 @@ public class GraphPanel extends JPanel
                {
                   Node n = (Node) iter.next();
                   Rectangle2D bounds = n.getBounds();
-                  if (!isCtrl && !lasso.contains(n.getBounds())) 
+                  if (!isCtrl && !lasso.contains(bounds))
                   {
                      removeSelectedItem(n);
                   }
-                  else if (lasso.contains(n.getBounds())) 
+                  else if (lasso.contains(bounds))
                   {
                      addSelectedItem(n);
                   }

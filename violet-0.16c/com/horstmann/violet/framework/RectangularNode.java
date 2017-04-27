@@ -35,6 +35,8 @@ import java.io.ObjectOutputStream;
 */
 public abstract class RectangularNode extends AbstractNode
 {
+   private static final long serialVersionUID = -4483825085278940812L;
+
    public Object clone()
    {
       RectangularNode cloned = (RectangularNode)super.clone();

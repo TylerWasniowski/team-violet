@@ -11,6 +11,8 @@ import java.awt.geom.Point2D;
  */
 public class ConnectEdgeCommand implements Command {
 
+    private static final long serialVersionUID = 8094178111891105571L;
+
     private Edge edge;
     private Point2D point1;
     private Point2D point2;

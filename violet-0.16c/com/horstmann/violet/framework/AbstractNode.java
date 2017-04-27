@@ -51,7 +51,7 @@ public abstract class AbstractNode implements Node
    public AbstractNode()
    {
       this.id = this.getClass().toString() + incrementCountInMap();
-      children = new ArrayList();
+      children = new ArrayList<>();
       parent = null;
    }
 
@@ -60,11 +60,11 @@ public abstract class AbstractNode implements Node
       try
       {
          AbstractNode cloned = (AbstractNode)super.clone();
-         cloned.children = new ArrayList(children.size());
+         cloned.children = new ArrayList<>(children.size());
          for (int i = 0; i < children.size(); i++)
          {
-            Node n = (Node)children.get(i);
-            cloned.children.set(i, n.clone());
+            Node n = children.get(i);
+            cloned.children.set(i, (Node) n.clone());
             n.setParent(cloned);
          }
 
@@ -84,6 +84,10 @@ public abstract class AbstractNode implements Node
          Node n = (Node)children.get(i);
          n.translate(dx, dy);
       }
+   }
+
+   public void setLocation(Point2D point) {
+      translate(point.getX() - this.getBounds().getX(), point.getY() - this.getBounds().getY());
    }
 
    public boolean addEdge(Edge e, Point2D p1, Point2D p2)
@@ -233,7 +237,7 @@ public abstract class AbstractNode implements Node
       id = graphID + this.getClass().toString() + classNameToNumberOfObjects.get(this.getClass().toString());
    }
 
-   private ArrayList children;
+   private ArrayList<Node> children;
    private Node parent;
 }
 
