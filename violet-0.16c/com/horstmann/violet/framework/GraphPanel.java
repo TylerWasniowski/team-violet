@@ -252,7 +252,7 @@ public class GraphPanel extends JPanel
                   if (selected instanceof Node)
                   {
                      Node n = (Node) selected;
-//                     n.translate(dx, dy);
+                     n.translate(dx, dy);
                   }
                }
                // we don't want continuous layout any more because of multiple selection
