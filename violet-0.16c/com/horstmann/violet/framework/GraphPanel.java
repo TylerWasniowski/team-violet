@@ -69,7 +69,6 @@ public class GraphPanel extends JPanel
       setBackground(Color.WHITE);
 
       selectedItems = new HashSet();
-      
       addMouseListener(new MouseAdapter()
       {
          public void mousePressed(MouseEvent event)

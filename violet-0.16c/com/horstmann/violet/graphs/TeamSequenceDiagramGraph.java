@@ -121,7 +121,8 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
     }
 
     public void removeEdgeLocal(String idOfEdgeToRemove) {
-        super.removeEdge(findEdgeFromID(idOfEdgeToRemove));
+        if (findEdgeFromID(idOfEdgeToRemove) != null)
+            super.removeEdge(findEdgeFromID(idOfEdgeToRemove));
     }
 
     public Node findNodeFromID(String idOfNodeToFind) {
