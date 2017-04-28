@@ -20,6 +20,6 @@ public class RemoveNodeCommand implements Command {
     @Override
     public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn) {
         graphToExecuteCommandOn.removeNodeLocal(idOfNodeToRemove);
-        return !graphToExecuteCommandOn.getNodes().contains(idOfNodeToRemove);
+        return graphToExecuteCommandOn.findNodeFromID(idOfNodeToRemove) != null;
     }
 }

@@ -20,6 +20,6 @@ public class RemoveEdgeCommand implements Command {
     @Override
     public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn) {
         graphToExecuteCommandOn.removeEdgeLocal(idOfEdgeToRemove);
-        return !graphToExecuteCommandOn.getEdges().contains(idOfEdgeToRemove);
+        return graphToExecuteCommandOn.findEdgeFromID(idOfEdgeToRemove) == null;
     }
 }

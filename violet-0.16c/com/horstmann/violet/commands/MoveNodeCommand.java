@@ -22,7 +22,7 @@ public class MoveNodeCommand implements Command {
     @Override
     public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn) {
 
-        Node nodeToMove = Command.findNodeFromID(graphToExecuteCommandOn, idOfNodeToMove);
+        Node nodeToMove = graphToExecuteCommandOn.findNodeFromID(idOfNodeToMove);
         if (nodeToMove == null)
             return false;
 

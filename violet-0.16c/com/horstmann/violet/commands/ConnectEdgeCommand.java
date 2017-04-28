@@ -5,6 +5,7 @@ import com.horstmann.violet.framework.Graph;
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
 
 import java.awt.geom.Point2D;
+import java.util.Collections;
 
 /**
  * Created by Tyler on 4/25/2017.

@@ -7,9 +7,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQObjectMessage;
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.Queue;
 
 /**
@@ -36,6 +34,7 @@ public class Subscriber {
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", BROKER_URL);
             connectionFactory.setTrustAllPackages(true);
             connection = connectionFactory.createConnection();
+            connection.setClientID(UUID.randomUUID().toString());
             connection.start();
             session = connection.createSession(NON_TRANSACTED, Session.AUTO_ACKNOWLEDGE);
             messageConsumer = session.createConsumer(session.createTopic("VIOLET.TOPIC"));

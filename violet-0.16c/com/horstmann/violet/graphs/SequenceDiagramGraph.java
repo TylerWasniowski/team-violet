@@ -182,7 +182,7 @@ public class SequenceDiagramGraph extends Graph
    {
       layout(g2, g);
 
-      Collection nodes = getNodes();
+      Collection<Node> nodes = getNodes();
       Iterator iter = nodes.iterator();
       while (iter.hasNext())
       {

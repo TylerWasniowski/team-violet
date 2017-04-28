@@ -19,14 +19,4 @@ public interface Command extends Serializable {
      */
     public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn);
 
-    static Node findNodeFromID(TeamSequenceDiagramGraph graphToSearch, String idOfNodeToFind) {
-        for (Node node: graphToSearch.getNodes()) {
-            if (idOfNodeToFind.equals(node.getID())) {
-                return node;
-            }
-        }
-
-        return null;
-    }
-
 }

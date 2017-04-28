@@ -68,7 +68,8 @@ public abstract class AbstractNode implements Node
             n.setParent(cloned);
          }
 
-         cloned.id = this.graphID + cloned.getClass().toString() + incrementCountInMap();
+         cloned.id = cloned.getClass().toString() + incrementCountInMap();
+         cloned.setGraphID(this.graphID);
          return cloned;
       }
       catch (CloneNotSupportedException exception)
@@ -233,6 +234,9 @@ public abstract class AbstractNode implements Node
 
    @Override
    public void setGraphID(String graphID) {
+      if (graphID == null)
+         return;
+
       this.graphID = graphID;
       id = graphID + this.getClass().toString() + classNameToNumberOfObjects.get(this.getClass().toString());
    }

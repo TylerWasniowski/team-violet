@@ -5,10 +5,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.*;
 import java.io.ByteArrayOutputStream;
 import java.net.ConnectException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 
 import com.horstmann.violet.commands.*;
 import com.horstmann.violet.client.Publisher;
@@ -30,12 +27,14 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
 
     private static final long serialVersionUID = -9088160815514315525L;
 
-    private static String id = "0";
+    private String id;
     private transient Publisher publisher;
     private transient Subscriber subscriber;
 
     public TeamSequenceDiagramGraph() throws JMSException {
         super();
+
+        id = UUID.randomUUID().toString();
 
         publisher = new Publisher();
         subscriber = new Subscriber(this);
@@ -122,12 +121,27 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
     }
 
     public void removeEdgeLocal(String idOfEdgeToRemove) {
-        for (Edge edge : getEdges()) {
-            if (edge.getID().equals(idOfEdgeToRemove)) {
-                super.removeEdge(edge);
-                return;
+        super.removeEdge(findEdgeFromID(idOfEdgeToRemove));
+    }
+
+    public Node findNodeFromID(String idOfNodeToFind) {
+        for (Node node: getNodes()) {
+            if (idOfNodeToFind.equals(node.getID())) {
+                return node;
             }
         }
+
+        return null;
+    }
+
+    public Edge findEdgeFromID(String idOfEdgeToFind) {
+        for (Edge edge: getEdges()) {
+            if (idOfEdgeToFind.equals(edge.getID())) {
+                return edge;
+            }
+        }
+
+        return null;
     }
 
     public void close() {

@@ -15,6 +15,7 @@ import com.horstmann.violet.commands.Command;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.UUID;
 
 /**
  * Created by CSingh on 4/21/2017.
@@ -32,8 +33,8 @@ public class Publisher {
         try { 
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", BROKER_URL);
             connectionFactory.setTrustAllPackages(true);
-            connection = connectionFactory.createConnection(); 
-            connection.start(); 
+            connection = connectionFactory.createConnection();
+            connection.start();
             session = connection.createSession(NON_TRANSACTED, Session.AUTO_ACKNOWLEDGE);
             Topic topic = session.createTopic("VIOLET.TOPIC"); 
             messageProducer = session.createProducer(topic);
