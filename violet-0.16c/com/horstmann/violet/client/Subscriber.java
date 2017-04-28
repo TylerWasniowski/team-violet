@@ -17,7 +17,7 @@ import java.util.Queue;
  */
 public class Subscriber {
 
-    private static final String BROKER_HOST = "tcp://35.185.234.204:%d";
+    private static final String BROKER_HOST = "tcp://35.185.226.223:%d";
     private static final int BROKER_PORT = 61616;
     private static final String BROKER_URL = String.format(BROKER_HOST, BROKER_PORT);
     private static final Boolean NON_TRANSACTED = false;

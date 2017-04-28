@@ -29,6 +29,8 @@ import java.beans.Statement;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -42,10 +44,10 @@ public abstract class Graph implements Serializable
    */
    public Graph()
    {
-      nodes = new ArrayList();
-      edges = new ArrayList();
-      nodesToBeRemoved = new ArrayList();
-      edgesToBeRemoved = new ArrayList();
+      nodes = Collections.synchronizedList(new ArrayList<>());
+      edges = Collections.synchronizedList(new ArrayList<>());
+      nodesToBeRemoved = new ArrayList<>();
+      edgesToBeRemoved = new ArrayList<>();
       needsLayout = true;
    }
 
@@ -168,12 +170,12 @@ public abstract class Graph implements Serializable
       // notify nodes of removals
       for (int i = 0; i < nodes.size(); i++)
       {
-         Node n2 = (Node)nodes.get(i);
+         Node n2 = nodes.get(i);
          n2.removeNode(this, n);
       }
       for (int i = 0; i < edges.size(); i++)
       {
-         Edge e = (Edge)edges.get(i);
+         Edge e = edges.get(i);
          if (e.getStart() == n || e.getEnd() == n)
             removeEdge(e);
       }
@@ -191,7 +193,7 @@ public abstract class Graph implements Serializable
       edgesToBeRemoved.add(e);
       for (int i = nodes.size() - 1; i >= 0; i--)
       {
-         Node n = (Node)nodes.get(i);
+         Node n = nodes.get(i);
          n.removeEdge(this, e);
       }
       needsLayout = true;
@@ -222,7 +224,7 @@ public abstract class Graph implements Serializable
 
       for (int i = 0; i < nodes.size(); i++)
       {
-         Node n = (Node) nodes.get(i);
+         Node n = nodes.get(i);
          n.layout(this, g2, g);
       }
       needsLayout = false;
@@ -238,14 +240,14 @@ public abstract class Graph implements Serializable
       Rectangle2D r = minBounds;
       for (int i = 0; i < nodes.size(); i++)
       {
-         Node n = (Node)nodes.get(i);
+         Node n = nodes.get(i);
          Rectangle2D b = n.getBounds();
          if (r == null) r = b;
          else r.add(b);
       }
       for (int i = 0; i < edges.size(); i++)
       {
-         Edge e = (Edge)edges.get(i);
+         Edge e = edges.get(i);
          r.add(e.getBounds(g2));
       }
       return r == null ? new Rectangle2D.Double() : new Rectangle2D.Double(r.getX(), r.getY(), 
@@ -287,7 +289,7 @@ public abstract class Graph implements Serializable
          
                for (int i = 0; i < g.nodes.size(); i++)
                {
-                  Node n = (Node)g.nodes.get(i);
+                  Node n = g.nodes.get(i);
                   Rectangle2D bounds = n.getBounds();
                   Point2D p = new Point2D.Double(bounds.getX(),
                      bounds.getY());
@@ -297,7 +299,7 @@ public abstract class Graph implements Serializable
                }
                for (int i = 0; i < g.edges.size(); i++)
                {
-                  Edge e = (Edge)g.edges.get(i);
+                  Edge e = g.edges.get(i);
                   out.writeStatement(
                      new Statement(oldInstance,
                         "connect", 
@@ -346,10 +348,10 @@ public abstract class Graph implements Serializable
       edges.add(e);
    }
 
-   private ArrayList nodes;
-   private ArrayList edges;
-   private transient ArrayList nodesToBeRemoved;
-   private transient ArrayList edgesToBeRemoved;
+   private List<Node> nodes;
+   private List<Edge> edges;
+   private transient List<Node> nodesToBeRemoved;
+   private transient List<Edge> edgesToBeRemoved;
    private transient boolean needsLayout;
    private transient Rectangle2D minBounds;
 }
