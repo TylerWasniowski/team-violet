@@ -183,28 +183,29 @@ public class SequenceDiagramGraph extends Graph
       layout(g2, g);
 
       Collection<Node> nodes = getNodes();
-      Iterator iter = nodes.iterator();
-      while (iter.hasNext())
-      {
-         Node n = (Node) iter.next();
-         if (!(n instanceof CallNode))
-            n.draw(g2);
-      }
+      synchronized (nodes) {
+         Iterator iter = nodes.iterator();
+         while (iter.hasNext()) {
+            Node n = (Node) iter.next();
+            if (!(n instanceof CallNode))
+               n.draw(g2);
+         }
 
-      iter = nodes.iterator();
-      while (iter.hasNext())
-      {
-         Node n = (Node) iter.next();
-         if (n instanceof CallNode)
-            n.draw(g2);
-      }
+         iter = nodes.iterator();
+         while (iter.hasNext())
+         {
+            Node n = (Node) iter.next();
+            if (n instanceof CallNode)
+               n.draw(g2);
+         }
 
-      Collection edges = getEdges();
-      iter = edges.iterator();
-      while (iter.hasNext())
-      {
-         Edge e = (Edge) iter.next();
-         e.draw(g2);
+         Collection edges = getEdges();
+         iter = edges.iterator();
+         while (iter.hasNext())
+         {
+            Edge e = (Edge) iter.next();
+            e.draw(g2);
+         }
       }
    }
 
