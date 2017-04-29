@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.horstmann.violet.framework;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -55,19 +56,21 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -75,10 +78,10 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-
 import com.horstmann.violet.edges.ArrowHead;
 import com.horstmann.violet.edges.BentStyle;
 import com.horstmann.violet.edges.LineStyle;
+import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
 
 /**
    This desktop frame contains panes that show graphs.
@@ -162,6 +165,34 @@ public class EditorFrame extends JFrame
 
       newMenu = factory.createMenu("file.new");
       fileMenu.add(newMenu);
+      
+      newMenu.add(factory.createMenuItem("file.team_seq_diagram", new ActionListener()
+      {
+          public void actionPerformed(ActionEvent event)
+          {
+              try
+              {
+                  JPanel pan = new JPanel(new BorderLayout(5, 5));
+                  JLabel lbl = new JLabel("Project Name");
+                  final JTextField txt = new JTextField(20);
+                  pan.add(lbl, BorderLayout.WEST);
+                  pan.add(txt, BorderLayout.CENTER);
+                  JOptionPane.showInternalOptionDialog(desktop, pan, "Create Project GUI",
+                          JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+                  try
+                  {
+                     GraphFrame frame = new GraphFrame(
+                           (Graph) TeamSequenceDiagramGraph.class.newInstance());
+                     addInternalFrame(frame);
+                  }
+                  catch (Exception exception)
+                  {
+                     exception.printStackTrace();
+                  }
+              }
+              catch (Exception exception) {}
+           }
+        }));
 
       JMenuItem fileOpenItem = factory.createMenuItem(
             "file.open", this, "openFile"); 

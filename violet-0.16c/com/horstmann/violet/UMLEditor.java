@@ -20,12 +20,27 @@
 
 package com.horstmann.violet;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URL;
 
 import javax.swing.JApplet;
+import javax.swing.JButton;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import com.horstmann.violet.framework.EditorFrame;
+import com.horstmann.violet.framework.Graph;
+import com.horstmann.violet.framework.GraphFrame;
 import com.horstmann.violet.framework.VersionChecker;
 import com.horstmann.violet.graphs.*;
 
@@ -81,7 +96,7 @@ public class UMLEditor extends JApplet
       frame.addGraphType("state_diagram", StateDiagramGraph.class);
       frame.addGraphType("object_diagram", ObjectDiagramGraph.class);
       frame.addGraphType("usecase_diagram", UseCaseDiagramGraph.class);
-      frame.addGraphType("team_sequence_diagram", TeamSequenceDiagramGraph.class);
+      //frame.addGraphType("team_sequence_diagram", TeamSequenceDiagramGraph.class);
       return frame;
    }
    
