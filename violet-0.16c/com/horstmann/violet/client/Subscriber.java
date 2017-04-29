@@ -15,7 +15,7 @@ import java.util.Queue;
  */
 public class Subscriber {
 
-    private static final String BROKER_HOST = "tcp://35.185.203.205:%d";
+    private static final String BROKER_HOST = "tcp://35.185.245.223:%d";
     private static final int BROKER_PORT = 61616;
     private static final String BROKER_URL = String.format(BROKER_HOST, BROKER_PORT);
     private static final Boolean NON_TRANSACTED = false;
@@ -56,6 +56,11 @@ public class Subscriber {
                         Command command = (Command) obj;
                         command.execute(tDiagram);
 
+                        tDiagram.layout();
+                        if (tDiagram.getGraphPanel() != null) {
+                            tDiagram.getGraphPanel().revalidate();
+                            tDiagram.getGraphPanel().repaint();
+                        }
                     }
                 } catch (JMSException e) {
                     e.printStackTrace();
@@ -65,8 +70,8 @@ public class Subscriber {
     }
 
     public synchronized List<Command> receiveCommands() throws Exception {
-        List<Command> lst = new ArrayList<Command>();
-        Serializable obj = null;
+        List<Command> lst = new ArrayList<>();
+        Serializable obj;
         if(!recievedMsgs.isEmpty()) {
             ActiveMQObjectMessage mq = recievedMsgs.poll();
             obj = mq.getObject();

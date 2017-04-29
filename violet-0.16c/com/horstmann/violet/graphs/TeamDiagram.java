@@ -13,4 +13,5 @@ public interface TeamDiagram {
      * @return true if the command is successfully sent, false if not
      */
     public boolean sendCommandToServer(Command command);
+
 }

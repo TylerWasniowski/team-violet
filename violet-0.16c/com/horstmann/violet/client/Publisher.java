@@ -21,7 +21,7 @@ import java.util.UUID;
  * Created by CSingh on 4/21/2017.
  */
 public class Publisher {
-    private static final String BROKER_HOST = "tcp://35.185.203.205:%d";
+    private static final String BROKER_HOST = "tcp://35.185.245.223:%d";
     private static final int BROKER_PORT = 61616; 
     private static final String BROKER_URL = String.format(BROKER_HOST, BROKER_PORT); 
     private static final Boolean NON_TRANSACTED = false;

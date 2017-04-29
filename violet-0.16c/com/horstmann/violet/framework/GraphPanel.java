@@ -349,6 +349,7 @@ public class GraphPanel extends JPanel
    public void setGraph(Graph aGraph)
    {
       graph = aGraph;
+      aGraph.setGraphPanel(this);
       setModified(false);
       revalidate();
       repaint();

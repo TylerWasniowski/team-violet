@@ -353,12 +353,30 @@ public abstract class Graph implements Serializable
       return true;
    }
 
+   /**
+    * Gets the graphPanel that the graph object belongs to.
+    * @return the graphPanel that the graph object belongs to.
+    */
+   public GraphPanel getGraphPanel() {
+      return graphPanel;
+   }
+
+
+   /**
+    * Sets the graphPanel that the graph object belongs to the given graphPanel.
+    * @param graphPanel the new graphPanel
+    */
+   public void setGraphPanel(GraphPanel graphPanel) {
+      this.graphPanel = graphPanel;
+   }
+
    private List<Node> nodes;
    private List<Edge> edges;
    private transient List<Node> nodesToBeRemoved;
    private transient List<Edge> edgesToBeRemoved;
    private transient boolean needsLayout;
    private transient Rectangle2D minBounds;
+   private GraphPanel graphPanel;
 }
 
 
