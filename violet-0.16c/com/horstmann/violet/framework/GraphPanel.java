@@ -20,7 +20,9 @@
 
 package com.horstmann.violet.framework;
 
+import com.horstmann.violet.commands.ConnectEdgeCommand;
 import com.horstmann.violet.commands.MoveNodeCommand;
+import com.horstmann.violet.graphs.TeamDiagram;
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
 
 import java.awt.Color;
@@ -180,13 +182,18 @@ public class GraphPanel extends JPanel
                if (mousePoint.distance(mouseDownPoint) > CONNECT_THRESHOLD
                      && graph.connect(newEdge, mouseDownPoint, mousePoint))
                {
+                  if (graph instanceof TeamDiagram) {
+                     ((TeamDiagram) graph).sendCommandToServer(
+                             new ConnectEdgeCommand(newEdge, mouseDownPoint, mousePoint));
+                  }
+
                   setModified(true);
                   setSelectedItem(newEdge);
                }
             }
             else if (dragMode == DRAG_MOVE)
             {
-               if (graph instanceof TeamSequenceDiagramGraph) {
+               if (graph instanceof TeamDiagram) {
                   for (Object selectedItem: selectedItems) {
                      if (selectedItem instanceof Node) {
                         Node selectedNode = (Node) selectedItem;
@@ -194,7 +201,7 @@ public class GraphPanel extends JPanel
                         double newX = selectedNode.getBounds().getX();
                         double newY = selectedNode.getBounds().getY();
 
-                        ((TeamSequenceDiagramGraph) graph).sendCommandToServer(
+                        ((TeamDiagram) graph).sendCommandToServer(
                                 new MoveNodeCommand(((Node) selectedItem).getID(), new Point2D.Double(newX, newY)));
                      }
                   }

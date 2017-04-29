@@ -342,10 +342,15 @@ public abstract class Graph implements Serializable
       @param start the start node of the edge
       @param end the end node of the edge
    */
-   public void connect(Edge e, Node start, Node end)
+   public boolean connect(Edge e, Node start, Node end)
    {
+      if (e == null || start == null || end == null)
+         return false;
+
       e.connect(start, end);
       edges.add(e);
+
+      return true;
    }
 
    private List<Node> nodes;

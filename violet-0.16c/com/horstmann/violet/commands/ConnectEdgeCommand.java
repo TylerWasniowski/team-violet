@@ -26,6 +26,6 @@ public class ConnectEdgeCommand implements Command {
 
     @Override
     public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn) {
-        return graphToExecuteCommandOn.connectLocal(edge, point1, point2);
+        return graphToExecuteCommandOn.connect(edge, point1, point2);
     }
 }

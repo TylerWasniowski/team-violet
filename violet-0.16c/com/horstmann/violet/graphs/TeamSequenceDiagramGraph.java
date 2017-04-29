@@ -3,8 +3,6 @@ package com.horstmann.violet.graphs;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.*;
-import java.io.ByteArrayOutputStream;
-import java.net.ConnectException;
 import java.util.*;
 
 import com.horstmann.violet.commands.*;
@@ -13,9 +11,6 @@ import com.horstmann.violet.client.Subscriber;
 import com.horstmann.violet.commands.AddNodeCommand;
 import com.horstmann.violet.framework.Edge;
 import com.horstmann.violet.framework.Node;
-import org.apache.activemq.command.ActiveMQTextMessage;
-import org.apache.activemq.util.*;
-import org.apache.activemq.util.ByteArrayInputStream;
 
 import javax.jms.JMSException;
 
@@ -23,7 +18,7 @@ import javax.jms.JMSException;
  *
  *
  */
-public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Closeable {
+public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements TeamDiagram, AutoCloseable, Closeable {
 
     private static final long serialVersionUID = -9088160815514315525L;
 
@@ -66,9 +61,11 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
 
     @Override
     public boolean connect(Edge e, Point2D p1, Point2D p2) {
-        e.setGraphID(id);
-        super.connect(e, p1, p2);
-        return sendCommandToServer(new ConnectEdgeCommand(e, p1, p2));
+        if (!getEdges().contains(e)) {
+            return super.connect(e, p1, p2);
+        }
+
+        return false;
     }
 
     @Override
@@ -112,17 +109,10 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Cl
         }
     }
 
-    public boolean connectLocal(Edge e, Point2D p1, Point2D p2) {
-        if (!getEdges().contains(e)) {
-            return super.connect(e, p1, p2);
-        }
-
-        return false;
-    }
-
     public void removeEdgeLocal(String idOfEdgeToRemove) {
-        if (findEdgeFromID(idOfEdgeToRemove) != null)
-            super.removeEdge(findEdgeFromID(idOfEdgeToRemove));
+        Edge edgeToRemove = findEdgeFromID(idOfEdgeToRemove);
+        if (edgeToRemove != null)
+            super.removeEdge(edgeToRemove);
     }
 
     public Node findNodeFromID(String idOfNodeToFind) {
