@@ -34,7 +34,6 @@ public class Subscriber {
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", BROKER_URL);
             connectionFactory.setTrustAllPackages(true);
             connection = connectionFactory.createConnection();
-            connection.setClientID(UUID.randomUUID().toString());
             connection.start();
             session = connection.createSession(NON_TRANSACTED, Session.AUTO_ACKNOWLEDGE);
             messageConsumer = session.createConsumer(session.createTopic("VIOLET.TOPIC"));
