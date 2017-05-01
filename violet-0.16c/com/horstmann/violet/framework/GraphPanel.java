@@ -20,6 +20,7 @@
 
 package com.horstmann.violet.framework;
 
+import com.horstmann.violet.commands.ChangePropertyCommand;
 import com.horstmann.violet.commands.ConnectEdgeCommand;
 import com.horstmann.violet.commands.MoveNodeCommand;
 import com.horstmann.violet.graphs.TeamDiagram;
@@ -44,7 +45,7 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import java.beans.PropertyEditorSupport;
+import java.beans.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -313,12 +314,14 @@ public class GraphPanel extends JPanel
       {
          public void stateChanged(ChangeEvent event)
          {
-             System.out.println(((UniquelyIdentifiable) edited).getID());
-             System.out.println(event);
-             System.out.println(((PropertyEditorSupport) event.getSource()).getValue().getClass());
-             System.out.println();
-            if (graph instanceof TeamDiagram) {
-
+            if (graph instanceof TeamDiagram && event instanceof PropertyChangeEvent) {
+                ((TeamDiagram) graph).sendCommandToServer(
+                        new ChangePropertyCommand(
+                                ((UniquelyIdentifiable) edited).getID(),
+                                ((PropertyChangeEvent) event).getPropertyName(),
+                                event
+                        )
+                );
             }
 
             graph.layout();
