@@ -123,7 +123,7 @@ public class PropertySheet extends JPanel
                   {
                      setter.invoke(bean, 
                         new Object[] { editor.getValue() });
-                     fireStateChanged(null);
+                     fireStateChanged(new ChangeEvent(event.getSource()));
                   }
                   catch (IllegalAccessException exception)
                   {

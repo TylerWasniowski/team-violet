@@ -44,6 +44,7 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import java.beans.PropertyEditorSupport;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -296,13 +297,15 @@ public class GraphPanel extends JPanel
     */
    public void editSelected()
    {
-      Object edited = lastSelected;
+      Object edited;
       if (lastSelected == null)
       {
          if (selectedItems.size() == 1)
             edited = selectedItems.iterator().next();
          else
             return;
+      } else {
+          edited = lastSelected;
       }
 
       PropertySheet sheet = new PropertySheet(edited, this);
@@ -310,6 +313,14 @@ public class GraphPanel extends JPanel
       {
          public void stateChanged(ChangeEvent event)
          {
+             System.out.println(((UniquelyIdentifiable) edited).getID());
+             System.out.println(event);
+             System.out.println(((PropertyEditorSupport) event.getSource()).getValue().getClass());
+             System.out.println();
+            if (graph instanceof TeamDiagram) {
+
+            }
+
             graph.layout();
             repaint();
          }

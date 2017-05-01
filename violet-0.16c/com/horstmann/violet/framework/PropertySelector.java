@@ -47,8 +47,9 @@ public class PropertySelector extends PropertyEditorSupport
 
    public String getAsText()
    {
-      for (int i = 0; i < values.length; i++)
+      for (int i = 0; i < values.length; i++) {
          if (getValue().equals(values[i])) return names[i];
+      }
       return null;
    }
 

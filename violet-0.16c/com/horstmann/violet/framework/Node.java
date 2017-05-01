@@ -30,7 +30,7 @@ import java.util.List;
 /**
    A node in a graph.
 */
-public interface Node extends Serializable, Cloneable
+public interface Node extends Serializable, Cloneable, UniquelyIdentifiable
 {
    long serialVersionUID = 3L;
    /**
@@ -147,18 +147,6 @@ public interface Node extends Serializable, Cloneable
       @param node the child to remove.
    */
    void removeChild(Node node);
-
-   /**
-    * Gets the ID of this node.
-    * @return the ID of this node.
-    */
-   String getID();
-
-   /**
-    * Sets the ID of this node.
-    * @param graphID the ID of the graph that this node belongs to
-    */
-   void setGraphID(String graphID);
 
    Object clone();
 }

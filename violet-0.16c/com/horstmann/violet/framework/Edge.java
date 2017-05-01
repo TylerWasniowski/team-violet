@@ -30,7 +30,7 @@ import java.io.Serializable;
 /**
    An edge in a graph.
 */
-public interface Edge extends Serializable, Cloneable
+public interface Edge extends Serializable, Cloneable, UniquelyIdentifiable
 {
    long serialVersionUID = 3L;
    /**
@@ -78,18 +78,6 @@ public interface Edge extends Serializable, Cloneable
       @return the bounding rectangle
    */
    Rectangle2D getBounds(Graphics2D g2);
-
-   /**
-    * Gets the ID of this edge.
-    * @return the ID of this edge.
-    */
-   String getID();
-
-   /**
-    * Sets the ID of this edge.
-    * @param graphID the ID of the graph that this edge belongs to
-    */
-   void setGraphID(String graphID);
 
    Object clone();
 }
