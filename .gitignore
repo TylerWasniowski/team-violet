@@ -13,3 +13,4 @@ violet-0.16c/build.properties
 hs_err_pid*
 
 *_Ignore*
+/bin/

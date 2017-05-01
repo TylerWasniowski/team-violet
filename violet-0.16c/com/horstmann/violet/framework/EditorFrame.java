@@ -57,6 +57,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDesktopPane;
@@ -165,34 +166,30 @@ public class EditorFrame extends JFrame
 
       newMenu = factory.createMenu("file.new");
       fileMenu.add(newMenu);
-      
+
       newMenu.add(factory.createMenuItem("file.team_seq_diagram", new ActionListener()
       {
-          public void actionPerformed(ActionEvent event)
-          {
-              try
-              {
-                  JPanel pan = new JPanel(new BorderLayout(5, 5));
-                  JLabel lbl = new JLabel("Project Name");
-                  final JTextField txt = new JTextField(20);
-                  pan.add(lbl, BorderLayout.WEST);
-                  pan.add(txt, BorderLayout.CENTER);
-                  JOptionPane.showInternalOptionDialog(desktop, pan, "Create Project GUI",
-                          JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
-                  try
-                  {
-                     GraphFrame frame = new GraphFrame(
-                           (Graph) TeamSequenceDiagramGraph.class.newInstance());
-                     addInternalFrame(frame);
-                  }
-                  catch (Exception exception)
-                  {
-                     exception.printStackTrace();
-                  }
-              }
-              catch (Exception exception) {}
-           }
-        }));
+			public void actionPerformed(ActionEvent event) {
+				try {
+					JPanel pan = new JPanel(new BorderLayout(5, 5));
+					JLabel lbl = new JLabel("Project Name");
+					pan.add(lbl, BorderLayout.WEST);
+					String newProjName = JOptionPane.showInternalInputDialog(desktop, pan, "Create Project GUI",
+							JOptionPane.QUESTION_MESSAGE);
+					if (newProjName == null) {
+						return;
+					} else {//TODO: Figure out how to create a topic on the server that can addressed by this name
+						try {
+							GraphFrame frame = new GraphFrame((Graph) TeamSequenceDiagramGraph.class.newInstance());
+							addInternalFrame(frame);
+						} catch (Exception exception) {
+							exception.printStackTrace();
+						}
+					}
+				} catch (Exception exception) {
+				}
+			}
+		}));
 
       JMenuItem fileOpenItem = factory.createMenuItem(
             "file.open", this, "openFile"); 
@@ -709,7 +706,7 @@ public class EditorFrame extends JFrame
       @param c the component to display in the internal frame
       @param t the title of the internal frame.
    */
-   private void addInternalFrame(final JInternalFrame iframe)
+	private void addInternalFrame(final JInternalFrame iframe)
    {  
       iframe.setResizable(true);
       iframe.setClosable(true);
