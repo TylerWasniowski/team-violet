@@ -3,6 +3,7 @@ package com.horstmann.violet.client;
 import javax.jms.*;
 
 import com.horstmann.violet.commands.*;
+import com.horstmann.violet.graphs.TeamDiagram;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQObjectMessage;
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
@@ -22,6 +23,7 @@ public class Subscriber {
     private Connection connection;
     private Session session;
     private MessageConsumer messageConsumer;
+    private static Map<String, TeamDiagram> projectIDToTeamDiagram;
     public static Queue<ActiveMQObjectMessage> recievedMsgs = new LinkedList<>();
     private static TeamSequenceDiagramGraph tDiagram;
 
@@ -56,6 +58,7 @@ public class Subscriber {
                         Command command = (Command) obj;
                         if (!command.execute(tDiagram))
                             System.out.println(command.getClass() + " failed");
+                        // or command.execute(projectIDToTeamDiagram.get("Project 1"));
 
                         tDiagram.layout();
                         if (tDiagram.getGraphPanel() != null) {
