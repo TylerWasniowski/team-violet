@@ -54,7 +54,8 @@ public class Subscriber {
                     if (obj instanceof Command) {
                         recievedMsgs.add(mq);
                         Command command = (Command) obj;
-                        command.execute(tDiagram);
+                        if (!command.execute(tDiagram))
+                            System.out.println(command.getClass() + " failed");
 
                         tDiagram.layout();
                         if (tDiagram.getGraphPanel() != null) {

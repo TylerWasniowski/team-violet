@@ -1,9 +1,11 @@
 package com.horstmann.violet.framework;
 
+import java.io.Serializable;
+
 /**
  * Created by Rooke_000 on 4/29/2017.
  */
-public interface UniquelyIdentifiable {
+public interface UniquelyIdentifiable extends Cloneable, Serializable {
 
     /**
      * Gets the ID of this edge.
@@ -22,4 +24,7 @@ public interface UniquelyIdentifiable {
      * @param graphID the ID of the graph that this edge belongs to
      */
     void assignGraphID(String graphID);
+
+    Object clone();
+
 }

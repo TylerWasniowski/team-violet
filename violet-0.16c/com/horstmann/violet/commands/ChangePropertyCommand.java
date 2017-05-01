@@ -9,11 +9,14 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 
 /**
  * Created by Rooke_000 on 4/29/2017.
  */
 public class ChangePropertyCommand implements Command {
+
+    private static final long serialVersionUID = 2361595660071833255L;
 
     private String idOfObject;
     private String nameOfPropertyInObject;
@@ -48,6 +51,7 @@ public class ChangePropertyCommand implements Command {
                     Introspector.getBeanInfo(objectToChangePropertyOf.getClass()).getPropertyDescriptors()) {
                 if (propertyDescriptor.getName().equals(nameOfPropertyInObject)) {
                     propertyDescriptor.getWriteMethod().invoke(objectToChangePropertyOf, newProperty);
+                    return true;
                 }
             }
         } catch(IntrospectionException|IllegalAccessException|InvocationTargetException ex) {
@@ -55,7 +59,7 @@ public class ChangePropertyCommand implements Command {
             return false;
         }
 
-        return true;
+        return false;
     }
 
 }

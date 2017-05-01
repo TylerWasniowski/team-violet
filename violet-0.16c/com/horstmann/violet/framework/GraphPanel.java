@@ -314,12 +314,14 @@ public class GraphPanel extends JPanel
       {
          public void stateChanged(ChangeEvent event)
          {
-            if (graph instanceof TeamDiagram && event instanceof PropertyChangeEvent) {
+            if (graph instanceof TeamDiagram
+                    && event.getSource() instanceof PropertyEditor
+                    && event instanceof PropertyChangeEvent) {
                 ((TeamDiagram) graph).sendCommandToServer(
                         new ChangePropertyCommand(
                                 ((UniquelyIdentifiable) edited).getID(),
                                 ((PropertyChangeEvent) event).getPropertyName(),
-                                event
+                                ((PropertyEditor) event.getSource()).getValue()
                         )
                 );
             }
