@@ -20,6 +20,7 @@
 
 package com.horstmann.violet.framework;
 
+import com.horstmann.violet.commands.ChangePropertyCommand;
 import com.horstmann.violet.commands.ConnectEdgeCommand;
 import com.horstmann.violet.commands.MoveNodeCommand;
 import com.horstmann.violet.graphs.TeamDiagram;
@@ -44,6 +45,7 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import java.beans.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -296,13 +298,15 @@ public class GraphPanel extends JPanel
     */
    public void editSelected()
    {
-      Object edited = lastSelected;
+      Object edited;
       if (lastSelected == null)
       {
          if (selectedItems.size() == 1)
             edited = selectedItems.iterator().next();
          else
             return;
+      } else {
+          edited = lastSelected;
       }
 
       PropertySheet sheet = new PropertySheet(edited, this);
@@ -310,6 +314,18 @@ public class GraphPanel extends JPanel
       {
          public void stateChanged(ChangeEvent event)
          {
+            if (graph instanceof TeamDiagram
+                    && event.getSource() instanceof PropertyEditor
+                    && event instanceof PropertyChangeEvent) {
+                ((TeamDiagram) graph).sendCommandToServer(
+                        new ChangePropertyCommand(
+                                ((UniquelyIdentifiable) edited).getID(),
+                                ((PropertyChangeEvent) event).getPropertyName(),
+                                ((PropertyEditor) event.getSource()).getValue()
+                        )
+                );
+            }
+
             graph.layout();
             repaint();
          }

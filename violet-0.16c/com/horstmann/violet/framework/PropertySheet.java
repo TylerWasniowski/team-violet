@@ -48,7 +48,7 @@ public class PropertySheet extends JPanel
       {
          BeanInfo info 
             = Introspector.getBeanInfo(bean.getClass());
-         PropertyDescriptor[] descriptors 
+         PropertyDescriptor[] descriptors
             = (PropertyDescriptor[])info.getPropertyDescriptors().clone();      
          Arrays.sort(descriptors, new
             Comparator()
@@ -114,16 +114,12 @@ public class PropertySheet extends JPanel
 
          Object value = getter.invoke(bean, new Object[] {});
          editor.setValue(value);
-         editor.addPropertyChangeListener(new
-            PropertyChangeListener()
-            {
-               public void propertyChange(PropertyChangeEvent event)
-               {
+         editor.addPropertyChangeListener((java.beans.PropertyChangeEvent event) -> {
                   try
                   {
                      setter.invoke(bean, 
                         new Object[] { editor.getValue() });
-                     fireStateChanged(null);
+                     fireStateChanged(new PropertyChangeEvent(descriptor.getName(), event.getSource()));
                   }
                   catch (IllegalAccessException exception)
                   {
@@ -134,7 +130,7 @@ public class PropertySheet extends JPanel
                      exception.printStackTrace();
                   }
                }
-            });
+            );
          return editor;
       }
       catch (InstantiationException exception)

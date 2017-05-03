@@ -174,12 +174,6 @@ public class MultiLineString implements Cloneable, Serializable
    */
    public void draw(Graphics2D g2, Rectangle2D r)
    {
-      // setLabelText();
-      // Label is not to be serialized, so this method would throw a null pointer exception when called
-      if (label == null) {
-         label = new JLabel();
-         setLabelText();
-      }
 
       label.setFont(g2.getFont());
       label.setBounds(0, 0, (int) r.getWidth(), (int) r.getHeight());
@@ -217,5 +211,5 @@ public class MultiLineString implements Cloneable, Serializable
    private int size;
    private boolean underlined;
    
-   private transient JLabel label = new JLabel();
+   private JLabel label = new JLabel();
 }

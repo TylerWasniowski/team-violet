@@ -36,46 +36,31 @@ import java.util.*;
    A class that supplies convenience implementations for 
    a number of methods in the Node interface
 */
-public abstract class AbstractNode implements Node
+public abstract class AbstractNode extends AbstractUniquelyIdentifiable implements Node
 {
    private static final long serialVersionUID = 211436464048429319L;
-
-   // These are for the syncing. We need to be able to identify unique nodes.
-   private String id;
-   private String graphID;
-   private static Map<String, Integer> classNameToNumberOfObjects = new HashMap<>(); // Counts number of objects of each class of Node
 
    /**
       Constructs a node with no parents or children.
    */
    public AbstractNode()
    {
-      this.id = this.getClass().toString() + incrementCountInMap();
       children = new ArrayList<>();
       parent = null;
    }
 
    public Object clone()
    {
-      try
+      AbstractNode cloned = (AbstractNode)super.clone();
+      cloned.children = new ArrayList<>(children.size());
+      for (int i = 0; i < children.size(); i++)
       {
-         AbstractNode cloned = (AbstractNode)super.clone();
-         cloned.children = new ArrayList<>(children.size());
-         for (int i = 0; i < children.size(); i++)
-         {
-            Node n = children.get(i);
-            cloned.children.set(i, (Node) n.clone());
-            n.setParent(cloned);
-         }
+         Node n = children.get(i);
+         cloned.children.set(i, (Node) n.clone());
+         n.setParent(cloned);
+      }
 
-         cloned.id = cloned.getClass().toString() + incrementCountInMap();
-         cloned.setGraphID(this.graphID);
-         return cloned;
-      }
-      catch (CloneNotSupportedException exception)
-      {
-         return null;
-      }
+      return cloned;
    }
 
    public void translate(double dx, double dy)
@@ -113,19 +98,6 @@ public abstract class AbstractNode implements Node
    public boolean addNode(Node n, Point2D p)
    {
       return false;
-   }
-
-   public boolean equals(Object o) {
-      if (!(o instanceof AbstractNode))
-         return false;
-
-      AbstractNode that = (AbstractNode) o;
-
-      return this.id.equals(that.getID());
-   }
-
-   public int hashCode() {
-      return Objects.hash(id);
    }
 
    public Node getParent() { return parent; }
@@ -178,22 +150,6 @@ public abstract class AbstractNode implements Node
    public static final int SHADOW_GAP = 4;
 
    /**
-    * Increments the value linked to the class name, or initializes the value to 1 if the value linked to the
-    * class name was 0.
-    * @return The new number linked to the class name
-    */
-   private Integer incrementCountInMap() {
-      Integer numberOfObjectsOfThisClass = classNameToNumberOfObjects.get(this.getClass().toString());
-      if (numberOfObjectsOfThisClass == null) {
-         classNameToNumberOfObjects.put(this.getClass().toString(), 1);
-      } else {
-         classNameToNumberOfObjects.put(this.getClass().toString(), numberOfObjectsOfThisClass + 1);
-      }
-
-      return numberOfObjectsOfThisClass;
-   }
-
-   /**
        @return the shape to be used for computing the drop shadow
     */
    public Shape getShape() { return null; }   
@@ -225,20 +181,6 @@ public abstract class AbstractNode implements Node
                }
             }
          });
-   }
-
-   @Override
-   public String getID() {
-      return id;
-   }
-
-   @Override
-   public void setGraphID(String graphID) {
-      if (graphID == null)
-         return;
-
-      this.graphID = graphID;
-      id = graphID + this.getClass().toString() + classNameToNumberOfObjects.get(this.getClass().toString());
    }
 
    private ArrayList<Node> children;

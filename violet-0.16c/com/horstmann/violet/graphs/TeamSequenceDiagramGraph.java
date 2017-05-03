@@ -48,7 +48,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
     // Commands to both send and execute
     @Override
     public boolean add(Node n, Point2D p) {
-        n.setGraphID(id);
+        n.assignGraphID(id);
         super.add(n, p);
         return sendCommandToServer(new AddNodeCommand(n, p));
     }
