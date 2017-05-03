@@ -1,4 +1,4 @@
-Build Instructions:
+## Build Instructions: ##
 
 In the violet-0.16c directory include your own build.properties file with the following lines:
 
@@ -16,9 +16,16 @@ Change jdk.home to the proper path to your jdk.
 
 
 ### Building without checkstyle ###
-With build.properties properly configured you can simply run ant in the directory with build.xml, this will not run the checkstyle script.
+With build.properties properly configured you can simply run
 
-### Building & Running Checkstyle ###
+```
+#!bash
+ant
+```
+
+in the directory with build.xml, this will not run the checkstyle script.
+
+### Building with checkstyle ###
 If you wish to run checkstyle after building the project you can configure the bash script build, which is found in the violet-0.16c directory. 
 
 Simply modify the following line of the script to the location of your checkstyle.
