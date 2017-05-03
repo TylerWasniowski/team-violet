@@ -26,7 +26,7 @@ ant
 in the directory with build.xml, this will not run the checkstyle script.
 
 ### Building with checkstyle ###
-If you wish to run checkstyle after building the project you can configure the bash script build, which is found in the violet-0.16c directory. 
+If you wish to run checkstyle after building the project you can configure the bash script 'build', which is found in the violet-0.16c directory. 
 
 Simply modify the following line of the script to the location of your checkstyle.
 
