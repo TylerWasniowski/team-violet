@@ -1,9 +1,12 @@
 #!/bin/bash
 
+# clean
+ant clean > NUL 2>&1 
+
 # Compile
 ant
 
 # Edit these settings to match your system
-CHECKSTYLE_HOME=~/checkstyle-7.5.1
+CHECKSTYLE_HOME=/Users/cheetah/Desktop/HomeFiles/sjsu/checkstyle-7.5.1
 
 java -cp $CHECKSTYLE_HOME/\* com.puppycrawl.tools.checkstyle.Main -c checkstyle.xml com/horstmann/violet/*.java
