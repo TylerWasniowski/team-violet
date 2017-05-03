@@ -24,6 +24,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -59,11 +61,13 @@ import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -72,6 +76,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -171,22 +176,58 @@ public class EditorFrame extends JFrame
       {
 			public void actionPerformed(ActionEvent event) {
 				try {
-					JPanel pan = new JPanel(new BorderLayout(5, 5));
-					JLabel lbl = new JLabel("Project Name");
-					pan.add(lbl, BorderLayout.WEST);
-					String newProjName = JOptionPane.showInternalInputDialog(desktop, pan, "Create Project GUI",
-							JOptionPane.QUESTION_MESSAGE);
-					if (newProjName == null) {
-						return;
-					} else {//TODO: Figure out how to create a topic on the server that can addressed by this name
-						try {
-							GraphFrame frame = new GraphFrame((Graph) TeamSequenceDiagramGraph.class.newInstance());
-							addInternalFrame(frame);
-						} catch (Exception exception) {
-							exception.printStackTrace();
-						}
-					}
-				} catch (Exception exception) {
+				   JButton newProjButton = new JButton("Create New Team");
+				   newProjButton.addActionListener(new ActionListener() {
+				      public void actionPerformed(ActionEvent event){
+				         JPanel pan = new JPanel(new BorderLayout(5, 5));
+		               JLabel lbl = new JLabel("Project Name");
+		               pan.add(lbl, BorderLayout.WEST);
+		               String newProjName = JOptionPane.showInternalInputDialog(desktop, pan, "Create Project GUI",
+		                     JOptionPane.QUESTION_MESSAGE);
+		               if (newProjName == null) {//Checking that they input anything
+		                  return;
+		               } 
+		               else {//TODO: store the project names
+		                  try {
+		                     GraphFrame frame = new GraphFrame((Graph) TeamSequenceDiagramGraph.class.newInstance());
+		                     addInternalFrame(frame);
+		                  } 
+		                  catch (Exception ex) {
+		                     ex.printStackTrace();
+		                  }
+		               }
+				      }
+				   });
+				   newProjButton.setMargin(new Insets(5,5,5,5));
+				   //TODO query the server to populate the list
+				   String[] testStrings = {"Dummy Project 1","Dummy Project 2"};
+				   JList<String> currentProjectsList = new JList<String>(testStrings);
+				   currentProjectsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				   currentProjectsList.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				   JScrollPane scrollList = new JScrollPane(currentProjectsList);
+				   JButton existingProjButton = new JButton("Join Existing Team");
+               existingProjButton.addActionListener(new ActionListener() {
+                  public void actionPerformed(ActionEvent event) {
+                     //TODO figure out how to join existing projects
+                  }
+               });
+               existingProjButton.setMargin(new Insets(5,5,5,5));
+				   
+				   JInternalFrame frm = new JInternalFrame("Project Selection Prompt", false, true, false);
+				   frm.setLayout(new BorderLayout(10,10));
+				   JPanel buttons = new JPanel();
+				   buttons.add(existingProjButton);
+				   buttons.add(newProjButton);
+				   frm.add(buttons, BorderLayout.SOUTH);
+				   frm.add(scrollList, BorderLayout.CENTER);
+				   desktop.add(frm);
+				   desktop.revalidate();
+				   frm.setLocation(screenWidth/3, screenHeight/3);
+				   frm.pack();
+				   frm.show();
+				} 
+				catch (Exception ex) {
+				   ex.printStackTrace();
 				}
 			}
 		}));
