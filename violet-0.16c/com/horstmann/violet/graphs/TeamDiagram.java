@@ -41,7 +41,7 @@ public interface TeamDiagram {
     public JPanel getJPanel();
 
     /**
-     * Adds the given node on this diagram at the given location,
+     * Adds the given node on this diagram at the given location, attaches this graphID to the node's ID
      * AND sends the appropriate command to the server to do the same.
      * @param node the node to add
      * @param point the point to add the node to
@@ -57,7 +57,8 @@ public interface TeamDiagram {
 
     /**
      * Tries to connect the given edge from the node at the given start point to the node at the given end point,
-     * AND if the connection succeeds, it sends the appropriate command to the server to do the same.
+     * attaches this graphID to the given edge's id, AND if the connection succeeds, it sends the
+     * appropriate command to the server to do the same.
      * @param edge the edge to connect
      * @param startPoint the location of the node that the edge should start from
      * @param endPoint the location of the node that the edge should end from
