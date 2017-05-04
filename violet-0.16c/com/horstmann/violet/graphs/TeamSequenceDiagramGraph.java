@@ -67,6 +67,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
 
     @Override
     public boolean connect(Edge e, Point2D p1, Point2D p2) {
+        e.assignGraphID(id);
         if (super.connect(e, p1, p2)) {
             sendCommandToServer(new ConnectEdgeCommand(e, p1, p2));
             return true;
