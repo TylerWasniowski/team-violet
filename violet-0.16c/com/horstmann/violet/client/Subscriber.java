@@ -6,7 +6,7 @@ import com.horstmann.violet.commands.*;
 import com.horstmann.violet.graphs.TeamDiagram;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQObjectMessage;
-import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
+
 import java.io.Serializable;
 import java.util.*;
 import java.util.Queue;
@@ -61,9 +61,9 @@ public class Subscriber {
                         // or command.execute(projectIDToTeamDiagram.get("Project 1"));
 
                         teamDiagram.layout();
-                        if (teamDiagram.getPanel() != null) {
-                            teamDiagram.getPanel().revalidate();
-                            teamDiagram.getPanel().repaint();
+                        if (teamDiagram.getJPanel() != null) {
+                            teamDiagram.getJPanel().revalidate();
+                            teamDiagram.getJPanel().repaint();
                         }
                     }
                 } catch (JMSException e) {

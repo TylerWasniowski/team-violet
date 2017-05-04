@@ -38,7 +38,7 @@ public interface TeamDiagram {
      * Returns the Panel that is viewing this diagram. This allows the view to be repainted.
      * @return the Panel that is viewing this diagram.
      */
-    public JPanel getPanel();
+    public JPanel getJPanel();
 
     /**
      * Adds the given node on this diagram at the given location,

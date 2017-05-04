@@ -69,9 +69,9 @@ public class PubSub {
                             System.out.println(command.getClass() + " failed");
 
                         teamDiagram.layout();
-                        if (teamDiagram.getPanel() != null) {
-                            teamDiagram.getPanel().revalidate();
-                            teamDiagram.getPanel().repaint();
+                        if (teamDiagram.getJPanel() != null) {
+                            teamDiagram.getJPanel().revalidate();
+                            teamDiagram.getJPanel().repaint();
                         }
                     }
                 } catch (JMSException e) {

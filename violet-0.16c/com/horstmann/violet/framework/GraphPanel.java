@@ -21,10 +21,8 @@
 package com.horstmann.violet.framework;
 
 import com.horstmann.violet.commands.ChangePropertyCommand;
-import com.horstmann.violet.commands.ConnectEdgeCommand;
 import com.horstmann.violet.commands.MoveNodeCommand;
 import com.horstmann.violet.graphs.TeamDiagram;
-import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -360,7 +358,7 @@ public class GraphPanel extends JPanel
    public void setGraph(Graph aGraph)
    {
       graph = aGraph;
-      aGraph.setGraphPanel(this);
+      aGraph.setJPanel(this);
       setModified(false);
       revalidate();
       repaint();
