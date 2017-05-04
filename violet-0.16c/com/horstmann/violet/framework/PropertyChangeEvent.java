@@ -7,6 +7,8 @@ import javax.swing.event.ChangeEvent;
  */
 public class PropertyChangeEvent extends ChangeEvent {
 
+    private static final long serialVersionUID = 3068294419021884021L;
+    
     private String propertyName;
 
     /**
