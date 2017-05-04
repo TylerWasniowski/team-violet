@@ -2,6 +2,7 @@ package com.horstmann.violet.commands;
 
 import com.horstmann.violet.framework.Graph;
 import com.horstmann.violet.framework.Node;
+import com.horstmann.violet.graphs.TeamDiagram;
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
 
 import java.io.Serializable;
@@ -17,6 +18,6 @@ public interface Command extends Serializable {
      * Carries out the command
      * @return true if command was executed, false if it wasn't executed
      */
-    public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn);
+    public boolean execute(TeamDiagram graphToExecuteCommandOn);
 
 }

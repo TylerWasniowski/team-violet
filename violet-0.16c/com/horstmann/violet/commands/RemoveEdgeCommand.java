@@ -2,6 +2,7 @@ package com.horstmann.violet.commands;
 
 import com.horstmann.violet.framework.Edge;
 import com.horstmann.violet.framework.Graph;
+import com.horstmann.violet.graphs.TeamDiagram;
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
 
 /**
@@ -18,7 +19,7 @@ public class RemoveEdgeCommand implements Command {
     }
 
     @Override
-    public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn) {
+    public boolean execute(TeamDiagram graphToExecuteCommandOn) {
         graphToExecuteCommandOn.removeEdgeLocal(idOfEdgeToRemove);
         return graphToExecuteCommandOn.findEdgeFromID(idOfEdgeToRemove) == null;
     }

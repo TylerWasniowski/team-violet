@@ -1,11 +1,10 @@
 package com.horstmann.violet.commands;
 
 import com.horstmann.violet.framework.Edge;
-import com.horstmann.violet.framework.Graph;
+import com.horstmann.violet.graphs.TeamDiagram;
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
 
 import java.awt.geom.Point2D;
-import java.util.Collections;
 
 /**
  * Created by Tyler on 4/25/2017.
@@ -25,7 +24,7 @@ public class ConnectEdgeCommand implements Command {
     }
 
     @Override
-    public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn) {
-        return graphToExecuteCommandOn.connect(edge, point1, point2);
+    public boolean execute(TeamDiagram graphToExecuteCommandOn) {
+        return graphToExecuteCommandOn.connectLocal(edge, point1, point2);
     }
 }

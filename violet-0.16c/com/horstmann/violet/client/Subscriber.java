@@ -25,10 +25,10 @@ public class Subscriber {
     private MessageConsumer messageConsumer;
     private static Map<String, TeamDiagram> projectIDToTeamDiagram;
     public static Queue<ActiveMQObjectMessage> recievedMsgs = new LinkedList<>();
-    private static TeamSequenceDiagramGraph tDiagram;
+    private static TeamDiagram teamDiagram;
 
-    public Subscriber(TeamSequenceDiagramGraph tDiagram) {
-       Subscriber.tDiagram = tDiagram;
+    public Subscriber(TeamDiagram teamDiagram) {
+       Subscriber.teamDiagram = teamDiagram;
     }
 
     public void start() throws JMSException {
@@ -56,14 +56,14 @@ public class Subscriber {
                     if (obj instanceof Command) {
                         recievedMsgs.add(mq);
                         Command command = (Command) obj;
-                        if (!command.execute(tDiagram))
+                        if (!command.execute(teamDiagram))
                             System.out.println(command.getClass() + " failed");
                         // or command.execute(projectIDToTeamDiagram.get("Project 1"));
 
-                        tDiagram.layout();
-                        if (tDiagram.getGraphPanel() != null) {
-                            tDiagram.getGraphPanel().revalidate();
-                            tDiagram.getGraphPanel().repaint();
+                        teamDiagram.layout();
+                        if (teamDiagram.getPanel() != null) {
+                            teamDiagram.getPanel().revalidate();
+                            teamDiagram.getPanel().repaint();
                         }
                     }
                 } catch (JMSException e) {

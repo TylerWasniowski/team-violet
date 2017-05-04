@@ -184,11 +184,6 @@ public class GraphPanel extends JPanel
                if (mousePoint.distance(mouseDownPoint) > CONNECT_THRESHOLD
                      && graph.connect(newEdge, mouseDownPoint, mousePoint))
                {
-                  if (graph instanceof TeamDiagram) {
-                     ((TeamDiagram) graph).sendCommandToServer(
-                             new ConnectEdgeCommand(newEdge, mouseDownPoint, mousePoint));
-                  }
-
                   setModified(true);
                   setSelectedItem(newEdge);
                }

@@ -2,6 +2,7 @@ package com.horstmann.violet.commands;
 
 import com.horstmann.violet.framework.Graph;
 import com.horstmann.violet.framework.Node;
+import com.horstmann.violet.graphs.TeamDiagram;
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
 
 /**
@@ -18,7 +19,7 @@ public class RemoveNodeCommand implements Command {
     }
 
     @Override
-    public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn) {
+    public boolean execute(TeamDiagram graphToExecuteCommandOn) {
         graphToExecuteCommandOn.removeNodeLocal(idOfNodeToRemove);
         return graphToExecuteCommandOn.findNodeFromID(idOfNodeToRemove) != null;
     }

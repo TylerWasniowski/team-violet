@@ -15,14 +15,16 @@ import com.horstmann.violet.framework.Node;
 import javax.jms.JMSException;
 
 /**
- *
- *
+ * A SequenceDiagram that stays synced with other clients connected to the same project.
  */
 public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements TeamDiagram, AutoCloseable, Closeable {
 
     private static final long serialVersionUID = -9088160815514315525L;
 
+    // A unique id for this graph, used when figuring out what graph added what object to the synced diagram
     private String id;
+
+    // The objects that communicate with the server.
     private transient Publisher publisher;
     private transient Subscriber subscriber;
 
@@ -49,8 +51,12 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
     @Override
     public boolean add(Node n, Point2D p) {
         n.assignGraphID(id);
-        super.add(n, p);
-        return sendCommandToServer(new AddNodeCommand(n, p));
+        if (super.add(n, p)) {
+            sendCommandToServer(new AddNodeCommand(n, p));
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -61,8 +67,9 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
 
     @Override
     public boolean connect(Edge e, Point2D p1, Point2D p2) {
-        if (!getEdges().contains(e)) {
-            return super.connect(e, p1, p2);
+        if (super.connect(e, p1, p2)) {
+            sendCommandToServer(new ConnectEdgeCommand(e, p1, p2));
+            return true;
         }
 
         return false;
@@ -79,6 +86,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
         super.setMinBounds(newValue);
     }
 
+    @Override
     public boolean sendCommandToServer(Command command) {
         try {
             publisher.sendCommand(command);
@@ -92,14 +100,15 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
     }
 
     // Commands to just execute locally and not send to server
+    @Override
     public boolean addLocal(Node n, Point2D p) {
-        if (!getNodes().contains(n)) {
+        if (!getNodes().contains(n))
             return super.add(n, p);
-        }
 
         return false;
     }
 
+    @Override
     public void removeNodeLocal(String idOfNodeToRemove) {
         for (Node node : getNodes()) {
             if (node.getID().equals(idOfNodeToRemove)) {
@@ -109,12 +118,22 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
         }
     }
 
+    @Override
+    public boolean connectLocal(Edge edge, Point2D startPoint, Point2D endPoint) {
+        if (!getEdges().contains(edge))
+            return super.connect(edge, startPoint, endPoint);
+
+        return false;
+    }
+
+    @Override
     public void removeEdgeLocal(String idOfEdgeToRemove) {
         Edge edgeToRemove = findEdgeFromID(idOfEdgeToRemove);
         if (edgeToRemove != null)
             super.removeEdge(edgeToRemove);
     }
 
+    @Override
     public Node findNodeFromID(String idOfNodeToFind) {
         for (Node node: getNodes()) {
             if (idOfNodeToFind.equals(node.getID())) {
@@ -125,6 +144,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
         return null;
     }
 
+    @Override
     public Edge findEdgeFromID(String idOfEdgeToFind) {
         for (Edge edge: getEdges()) {
             if (idOfEdgeToFind.equals(edge.getID())) {
@@ -135,6 +155,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
         return null;
     }
 
+    @Override
     public void close() {
         publisher.closePublisherConnection();
         subscriber.closeSubscriberConnection();

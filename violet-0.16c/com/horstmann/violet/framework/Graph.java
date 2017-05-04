@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.horstmann.violet.framework;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.beans.DefaultPersistenceDelegate;
@@ -354,20 +354,20 @@ public abstract class Graph implements Serializable
    }
 
    /**
-    * Gets the graphPanel that the graph object belongs to.
-    * @return the graphPanel that the graph object belongs to.
+    * Gets the Panel that the graph object belongs to.
+    * @return the Panel that the graph object belongs to.
     */
-   public GraphPanel getGraphPanel() {
-      return graphPanel;
+   public Panel getPanel() {
+      return panel;
    }
 
 
    /**
-    * Sets the graphPanel that the graph object belongs to the given graphPanel.
-    * @param graphPanel the new graphPanel
+    * Sets the Panel that the graph object belongs to the given Panel.
+    * @param panel the new graphPanel
     */
-   public void setGraphPanel(GraphPanel graphPanel) {
-      this.graphPanel = graphPanel;
+   public void setGraphPanel(Panel panel) {
+      this.panel = panel;
    }
 
    private List<Node> nodes;
@@ -376,7 +376,7 @@ public abstract class Graph implements Serializable
    private transient List<Edge> edgesToBeRemoved;
    private transient boolean needsLayout;
    private transient Rectangle2D minBounds;
-   private GraphPanel graphPanel;
+   private Panel panel;
 }
 
 

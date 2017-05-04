@@ -2,6 +2,7 @@ package com.horstmann.violet.commands;
 
 import com.horstmann.violet.framework.Graph;
 import com.horstmann.violet.framework.Node;
+import com.horstmann.violet.graphs.TeamDiagram;
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
 
 import java.awt.geom.Point2D;
@@ -22,7 +23,7 @@ public class AddNodeCommand implements Command {
     }
 
     @Override
-    public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn) {
+    public boolean execute(TeamDiagram graphToExecuteCommandOn) {
         return graphToExecuteCommandOn.addLocal(node, point);
     }
 

@@ -3,6 +3,7 @@ package com.horstmann.violet.commands;
 import com.horstmann.violet.framework.Edge;
 import com.horstmann.violet.framework.Node;
 import com.horstmann.violet.framework.UniquelyIdentifiable;
+import com.horstmann.violet.graphs.TeamDiagram;
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
 
 import java.beans.IntrospectionException;
@@ -29,9 +30,10 @@ public class ChangePropertyCommand implements Command {
     }
 
     @Override
-    public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn) {
+    public boolean execute(TeamDiagram graphToExecuteCommandOn) {
         Object objectToChangePropertyOf;
 
+        // Finds the object whose property was changed, and stores result into objectToChangePropertyOf
         Node nodeWithGivenID = graphToExecuteCommandOn.findNodeFromID(idOfObject);
         if (nodeWithGivenID == null) {
             Edge edgeWithGivenID = graphToExecuteCommandOn.findEdgeFromID(idOfObject);

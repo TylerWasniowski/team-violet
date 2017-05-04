@@ -1,6 +1,7 @@
 package com.horstmann.violet.commands;
 
 import com.horstmann.violet.framework.Node;
+import com.horstmann.violet.graphs.TeamDiagram;
 import com.horstmann.violet.graphs.TeamSequenceDiagramGraph;
 
 import java.awt.geom.Point2D;
@@ -20,7 +21,7 @@ public class MoveNodeCommand implements Command {
     }
 
     @Override
-    public boolean execute(TeamSequenceDiagramGraph graphToExecuteCommandOn) {
+    public boolean execute(TeamDiagram graphToExecuteCommandOn) {
 
         Node nodeToMove = graphToExecuteCommandOn.findNodeFromID(idOfNodeToMove);
         if (nodeToMove == null)
