@@ -14,9 +14,9 @@ import java.util.Queue;
 /**
  * Created by CSingh on 4/21/2017.
  */
-public class Subscriber {
+public class Subscriber implements MessageListener {
 
-    private static final String BROKER_HOST = "tcp://35.185.245.223:%d";
+    private static final String BROKER_HOST = "tcp://35.185.243.162:%d";
     private static final int BROKER_PORT = 61616;
     private static final String BROKER_URL = String.format(BROKER_HOST, BROKER_PORT);
     private static final Boolean NON_TRANSACTED = false;
@@ -25,10 +25,10 @@ public class Subscriber {
     private MessageConsumer messageConsumer;
     private static Map<String, TeamDiagram> projectIDToTeamDiagram;
     public static Queue<ActiveMQObjectMessage> recievedMsgs = new LinkedList<>();
-    private static TeamDiagram teamDiagram;
+    private TeamDiagram teamDiagram;
 
     public Subscriber(TeamDiagram teamDiagram) {
-       Subscriber.teamDiagram = teamDiagram;
+       this.teamDiagram = teamDiagram;
     }
 
     public void start() throws JMSException {
@@ -39,36 +39,34 @@ public class Subscriber {
             connection.start();
             session = connection.createSession(NON_TRANSACTED, Session.AUTO_ACKNOWLEDGE);
             messageConsumer = session.createConsumer(session.createTopic("VIOLET.TOPIC"));
-            messageConsumer.setMessageListener(new TeamVioletMessageListener());
+            messageConsumer.setMessageListener(this);
         } catch (JMSException e) {
             e.printStackTrace();
         }
     }
 
-    private static class TeamVioletMessageListener implements MessageListener {
-        @Override
-        public void onMessage(Message message) {
-            synchronized (this) {
-                try {
-                    Serializable obj;
-                    ActiveMQObjectMessage mq = (ActiveMQObjectMessage) message;
-                    obj = mq.getObject();
-                    if (obj instanceof Command) {
-                        recievedMsgs.add(mq);
-                        Command command = (Command) obj;
-                        if (!command.execute(teamDiagram))
-                            System.out.println(command.getClass() + " failed");
-                        // or command.execute(projectIDToTeamDiagram.get("Project 1"));
+    @Override
+    public void onMessage(Message message) {
+        synchronized (this) {
+            try {
+                Serializable obj;
+                ActiveMQObjectMessage mq = (ActiveMQObjectMessage) message;
+                obj = mq.getObject();
+                if (obj instanceof Command) {
+                    recievedMsgs.add(mq);
+                    Command command = (Command) obj;
+                    if (!command.execute(teamDiagram))
+                        System.out.println(command.getClass() + " failed");
+                    // or command.execute(projectIDToTeamDiagram.get("Project 1"));
 
-                        teamDiagram.layout();
-                        if (teamDiagram.getJPanel() != null) {
-                            teamDiagram.getJPanel().revalidate();
-                            teamDiagram.getJPanel().repaint();
-                        }
+                    teamDiagram.layout();
+                    if (teamDiagram.getJPanel() != null) {
+                        teamDiagram.getJPanel().revalidate();
+                        teamDiagram.getJPanel().repaint();
                     }
-                } catch (JMSException e) {
-                    e.printStackTrace();
                 }
+            } catch (JMSException e) {
+                e.printStackTrace();
             }
         }
     }

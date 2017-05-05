@@ -22,7 +22,7 @@ import org.apache.activemq.command.ActiveMQObjectMessage;
 import com.horstmann.violet.commands.Command;
 
 public class PubSub {
-    private static final String BROKER_HOST = "tcp://35.185.245.223:%d";
+    private static final String BROKER_HOST = "tcp://35.185.243.162:%d";
     private static final int BROKER_PORT = 61616; 
     private static final String BROKER_URL = String.format(BROKER_HOST, BROKER_PORT); 
     private static final Boolean NON_TRANSACTED = false;
