@@ -22,7 +22,7 @@ package com.horstmann.violet.framework;
 
 import com.horstmann.violet.commands.ChangePropertyCommand;
 import com.horstmann.violet.commands.MoveNodeCommand;
-import com.horstmann.violet.commands.ScrubberNodeCommand;
+import com.horstmann.violet.commands.GrabberNodeCommand;
 import com.horstmann.violet.graphs.TeamDiagram;
 import java.awt.Color;
 import java.awt.Component;
@@ -620,7 +620,7 @@ public class GraphPanel extends JPanel
        if (graph instanceof TeamDiagram) {
            if (!obj.equals(lastSelected))
                ((TeamDiagram) graph).sendCommandToServer(
-                       new ScrubberNodeCommand(((TeamDiagram) graph).getGraphId(),
+                       new GrabberNodeCommand(((TeamDiagram) graph).getGraphId(),
                                ((UniquelyIdentifiable) obj).getID()));
        }
       selectedItems.clear();

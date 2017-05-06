@@ -6,13 +6,13 @@ import com.horstmann.violet.graphs.TeamDiagram;
 /**
  * Created by CSingh on 5/5/2017.
  */
-public class ScrubberNodeCommand implements Command {
+public class GrabberNodeCommand implements Command {
     
     private static final long serialVersionUID = -5173365451099251363L;
     private String idOfNodeToSelect;
     private String clientGraphId;
     
-    public ScrubberNodeCommand(String cGraphId, String nId) {
+    public GrabberNodeCommand(String cGraphId, String nId) {
         this.idOfNodeToSelect = nId;
         this.clientGraphId = cGraphId;
     }
