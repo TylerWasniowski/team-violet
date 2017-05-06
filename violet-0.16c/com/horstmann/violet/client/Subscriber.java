@@ -1,15 +1,12 @@
 package com.horstmann.violet.client;
 
 import javax.jms.*;
-
 import com.horstmann.violet.commands.*;
 import com.horstmann.violet.graphs.TeamDiagram;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQObjectMessage;
-
 import java.io.Serializable;
-import java.util.*;
-import java.util.Queue;
+
 
 /**
  * Created by CSingh on 4/21/2017.
@@ -23,8 +20,6 @@ public class Subscriber implements MessageListener {
     private Connection connection;
     private Session session;
     private MessageConsumer messageConsumer;
-    private static Map<String, TeamDiagram> projectIDToTeamDiagram;
-    public static Queue<ActiveMQObjectMessage> recievedMsgs = new LinkedList<>();
     private TeamDiagram teamDiagram;
 
     public Subscriber(TeamDiagram teamDiagram) {
@@ -53,7 +48,6 @@ public class Subscriber implements MessageListener {
                 ActiveMQObjectMessage mq = (ActiveMQObjectMessage) message;
                 obj = mq.getObject();
                 if (obj instanceof Command) {
-                    recievedMsgs.add(mq);
                     Command command = (Command) obj;
                     if (!command.execute(teamDiagram))
                         System.out.println(command.getClass() + " failed");
@@ -69,21 +63,6 @@ public class Subscriber implements MessageListener {
                 e.printStackTrace();
             }
         }
-    }
-
-    public synchronized List<Command> receiveCommands() throws Exception {
-        List<Command> lst = new ArrayList<>();
-        Serializable obj;
-        if(!recievedMsgs.isEmpty()) {
-            ActiveMQObjectMessage mq = recievedMsgs.poll();
-            obj = mq.getObject();
-            if (obj instanceof Command) {
-                lst.add((Command) obj);
-            } else {
-                throw new Exception("Unknown Message");
-            }
-        }
-        return lst;
     }
     
     public void closeSubscriberConnection() {

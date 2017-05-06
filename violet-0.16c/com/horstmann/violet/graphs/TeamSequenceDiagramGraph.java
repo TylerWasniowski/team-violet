@@ -3,6 +3,8 @@ package com.horstmann.violet.graphs;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
 
 import com.horstmann.violet.commands.*;
@@ -23,6 +25,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
 
     // A unique id for this graph, used when figuring out what graph added what object to the synced diagram
     private String id;
+    private String hostname;
 
     // The objects that communicate with the server.
     private transient Publisher publisher;
@@ -32,6 +35,11 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
         super();
 
         id = UUID.randomUUID().toString();
+        try {
+            hostname = InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            hostname = id;
+        }
 
         publisher = new Publisher();
         subscriber = new Subscriber(this);
@@ -162,4 +170,30 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
         subscriber.closeSubscriberConnection();
     }
 
+    /**
+     * gets the hostname.
+     */
+    @Override
+    public String getHostname() {
+        return hostname;
+    }
+
+    /**
+     * Adds to map that the graph id and node key value.
+     * @param gId graph id
+     * @param n the node from the graph
+     * @return true if key is added and then found to be contained, false otherwise
+     */
+    @Override
+    public boolean addToConnectedClientsMap(String clientGraphId, Node node) {
+        return super.addToConnectedClientsToNode(clientGraphId, node);
+    }
+
+    /**
+     * gets the graph id.
+     */
+    @Override
+    public String getGraphId() {
+        return id;
+    }
 }

@@ -22,8 +22,8 @@ package com.horstmann.violet.framework;
 
 import com.horstmann.violet.commands.ChangePropertyCommand;
 import com.horstmann.violet.commands.MoveNodeCommand;
+import com.horstmann.violet.commands.ScrubberNodeCommand;
 import com.horstmann.violet.graphs.TeamDiagram;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -42,11 +42,11 @@ import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import java.beans.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -375,6 +375,24 @@ public class GraphPanel extends JPanel
             Math.max(bounds.getMaxX() / zoom, graphBounds.getMaxX()), 
             Math.max(bounds.getMaxY() / zoom, graphBounds.getMaxY())));
       graph.draw(g2, grid);
+      
+      Map<String, Node> connectedNodes = graph.getConnectedClientsToNode();
+
+      if(!connectedNodes.isEmpty()) {
+          for (String graphID: connectedNodes.keySet()) {
+              if(!graphID.equals(((TeamDiagram) graph).getGraphId())) {
+                  Rectangle2D grabberBounds = ((Node) connectedNodes.get(graphID)).getBounds();
+                  drawGrabber(g2, grabberBounds.getMinX(), grabberBounds.getMinY());
+                  drawGrabber(g2, grabberBounds.getMinX(), grabberBounds.getMaxY());
+                  drawGrabber(g2, grabberBounds.getMaxX(), grabberBounds.getMinY());
+                  drawGrabber(g2, grabberBounds.getMaxX(), grabberBounds.getMaxY());
+                  //g2.drawString(graphID, (int) grabberBounds.getMaxX() +10, (int) grabberBounds.getMinY() +10);
+                  g2.drawString(((TeamDiagram) graph).getHostname(),(int) grabberBounds.getMaxX() +10,
+                          (int) grabberBounds.getMinY() +10);
+              }
+          }
+          //connectedNodes.clear();
+      }
 
       Iterator iter = selectedItems.iterator();
       Set toBeRemoved = new HashSet();
@@ -599,6 +617,12 @@ public class GraphPanel extends JPanel
    
    private void setSelectedItem(Object obj)
    {
+       if (graph instanceof TeamDiagram) {
+           if (!obj.equals(lastSelected))
+               ((TeamDiagram) graph).sendCommandToServer(
+                       new ScrubberNodeCommand(((TeamDiagram) graph).getGraphId(),
+                               ((UniquelyIdentifiable) obj).getID()));
+       }
       selectedItems.clear();
       lastSelected = obj;
       if (obj != null) selectedItems.add(obj);

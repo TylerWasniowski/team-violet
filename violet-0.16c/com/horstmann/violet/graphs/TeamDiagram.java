@@ -109,5 +109,23 @@ public interface TeamDiagram {
      Causes the layout of the graph to be recomputed.
      */
     public void layout();
+    
+    /**
+     * Adds to map that the graph id and node key value.
+     * @param gId graph id
+     * @param n the node from the graph
+     * @return true if key is added and then found to be contained, false otherwise
+     */
+    public boolean addToConnectedClientsMap(String clientGraphId, Node node);
+
+    /**
+     * gets the graph id
+     */
+    public String getGraphId();
+
+    /**
+     * gets the host name
+     */
+    public String getHostname();
 
 }

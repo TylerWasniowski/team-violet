@@ -31,7 +31,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -370,6 +372,26 @@ public abstract class Graph implements Serializable
    public void setJPanel(JPanel panel) {
       this.panel = panel;
    }
+   
+   /**
+    * gets the connectedClientsToNode map.
+    */
+   public Map<String, Node> getConnectedClientsToNode() {
+       return connectedClientsToNode;
+   }
+   
+   /**
+    * Adds to map that the graph id and node key value.
+    * @param gId graph id
+    * @param n the node from the graph
+    * @return true if key is added and then found to be contained, false otherwise
+    */
+   public boolean addToConnectedClientsToNode(String gId, Node n) {
+       connectedClientsToNode.put(gId, n);
+       if(connectedClientsToNode.containsKey(gId))
+           return true;
+       return false;
+   }
 
    private List<Node> nodes;
    private List<Edge> edges;
@@ -377,10 +399,6 @@ public abstract class Graph implements Serializable
    private transient List<Edge> edgesToBeRemoved;
    private transient boolean needsLayout;
    private transient Rectangle2D minBounds;
+   private Map<String, Node> connectedClientsToNode = new HashMap<String, Node>();
    private JPanel panel;
 }
-
-
-
-
-
