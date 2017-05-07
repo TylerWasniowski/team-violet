@@ -71,7 +71,7 @@ public interface TeamDiagram {
             // This graphID has not given a color to the given graphID yet, make one
                 // Use the number of graphIDs in the map as the seed for the hue
             Color color = Color.getHSBColor((float) getItemSelectionsMap().size() / 30,
-                    0.8f + (float) Math.random() * 0.2f, 0.45f + (float) Math.random() * 0.55f);
+                    0.8f + (float) Math.random() * 0.20f, 0.45f + (float) Math.random() * 0.10f);
             getItemSelectionsMap().put(graphID, new Pair<>(color, selectedItems));
         }
     }
