@@ -92,7 +92,7 @@ public class StateNode extends RectangularNode
       return name;
    }
 
-   public Object clone()
+   public Object clone() throws CloneNotSupportedException
    {
       StateNode cloned = (StateNode)super.clone();
       cloned.name = (MultiLineString)name.clone();

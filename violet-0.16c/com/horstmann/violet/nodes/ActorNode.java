@@ -120,7 +120,7 @@ public class ActorNode extends RectangularNode
       return name;
    }
 
-   public Object clone()
+   public Object clone() throws CloneNotSupportedException
    {
       ActorNode cloned = (ActorNode) super.clone();
       cloned.name = (MultiLineString) name.clone();

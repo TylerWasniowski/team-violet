@@ -148,5 +148,5 @@ public interface Node extends Serializable, Cloneable, UniquelyIdentifiable
    */
    void removeChild(Node node);
 
-   Object clone();
+   Object clone() throws CloneNotSupportedException;
 }

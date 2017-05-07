@@ -164,7 +164,7 @@ public class ClassNode extends RectangularNode
       return methods;
    }
 
-   public Object clone()
+   public Object clone() throws CloneNotSupportedException
    {
       ClassNode cloned = (ClassNode)super.clone();
       cloned.name = (MultiLineString)name.clone();

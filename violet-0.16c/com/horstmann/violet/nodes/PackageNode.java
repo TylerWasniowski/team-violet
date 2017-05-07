@@ -172,7 +172,7 @@ public class PackageNode extends RectangularNode
       return contents;
    }
 
-   public Object clone()
+   public Object clone() throws CloneNotSupportedException
    {
       PackageNode cloned = (PackageNode)super.clone();
       cloned.contents = (MultiLineString)contents.clone();

@@ -37,7 +37,7 @@ public abstract class AbstractEdge extends AbstractUniquelyIdentifiable implemen
 {
    private static final long serialVersionUID = 9000165480500528416L;
 
-   public Object clone()
+   public Object clone() throws CloneNotSupportedException
    {
       return super.clone();
    }

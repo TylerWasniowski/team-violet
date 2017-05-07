@@ -37,7 +37,7 @@ public abstract class RectangularNode extends AbstractNode
 {
    private static final long serialVersionUID = -4483825085278940812L;
 
-   public Object clone()
+   public Object clone() throws CloneNotSupportedException
    {
       RectangularNode cloned = (RectangularNode)super.clone();
       cloned.bounds = (Rectangle2D)bounds.clone();

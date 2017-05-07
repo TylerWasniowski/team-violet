@@ -192,7 +192,7 @@ public class FieldNode extends RectangularNode
       return boxedValue;
    }
 
-   public Object clone()
+   public Object clone() throws CloneNotSupportedException
    {
       FieldNode cloned = (FieldNode)super.clone();
       cloned.name = (MultiLineString)name.clone();

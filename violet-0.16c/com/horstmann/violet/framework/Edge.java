@@ -79,6 +79,6 @@ public interface Edge extends Serializable, Cloneable, UniquelyIdentifiable
    */
    Rectangle2D getBounds(Graphics2D g2);
 
-   Object clone();
+   Object clone() throws CloneNotSupportedException;
 }
 

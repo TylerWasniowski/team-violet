@@ -101,7 +101,14 @@ public class GraphPanel extends JPanel
                               if (tool instanceof Node)
                               {
                                  Node prototype = (Node) tool;
-                                 Node newNode = (Node) prototype.clone();
+
+                                 Node newNode;
+                                 try {
+                                    newNode = (Node) prototype.clone();
+                                 } catch (CloneNotSupportedException ex) {
+                                    return;
+                                 }
+
                                  boolean added = graph.add(newNode, mousePoint);
                                  if (added)
                                  {
@@ -137,7 +144,14 @@ public class GraphPanel extends JPanel
             else if (tool instanceof Node)
             {
                Node prototype = (Node) tool;
-               Node newNode = (Node) prototype.clone();
+
+               Node newNode;
+               try {
+                  newNode = (Node) prototype.clone();
+               } catch (CloneNotSupportedException ex) {
+                  return;
+               }
+
                boolean added = graph.add(newNode, mousePoint);
                if (added)
                {
@@ -172,7 +186,14 @@ public class GraphPanel extends JPanel
             if (dragMode == DRAG_RUBBERBAND)
             {
                Edge prototype = (Edge) tool;
-               Edge newEdge = (Edge) prototype.clone();
+
+               Edge newEdge;
+               try {
+                  newEdge = (Edge) prototype.clone();
+               } catch (CloneNotSupportedException ex) {
+                  return;
+               }
+
                if (mousePoint.distance(mouseDownPoint) > CONNECT_THRESHOLD
                      && graph.connect(newEdge, mouseDownPoint, mousePoint))
                {

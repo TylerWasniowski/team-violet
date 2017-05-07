@@ -49,9 +49,9 @@ public abstract class AbstractNode extends AbstractUniquelyIdentifiable implemen
       parent = null;
    }
 
-   public Object clone()
+   public Object clone() throws CloneNotSupportedException
    {
-      AbstractNode cloned = (AbstractNode)super.clone();
+      AbstractNode cloned = (AbstractNode) super.clone();
       cloned.children = new ArrayList<>(children.size());
       for (int i = 0; i < children.size(); i++)
       {
