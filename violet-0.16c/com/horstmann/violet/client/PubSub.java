@@ -91,7 +91,7 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
                 if (obj instanceof Command) {
                     Command command = (Command) obj;
                     if (!command.execute(teamDiagram))
-                        System.out.println(command.getClass() + " failed on graph with ID: " + teamDiagram.getGraphID());
+                        System.out.println(command.getClass() + " failed on graph with ID: " + teamDiagram.getClientID());
                     // or command.execute(projectIDToTeamDiagram.get("Project 1"));
 
                     teamDiagram.layout();

@@ -383,7 +383,7 @@ public class GraphPanel extends JPanel
          for (String graphID: ((TeamDiagram) graph).getItemSelectionsMap().keySet()) {
 
             // Draw selections and names for all of the other clients
-            if (!graphID.equals(((TeamDiagram) graph).getGraphID())) {
+            if (!graphID.equals(((TeamDiagram) graph).getClientID())) {
 
                Pair<Color, Set<UniquelyIdentifiable>> colorItemSelectionsPair =
                        ((TeamDiagram) graph).getItemSelectionsMap().get(graphID);
@@ -616,7 +616,7 @@ public class GraphPanel extends JPanel
    private void sendSelectionChangeToServer() {
       if (graph instanceof TeamDiagram) {
          ((TeamDiagram) graph).sendCommandToServer(
-                 new ChangeItemSelectionsCommand(((TeamDiagram) graph).getGraphID(), selectedItems));
+                 new ChangeItemSelectionsCommand(((TeamDiagram) graph).getClientID(), selectedItems));
       }
    }
 

@@ -158,6 +158,6 @@ public interface TeamDiagram extends Closeable, AutoCloseable{
     /**
      * gets the graph id
      */
-    public String getGraphID();
+    public String getClientID();
 
 }

@@ -17,14 +17,14 @@ public interface UniquelyIdentifiable extends Cloneable, Serializable {
      * Gets the ID of the graph that this object belongs to
      * @return the ID of the graph that this object belongs to
      */
-    String getGraphID();
+    String getClientID();
 
     /**
      * Assigns the graphID of this edge.
      * @param graphID the ID of the graph that this edge belongs to
      */
-    void assignGraphID(String graphID);
+    void assignClientID(String graphID);
 
-    Object clone();
+    Object clone() throws CloneNotSupportedException;
 
 }

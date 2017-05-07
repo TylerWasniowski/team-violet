@@ -20,7 +20,7 @@ public abstract class AbstractUniquelyIdentifiable implements UniquelyIdentifiab
 
     public AbstractUniquelyIdentifiable() {
         incrementCountInMap();
-        assignGraphID("");
+        assignClientID("");
     }
 
     /**
@@ -55,11 +55,11 @@ public abstract class AbstractUniquelyIdentifiable implements UniquelyIdentifiab
     }
 
     @Override
-    public Object clone() {
+    public Object clone() throws CloneNotSupportedException {
         try {
             AbstractUniquelyIdentifiable cloned = (AbstractUniquelyIdentifiable) super.clone();
             incrementCountInMap();
-            cloned.assignGraphID(this.graphID);
+            cloned.assignClientID(this.graphID);
             return cloned;
         } catch (CloneNotSupportedException ex) {
             ex.printStackTrace();
@@ -73,12 +73,12 @@ public abstract class AbstractUniquelyIdentifiable implements UniquelyIdentifiab
     }
 
     @Override
-    public String getGraphID() {
+    public String getClientID() {
         return this.graphID;
     }
 
     @Override
-    public void assignGraphID(String graphID) {
+    public void assignClientID(String graphID) {
         if (graphID == null)
             this.graphID = "";
         else

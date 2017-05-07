@@ -3,16 +3,11 @@ package com.horstmann.violet.graphs;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.io.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.horstmann.violet.client.PubSub;
 import com.horstmann.violet.commands.*;
-import com.horstmann.violet.client.Publisher;
-import com.horstmann.violet.client.Subscriber;
 import com.horstmann.violet.commands.AddNodeCommand;
 import com.horstmann.violet.framework.Edge;
 import com.horstmann.violet.framework.Node;
@@ -51,7 +46,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
     // Commands to both send and execute
     @Override
     public boolean add(Node n, Point2D p) {
-        n.assignGraphID(id);
+        n.assignClientID(id);
         if (super.add(n, p)) {
             sendCommandToServer(new AddNodeCommand(n, p));
             return true;
@@ -68,7 +63,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
 
     @Override
     public boolean connect(Edge e, Point2D p1, Point2D p2) {
-        e.assignGraphID(id);
+        e.assignClientID(id);
         if (super.connect(e, p1, p2)) {
             sendCommandToServer(new ConnectEdgeCommand(e, p1, p2));
             return true;
@@ -169,7 +164,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
     }
 
     @Override
-    public String getGraphID() {
+    public String getClientID() {
         return id;
     }
 }
