@@ -445,8 +445,8 @@ public class GraphPanel extends JPanel
             int stringY = (int) Math.max(line.getY1(), line.getY2()) + fontMetrics.getHeight();
             g2.drawString(nameOfSelector, stringX, stringY);
          }
-         g2.setColor(oldColor);
       }
+      g2.setColor(oldColor);
    }
 
    /**
