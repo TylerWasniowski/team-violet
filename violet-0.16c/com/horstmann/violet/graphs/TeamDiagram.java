@@ -10,6 +10,7 @@ import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * All diagrams should implement this interface if they are to be synced with other clients.
@@ -55,7 +56,7 @@ public interface TeamDiagram {
      * Gets the map of graphIDs mapped to the items that graph has selected.
      * @return
      */
-    public Map<String, Pair<Color, Set<UniquelyIdentifiable>>> getItemSelectionsMap();
+    public ConcurrentHashMap<String, Pair<Color, Set<UniquelyIdentifiable>>> getItemSelectionsMap();
 
     /**
      * Maps the given graphID to the given set of items that graph is selecting.
@@ -68,11 +69,14 @@ public interface TeamDiagram {
             // Given graphID has a color assigned to it, don't change it
             getItemSelectionsMap().put(graphID, new Pair<>(colorItemSelectionsPair.getKey(), selectedItems));
         } else {
-            // This graphID has not given a color to the given graphID yet, make one
+            synchronized (getItemSelectionsMap()) {
+                System.out.println((((float) getItemSelectionsMap().size() % 8) / 8f));
+                // This graphID has not given a color to the given graphID yet, make one
                 // Use the number of graphIDs in the map as the seed for the hue
-            Color color = Color.getHSBColor((float) getItemSelectionsMap().size() / 30,
-                    0.8f + (float) Math.random() * 0.20f, 0.45f + (float) Math.random() * 0.10f);
-            getItemSelectionsMap().put(graphID, new Pair<>(color, selectedItems));
+                Color color = Color.getHSBColor((((float) getItemSelectionsMap().size() % 9) / 8f),
+                        0.8f + (float) Math.random() * 0.20f, 0.45f + (float) Math.random() * 0.30f);
+                getItemSelectionsMap().put(graphID, new Pair<>(color, selectedItems));
+            }
         }
     }
 

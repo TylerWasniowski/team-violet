@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.horstmann.violet.commands.*;
 import com.horstmann.violet.client.Publisher;
@@ -36,7 +37,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
     private transient Subscriber subscriber;
 
     // A map connecting graphIDs to the items that the graph is selecting
-    private Map<String, Pair<Color, Set<UniquelyIdentifiable>>> graphIDsToItemSelections;
+    private ConcurrentHashMap<String, Pair<Color, Set<UniquelyIdentifiable>>> graphIDsToItemSelections;
 
     public TeamSequenceDiagramGraph() throws JMSException {
         super();
@@ -62,7 +63,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
             throw ex;
         }
 
-        graphIDsToItemSelections = new HashMap<>();
+        graphIDsToItemSelections = new ConcurrentHashMap<>();
 
     }
 
@@ -176,7 +177,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
     }
 
     @Override
-    public Map<String, Pair<Color, Set<UniquelyIdentifiable>>> getItemSelectionsMap() {
+    public ConcurrentHashMap<String, Pair<Color, Set<UniquelyIdentifiable>>> getItemSelectionsMap() {
         return graphIDsToItemSelections;
     }
 
