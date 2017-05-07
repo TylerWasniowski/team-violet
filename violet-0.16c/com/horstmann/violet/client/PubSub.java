@@ -3,12 +3,7 @@ package com.horstmann.violet.client;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 import java.util.Set;
-import javax.jms.Connection;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
@@ -16,20 +11,22 @@ import javax.jms.MessageListener;
 import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
 import javax.jms.Session;
-import javax.jms.Topic;
 import javax.swing.*;
 
 import com.horstmann.violet.graphs.TeamDiagram;
+import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.advisory.DestinationSource;
 import org.apache.activemq.command.ActiveMQObjectMessage;
 import com.horstmann.violet.commands.Command;
+import org.apache.activemq.command.ActiveMQTopic;
 
 public class PubSub implements MessageListener, Closeable, AutoCloseable {
     private static final String BROKER_HOST = "tcp://35.185.243.162:%d";
     private static final int BROKER_PORT = 61616;
     private static final String BROKER_URL = String.format(BROKER_HOST, BROKER_PORT);
     private static final Boolean NON_TRANSACTED = false;
-    private Connection connection;
+    private ActiveMQConnection connection;
     private Session session;
     private MessageConsumer messageConsumer;
     private MessageProducer messageProducer;
@@ -47,12 +44,22 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
         try {
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", BROKER_URL);
             connectionFactory.setTrustAllPackages(true);
-            connection = connectionFactory.createConnection();
+            connection = (ActiveMQConnection) connectionFactory.createConnection();
             connection.start();
             session = connection.createSession(NON_TRANSACTED, Session.AUTO_ACKNOWLEDGE);
+
+            DestinationSource destinationSource = connection.getDestinationSource();
+            Set<ActiveMQTopic> topics = destinationSource.getTopics();
+            System.out.println(topics);
+            System.out.println();
+
             messageConsumer = session.createConsumer(session.createTopic("VIOLET.TOPIC"));
             messageProducer = session.createProducer(session.createTopic("VIOLET.TOPIC"));
             messageConsumer.setMessageListener(this);
+
+            topics = destinationSource.getTopics();
+            System.out.println(topics);
+            System.out.println();
 
             return connection.getClientID();
         } catch (JMSException e) {
