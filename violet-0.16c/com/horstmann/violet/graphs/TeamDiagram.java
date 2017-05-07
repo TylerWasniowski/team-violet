@@ -7,6 +7,7 @@ import javafx.util.Pair;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.io.Closeable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -15,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * All diagrams should implement this interface if they are to be synced with other clients.
  */
-public interface TeamDiagram {
+public interface TeamDiagram extends Closeable, AutoCloseable{
 
     /**
      * Sends a command to a server.
@@ -70,11 +71,9 @@ public interface TeamDiagram {
             getItemSelectionsMap().put(graphID, new Pair<>(colorItemSelectionsPair.getKey(), selectedItems));
         } else {
             synchronized (getItemSelectionsMap()) {
-                System.out.println((((float) getItemSelectionsMap().size() % 8) / 8f));
                 // This graphID has not given a color to the given graphID yet, make one
                 // Use the number of graphIDs in the map as the seed for the hue
-                Color color = Color.getHSBColor((((float) getItemSelectionsMap().size() % 9) / 8f),
-                        0.8f + (float) Math.random() * 0.20f, 0.45f + (float) Math.random() * 0.30f);
+                Color color = Color.getHSBColor((((float) getItemSelectionsMap().size() % 9) / 8f), 1f, 0.55f);
                 getItemSelectionsMap().put(graphID, new Pair<>(color, selectedItems));
             }
         }
@@ -160,10 +159,5 @@ public interface TeamDiagram {
      * gets the graph id
      */
     public String getGraphID();
-
-    /**
-     * gets the host name
-     */
-    public String getHostname();
 
 }

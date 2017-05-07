@@ -1,5 +1,7 @@
 package com.horstmann.violet.client;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -15,104 +17,103 @@ import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
 import javax.jms.Session;
 import javax.jms.Topic;
+import javax.swing.*;
 
 import com.horstmann.violet.graphs.TeamDiagram;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQObjectMessage;
 import com.horstmann.violet.commands.Command;
 
-public class PubSub {
+public class PubSub implements MessageListener, Closeable, AutoCloseable {
     private static final String BROKER_HOST = "tcp://35.185.243.162:%d";
-    private static final int BROKER_PORT = 61616; 
-    private static final String BROKER_URL = String.format(BROKER_HOST, BROKER_PORT); 
+    private static final int BROKER_PORT = 61616;
+    private static final String BROKER_URL = String.format(BROKER_HOST, BROKER_PORT);
     private static final Boolean NON_TRANSACTED = false;
     private Connection connection;
     private Session session;
-    private MessageProducer messageProducer;
     private MessageConsumer messageConsumer;
-    public static Queue<ActiveMQObjectMessage> recievedMsgs = new LinkedList<>();
-    private static TeamDiagram teamDiagram;
+    private MessageProducer messageProducer;
+    private TeamDiagram teamDiagram;
 
     public PubSub(TeamDiagram teamDiagram) {
         this.teamDiagram = teamDiagram;
     }
-    
-    public void start() throws JMSException {
+
+    /**
+     * Starts the server and returns the unique client ID.
+     * @return a unique client ID
+     */
+    public String start() {
         try {
-            if(session != null) {
-                ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", BROKER_URL);
-                connectionFactory.setTrustAllPackages(true);
-                connection = connectionFactory.createConnection();
-                connection.start();
-                session = connection.createSession(NON_TRANSACTED, Session.AUTO_ACKNOWLEDGE);
-                messageConsumer.setMessageListener(new TeamVioletMessageListener());
-            }
-            Topic topic = session.createTopic("VIOLET.TOPIC"); 
-            messageProducer = session.createProducer(topic);
+            ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", BROKER_URL);
+            connectionFactory.setTrustAllPackages(true);
+            connection = connectionFactory.createConnection();
+            connection.start();
+            session = connection.createSession(NON_TRANSACTED, Session.AUTO_ACKNOWLEDGE);
+            messageConsumer = session.createConsumer(session.createTopic("VIOLET.TOPIC"));
+            messageProducer = session.createProducer(session.createTopic("VIOLET.TOPIC"));
+            messageConsumer.setMessageListener(this);
+
+            return connection.getClientID();
         } catch (JMSException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    private static class TeamVioletMessageListener implements MessageListener {
-        @Override
-        public void onMessage(Message message) {
-            synchronized (this) {
-                try {
-                    Serializable obj;
-                    ActiveMQObjectMessage mq = (ActiveMQObjectMessage) message;
-                    obj = mq.getObject();
-                    if (obj instanceof Command) {
-                        recievedMsgs.add(mq);
-                        Command command = (Command) obj;
-                        if (!command.execute(teamDiagram))
-                            System.out.println(command.getClass() + " failed");
+            try {
+                teamDiagram.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } finally {
+                teamDiagram = null;
+            }
 
-                        teamDiagram.layout();
-                        if (teamDiagram.getJPanel() != null) {
-                            teamDiagram.getJPanel().revalidate();
-                            teamDiagram.getJPanel().repaint();
-                        }
+            JOptionPane jOptionPane = new JOptionPane("Could not start connection with ActiveMQ." +
+                    " Is ActiveMQ running on the server?", JOptionPane.WARNING_MESSAGE);
+            JDialog jDialog = jOptionPane.createDialog("Error");
+            jDialog.setAlwaysOnTop(true);
+            jDialog.setVisible(true);
+        }
+
+        return null;
+    }
+
+    @Override
+    public void onMessage(Message message) {
+        synchronized (this) {
+            try {
+                Serializable obj;
+                ActiveMQObjectMessage mq = (ActiveMQObjectMessage) message;
+                obj = mq.getObject();
+                if (obj instanceof Command) {
+                    Command command = (Command) obj;
+                    if (!command.execute(teamDiagram))
+                        System.out.println(command.getClass() + " failed on graph with ID: " + teamDiagram.getGraphID());
+                    // or command.execute(projectIDToTeamDiagram.get("Project 1"));
+
+                    teamDiagram.layout();
+                    if (teamDiagram.getJPanel() != null) {
+                        teamDiagram.getJPanel().revalidate();
+                        teamDiagram.getJPanel().repaint();
                     }
-                } catch (JMSException e) {
-                    e.printStackTrace();
                 }
+            } catch (JMSException e) {
+                e.printStackTrace();
             }
         }
     }
 
-    public synchronized List<Command> receiveCommands() throws Exception {
-        List<Command> lst = new ArrayList<>();
-        Serializable obj;
-        if(!recievedMsgs.isEmpty()) {
-            ActiveMQObjectMessage mq = recievedMsgs.poll();
-            obj = mq.getObject();
-            if (obj instanceof Command) {
-                lst.add((Command) obj);
-            } else {
-                throw new Exception("Unknown Message");
-            }
-        }
-        return lst;
-    }
-    
     public void sendCommand(Command command) throws JMSException, InterruptedException {
         ObjectMessage msg = session.createObjectMessage();
         msg.setObject(command);
-        messageProducer.send(msg); 
+        messageProducer.send(msg);
     }
-    
-    public Set getAavilableTopics() {
-        return null;
-    }
-    
-    public void closePubSubConnection() {
+
+    public void close() {
         if (connection != null) {
-            try { 
-                connection.close(); 
-            } catch (JMSException e) { 
-                System.out.println("Could not close an open PubSub connection..."); 
+            try {
+                connection.close();
+            } catch (JMSException e) {
+                e.printStackTrace();
             }
         }
+
+        connection = null;
     }
 }

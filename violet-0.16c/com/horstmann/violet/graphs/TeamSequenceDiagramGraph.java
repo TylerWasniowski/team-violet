@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.horstmann.violet.client.PubSub;
 import com.horstmann.violet.commands.*;
 import com.horstmann.violet.client.Publisher;
 import com.horstmann.violet.client.Subscriber;
@@ -23,18 +24,15 @@ import javax.jms.JMSException;
 /**
  * A SequenceDiagram that stays synced with other clients connected to the same project.
  */
-public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements TeamDiagram, AutoCloseable, Closeable {
+public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements TeamDiagram {
 
     private static final long serialVersionUID = -9088160815514315525L;
 
     // A unique id for this graph, used when figuring out what graph added what object to the synced diagram
     private String id;
-    // A more readable ID for humans to see
-    private String hostname;
 
-    // The objects that communicate with the server.
-    private transient Publisher publisher;
-    private transient Subscriber subscriber;
+    // The object that communicate with the server.
+    private transient PubSub connectionToServer;
 
     // A map connecting graphIDs to the items that the graph is selecting
     private ConcurrentHashMap<String, Pair<Color, Set<UniquelyIdentifiable>>> graphIDsToItemSelections;
@@ -42,26 +40,9 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
     public TeamSequenceDiagramGraph() throws JMSException {
         super();
 
-        id = UUID.randomUUID().toString();
+        connectionToServer = new PubSub(this);
 
-        // The name of the computer running this instance of violet
-        try {
-            hostname = InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException e) {
-            hostname = id;
-        }
-
-        publisher = new Publisher();
-        subscriber = new Subscriber(this);
-
-        try {
-            publisher.start();
-            subscriber.start();
-        } catch (JMSException ex) {
-            publisher.closePublisherConnection();
-            subscriber.closeSubscriberConnection();
-            throw ex;
-        }
+        id = connectionToServer.start();
 
         graphIDsToItemSelections = new ConcurrentHashMap<>();
 
@@ -110,7 +91,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
     @Override
     public boolean sendCommandToServer(Command command) {
         try {
-            publisher.sendCommand(command);
+            connectionToServer.sendCommand(command);
         } catch (InterruptedException|JMSException ex) {
             ex.printStackTrace();
             return false;
@@ -183,14 +164,8 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
 
     @Override
     public void close() {
-        sendCommandToServer(new ChangeItemSelectionsCommand(id, new HashSet<>()));
-        publisher.closePublisherConnection();
-        subscriber.closeSubscriberConnection();
-    }
-
-    @Override
-    public String getHostname() {
-        return hostname;
+        connectionToServer.close();
+        connectionToServer = null;
     }
 
     @Override
