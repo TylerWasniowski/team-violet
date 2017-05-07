@@ -50,7 +50,7 @@ public class Subscriber implements MessageListener {
                 if (obj instanceof Command) {
                     Command command = (Command) obj;
                     if (!command.execute(teamDiagram))
-                        System.out.println(command.getClass() + " failed");
+                        System.out.println(command.getClass() + " failed on graph with ID: " + teamDiagram.getGraphID());
                     // or command.execute(projectIDToTeamDiagram.get("Project 1"));
 
                     teamDiagram.layout();

@@ -22,13 +22,11 @@ package com.horstmann.violet.framework;
 
 import com.horstmann.violet.commands.ChangePropertyCommand;
 import com.horstmann.violet.commands.MoveNodeCommand;
-import com.horstmann.violet.commands.GrabberNodeCommand;
+import com.horstmann.violet.commands.ChangeItemSelectionsCommand;
 import com.horstmann.violet.graphs.TeamDiagram;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import javafx.util.Pair;
+
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,12 +41,8 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.beans.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 
 /**
  * A panel to draw a graph
@@ -70,7 +64,7 @@ public class GraphPanel extends JPanel
       toolBar = aToolBar;
       setBackground(Color.WHITE);
 
-      selectedItems = new HashSet();
+      selectedItems = new HashSet<>();
       addMouseListener(new MouseAdapter()
       {
          public void mousePressed(MouseEvent event)
@@ -189,7 +183,7 @@ public class GraphPanel extends JPanel
             else if (dragMode == DRAG_MOVE)
             {
                if (graph instanceof TeamDiagram) {
-                  for (Object selectedItem: selectedItems) {
+                  selectedItems.forEach((Object selectedItem) -> {
                      if (selectedItem instanceof Node) {
                         Node selectedNode = (Node) selectedItem;
 
@@ -199,7 +193,7 @@ public class GraphPanel extends JPanel
                         ((TeamDiagram) graph).sendCommandToServer(
                                 new MoveNodeCommand(((Node) selectedItem).getID(), new Point2D.Double(newX, newY)));
                      }
-                  }
+                  });
                }
 
                graph.layout();
@@ -291,7 +285,7 @@ public class GraphPanel extends JPanel
     */
    public void editSelected()
    {
-      Object edited;
+      UniquelyIdentifiable edited;
       if (lastSelected == null)
       {
          if (selectedItems.size() == 1)
@@ -312,7 +306,7 @@ public class GraphPanel extends JPanel
                     && event instanceof PropertyChangeEvent) {
                 ((TeamDiagram) graph).sendCommandToServer(
                         new ChangePropertyCommand(
-                                ((UniquelyIdentifiable) edited).getID(),
+                                edited.getID(),
                                 ((PropertyChangeEvent) event).getPropertyName(),
                                 ((PropertyEditor) event.getSource()).getValue()
                         )
@@ -375,55 +369,29 @@ public class GraphPanel extends JPanel
             Math.max(bounds.getMaxX() / zoom, graphBounds.getMaxX()), 
             Math.max(bounds.getMaxY() / zoom, graphBounds.getMaxY())));
       graph.draw(g2, grid);
-      
-      Map<String, Node> connectedNodes = graph.getConnectedClientsToNode();
 
-      if(!connectedNodes.isEmpty()) {
-          for (String graphID: connectedNodes.keySet()) {
-              if(!graphID.equals(((TeamDiagram) graph).getGraphId())) {
-                  Rectangle2D grabberBounds = ((Node) connectedNodes.get(graphID)).getBounds();
-                  drawGrabber(g2, grabberBounds.getMinX(), grabberBounds.getMinY());
-                  drawGrabber(g2, grabberBounds.getMinX(), grabberBounds.getMaxY());
-                  drawGrabber(g2, grabberBounds.getMaxX(), grabberBounds.getMinY());
-                  drawGrabber(g2, grabberBounds.getMaxX(), grabberBounds.getMaxY());
-                  //g2.drawString(graphID, (int) grabberBounds.getMaxX() +10, (int) grabberBounds.getMinY() +10);
-                  g2.drawString(((TeamDiagram) graph).getHostname(),(int) grabberBounds.getMaxX() +10,
-                          (int) grabberBounds.getMinY() +10);
-              }
-          }
-          //connectedNodes.clear();
-      }
+      selectedItems.stream()
+              .filter((UniquelyIdentifiable selectedItem) ->
+                      (!graph.getNodes().contains(selectedItem)
+                              && !graph.getEdges().contains(selectedItem)))
+              .forEach(this::removeSelectedItem);
 
-      Iterator iter = selectedItems.iterator();
-      Set toBeRemoved = new HashSet();
-      while (iter.hasNext())
-      {
-         Object selected = iter.next();                 
-      
-         if (!graph.getNodes().contains(selected)
-               && !graph.getEdges().contains(selected)) 
-         {
-            toBeRemoved.add(selected);
-         }
-         else if (selected instanceof Node)
-         {
-            Rectangle2D grabberBounds = ((Node) selected).getBounds();
-            drawGrabber(g2, grabberBounds.getMinX(), grabberBounds.getMinY());
-            drawGrabber(g2, grabberBounds.getMinX(), grabberBounds.getMaxY());
-            drawGrabber(g2, grabberBounds.getMaxX(), grabberBounds.getMinY());
-            drawGrabber(g2, grabberBounds.getMaxX(), grabberBounds.getMaxY());
-         }
-         else if (selected instanceof Edge)
-         {
-            Line2D line = ((Edge) selected).getConnectionPoints();
-            drawGrabber(g2, line.getX1(), line.getY1());
-            drawGrabber(g2, line.getX2(), line.getY2());
+      drawItemSelections(g2, selectedItems);
+
+      // Draw selections of all of the other clients
+      if (graph instanceof TeamDiagram) {
+         for (String graphID: ((TeamDiagram) graph).getItemSelectionsMap().keySet()) {
+
+            // Draw selections and names for all of the other clients
+            if (!graphID.equals(((TeamDiagram) graph).getGraphID())) {
+
+               Pair<Color, Set<UniquelyIdentifiable>> colorItemSelectionsPair =
+                       ((TeamDiagram) graph).getItemSelectionsMap().get(graphID);
+               drawItemSelections(g2, colorItemSelectionsPair.getValue(), colorItemSelectionsPair.getKey(), graphID);
+            }
+
          }
       }
-
-      iter = toBeRemoved.iterator();
-      while (iter.hasNext())      
-         removeSelectedItem(iter.next());                 
       
       if (dragMode == DRAG_RUBBERBAND)
       {
@@ -447,17 +415,63 @@ public class GraphPanel extends JPanel
       }      
    }
 
+   private static void drawItemSelections(Graphics2D g2, Set<UniquelyIdentifiable> selectedItems) {
+      drawItemSelections(g2, selectedItems, PURPLE, "You");
+   }
+
+   private static void drawItemSelections(Graphics2D g2, Set<UniquelyIdentifiable> selectedItems, Color color, String nameOfSelector) {
+
+      FontMetrics fontMetrics = g2.getFontMetrics();
+
+      Color oldColor = g2.getColor();
+      g2.setColor(color);
+      for (UniquelyIdentifiable selectedItem: selectedItems) {
+         if (selectedItem instanceof Node) {
+            Rectangle2D grabberBounds = ((Node) selectedItem).getBounds();
+            drawFilledSquare(g2, grabberBounds.getMinX(), grabberBounds.getMinY(), color);
+            drawFilledSquare(g2, grabberBounds.getMinX(), grabberBounds.getMaxY(), color);
+            drawFilledSquare(g2, grabberBounds.getMaxX(), grabberBounds.getMinY(), color);
+            drawFilledSquare(g2, grabberBounds.getMaxX(), grabberBounds.getMaxY(), color);
+
+            int stringX = (int) (grabberBounds.getX() + (grabberBounds.getWidth() - fontMetrics.stringWidth(nameOfSelector))/2);
+            int stringY = (int) grabberBounds.getMaxY() + fontMetrics.getHeight();
+            g2.drawString(nameOfSelector, stringX, stringY);
+         } else if (selectedItem instanceof Edge) {
+            Line2D line = ((Edge) selectedItem).getConnectionPoints();
+            drawFilledSquare(g2, line.getX1(), line.getY1(), color);
+            drawFilledSquare(g2, line.getX2(), line.getY2(), color);
+
+            int stringX = (int) (line.getX1() + ((line.getX2() - line.getX1()) - fontMetrics.stringWidth(nameOfSelector))/2);
+            int stringY = (int) Math.max(line.getY1(), line.getY2()) + fontMetrics.getHeight();
+            g2.drawString(nameOfSelector, stringX, stringY);
+         }
+         g2.setColor(oldColor);
+      }
+   }
+
    /**
-    * Draws a single "grabber", a filled square
+    * Draws a single "grabber", a filled square in purple.
     * @param g2 the graphics context
     * @param x the x coordinate of the center of the grabber
     * @param y the y coordinate of the center of the grabber
     */
-   public static void drawGrabber(Graphics2D g2, double x, double y)
+   public static void drawFilledSquare(Graphics2D g2, double x, double y)
+   {
+      drawFilledSquare(g2, x, y, PURPLE);
+   }
+
+   /**
+    * Draws a single "grabber", a filled square with the given color.
+    * @param g2 the graphics context
+    * @param color the color fo the filled square
+    * @param x the x coordinate of the center of the grabber
+    * @param y the y coordinate of the center of the grabber
+    */
+   private static void drawFilledSquare(Graphics2D g2,double x, double y, Color color)
    {
       final int SIZE = 5;
       Color oldColor = g2.getColor();
-      g2.setColor(PURPLE);
+      g2.setColor(color);
       g2.fill(new Rectangle2D.Double(x - SIZE / 2, y - SIZE / 2, SIZE, SIZE));
       g2.setColor(oldColor);
    }
@@ -508,48 +522,45 @@ public class GraphPanel extends JPanel
 
    public void selectNext(int n)
    {
-      ArrayList selectables = new ArrayList();
+      List<UniquelyIdentifiable> selectables = new ArrayList<>();
       selectables.addAll(graph.getNodes());
       selectables.addAll(graph.getEdges());
       if (selectables.size() == 0) return;
-      java.util.Collections.sort(selectables, new java.util.Comparator()
+      java.util.Collections.sort(selectables, (UniquelyIdentifiable item, UniquelyIdentifiable otherItem) ->
       {
-         public int compare(Object obj1, Object obj2)
+         double x1;
+         double y1;
+         if (item instanceof Node)
          {
-            double x1;
-            double y1;
-            if (obj1 instanceof Node)
-            {
-               Rectangle2D bounds = ((Node) obj1).getBounds();
-               x1 = bounds.getX();
-               y1 = bounds.getY();
-            }
-            else
-            {
-               Point2D start = ((Edge) obj1).getConnectionPoints().getP1();
-               x1 = start.getX();
-               y1 = start.getY();
-            }
-            double x2;
-            double y2;
-            if (obj2 instanceof Node)
-            {
-               Rectangle2D bounds = ((Node) obj2).getBounds();
-               x2 = bounds.getX();
-               y2 = bounds.getY();
-            }
-            else
-            {
-               Point2D start = ((Edge) obj2).getConnectionPoints().getP1();
-               x2 = start.getX();
-               y2 = start.getY();
-            }
-            if (y1 < y2) return -1;
-            if (y1 > y2) return 1;
-            if (x1 < x2) return -1;
-            if (x1 > x2) return 1;
-            return 0;
+            Rectangle2D bounds = ((Node) item).getBounds();
+            x1 = bounds.getX();
+            y1 = bounds.getY();
          }
+         else
+         {
+            Point2D start = ((Edge) item).getConnectionPoints().getP1();
+            x1 = start.getX();
+            y1 = start.getY();
+         }
+         double x2;
+         double y2;
+         if (otherItem instanceof Node)
+         {
+            Rectangle2D bounds = ((Node) otherItem).getBounds();
+            x2 = bounds.getX();
+            y2 = bounds.getY();
+         }
+         else
+         {
+            Point2D start = ((Edge) otherItem).getConnectionPoints().getP1();
+            x2 = start.getX();
+            y2 = start.getY();
+         }
+         if (y1 < y2) return -1;
+         if (y1 > y2) return 1;
+         if (x1 < x2) return -1;
+         if (x1 > x2) return 1;
+         return 0;
       });
       int index;
       if (lastSelected == null) index = 0;
@@ -602,36 +613,39 @@ public class GraphPanel extends JPanel
       }
    }
 
-   private void addSelectedItem(Object obj)
+   private void sendSelectionChangeToServer() {
+      if (graph instanceof TeamDiagram) {
+         ((TeamDiagram) graph).sendCommandToServer(
+                 new ChangeItemSelectionsCommand(((TeamDiagram) graph).getGraphID(), selectedItems));
+      }
+   }
+
+   private void addSelectedItem(UniquelyIdentifiable item)
    {
-      lastSelected = obj;      
-      selectedItems.add(obj);
+      lastSelected = item;
+      if (item != null) selectedItems.add(item);
+
+      sendSelectionChangeToServer();
    }
    
-   private void removeSelectedItem(Object obj)
+   private void removeSelectedItem(UniquelyIdentifiable item)
    {
-      if (obj == lastSelected)
+      if (item == lastSelected)
          lastSelected = null;
-      selectedItems.remove(obj);
+      selectedItems.remove(item);
+
+      sendSelectionChangeToServer();
    }
    
-   private void setSelectedItem(Object obj)
+   private void setSelectedItem(UniquelyIdentifiable item)
    {
-       if (graph instanceof TeamDiagram) {
-           if (!obj.equals(lastSelected))
-               ((TeamDiagram) graph).sendCommandToServer(
-                       new GrabberNodeCommand(((TeamDiagram) graph).getGraphId(),
-                               ((UniquelyIdentifiable) obj).getID()));
-       }
       selectedItems.clear();
-      lastSelected = obj;
-      if (obj != null) selectedItems.add(obj);
+      addSelectedItem(item);
    }
-   
+
    private void clearSelection()
    {
-      selectedItems.clear();
-      lastSelected = null;
+      setSelectedItem(null);
    }
    
    /**
@@ -663,8 +677,9 @@ public class GraphPanel extends JPanel
    private boolean hideGrid;
    private boolean modified;
 
-   private Object lastSelected;
-   private Set selectedItems;
+   private UniquelyIdentifiable lastSelected;
+   private Set<UniquelyIdentifiable> selectedItems;
+   private Map<String, Set<UniquelyIdentifiable>> graphIDToSelectedItems;
 
    private Point2D lastMousePoint;
    private Point2D mouseDownPoint;

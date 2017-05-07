@@ -72,10 +72,10 @@ public class ToolBar extends JPanel
                int x, int y)
             {
                Graphics2D g2 = (Graphics2D)g;
-               GraphPanel.drawGrabber(g2, x + OFFSET, y + OFFSET);
-               GraphPanel.drawGrabber(g2, x + OFFSET, y + BUTTON_SIZE - OFFSET);
-               GraphPanel.drawGrabber(g2, x + BUTTON_SIZE - OFFSET, y + OFFSET);
-               GraphPanel.drawGrabber(g2, x + BUTTON_SIZE - OFFSET, y + BUTTON_SIZE - OFFSET);
+               GraphPanel.drawFilledSquare(g2, x + OFFSET, y + OFFSET);
+               GraphPanel.drawFilledSquare(g2, x + OFFSET, y + BUTTON_SIZE - OFFSET);
+               GraphPanel.drawFilledSquare(g2, x + BUTTON_SIZE - OFFSET, y + OFFSET);
+               GraphPanel.drawFilledSquare(g2, x + BUTTON_SIZE - OFFSET, y + BUTTON_SIZE - OFFSET);
             }
          };
       final JToggleButton button = new JToggleButton(icon);

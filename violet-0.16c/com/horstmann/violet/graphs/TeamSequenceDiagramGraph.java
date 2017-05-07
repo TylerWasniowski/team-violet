@@ -1,5 +1,6 @@
 package com.horstmann.violet.graphs;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.*;
@@ -13,6 +14,8 @@ import com.horstmann.violet.client.Subscriber;
 import com.horstmann.violet.commands.AddNodeCommand;
 import com.horstmann.violet.framework.Edge;
 import com.horstmann.violet.framework.Node;
+import com.horstmann.violet.framework.UniquelyIdentifiable;
+import javafx.util.Pair;
 
 import javax.jms.JMSException;
 
@@ -25,16 +28,22 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
 
     // A unique id for this graph, used when figuring out what graph added what object to the synced diagram
     private String id;
+    // A more readable ID for humans to see
     private String hostname;
 
     // The objects that communicate with the server.
     private transient Publisher publisher;
     private transient Subscriber subscriber;
 
+    // A map connecting graphIDs to the items that the graph is selecting
+    private Map<String, Pair<Color, Set<UniquelyIdentifiable>>> graphIDsToItemSelections;
+
     public TeamSequenceDiagramGraph() throws JMSException {
         super();
 
         id = UUID.randomUUID().toString();
+
+        // The name of the computer running this instance of violet
         try {
             hostname = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
@@ -52,6 +61,8 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
             subscriber.closeSubscriberConnection();
             throw ex;
         }
+
+        graphIDsToItemSelections = new HashMap<>();
 
     }
 
@@ -165,35 +176,24 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
     }
 
     @Override
+    public Map<String, Pair<Color, Set<UniquelyIdentifiable>>> getItemSelectionsMap() {
+        return graphIDsToItemSelections;
+    }
+
+    @Override
     public void close() {
+        sendCommandToServer(new ChangeItemSelectionsCommand(id, new HashSet<>()));
         publisher.closePublisherConnection();
         subscriber.closeSubscriberConnection();
     }
 
-    /**
-     * gets the hostname.
-     */
     @Override
     public String getHostname() {
         return hostname;
     }
 
-    /**
-     * Adds to map that the graph id and node key value.
-     * @param gId graph id
-     * @param n the node from the graph
-     * @return true if key is added and then found to be contained, false otherwise
-     */
     @Override
-    public boolean addToConnectedClientsMap(String clientGraphId, Node node) {
-        return super.addToConnectedClientsToNode(clientGraphId, node);
-    }
-
-    /**
-     * gets the graph id.
-     */
-    @Override
-    public String getGraphId() {
+    public String getGraphID() {
         return id;
     }
 }

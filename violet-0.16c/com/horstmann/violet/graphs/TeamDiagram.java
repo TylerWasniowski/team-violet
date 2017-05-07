@@ -1,12 +1,15 @@
 package com.horstmann.violet.graphs;
 
 import com.horstmann.violet.commands.Command;
-import com.horstmann.violet.framework.Edge;
-import com.horstmann.violet.framework.GraphPanel;
-import com.horstmann.violet.framework.Node;
+import com.horstmann.violet.framework.*;
+import javafx.util.Pair;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * All diagrams should implement this interface if they are to be synced with other clients.
@@ -21,6 +24,20 @@ public interface TeamDiagram {
     public boolean sendCommandToServer(Command command);
 
     /**
+     * Finds the item with the given ID.
+     * @param idOfItemToFind the id of the item to find
+     * @return the item with the given ID or null if item not found
+     */
+    public default UniquelyIdentifiable findItemFromID(String idOfItemToFind) {
+        Node nodeWithGivenID = findNodeFromID(idOfItemToFind);
+
+        if (nodeWithGivenID != null)
+            return nodeWithGivenID;
+        else
+            return findEdgeFromID(idOfItemToFind);
+    }
+
+    /**
      * Finds the node with the given ID.
      * @param idOfNodeToFind the id of the node to find
      * @return the node with the given ID, or null if no such edge was found
@@ -33,6 +50,31 @@ public interface TeamDiagram {
      * @return the edge with the given ID, or null if no such edge was found
      */
     public Edge findEdgeFromID(String idOfEdgeToFind);
+
+    /**
+     * Gets the map of graphIDs mapped to the items that graph has selected.
+     * @return
+     */
+    public Map<String, Pair<Color, Set<UniquelyIdentifiable>>> getItemSelectionsMap();
+
+    /**
+     * Maps the given graphID to the given set of items that graph is selecting.
+     * @param graphID the ID of the graph selecting the given items
+     * @param selectedItems the items the graph with the given graphID is selecting
+     */
+    public default void putItemSelections(String graphID, Set<UniquelyIdentifiable> selectedItems) {
+        Pair<Color, Set<UniquelyIdentifiable>> colorItemSelectionsPair = getItemSelectionsMap().get(graphID);
+        if (colorItemSelectionsPair != null) {
+            // Given graphID has a color assigned to it, don't change it
+            getItemSelectionsMap().put(graphID, new Pair<>(colorItemSelectionsPair.getKey(), selectedItems));
+        } else {
+            // This graphID has not given a color to the given graphID yet, make one
+                // Use the number of graphIDs in the map as the seed for the hue
+            Color color = Color.getHSBColor((float) getItemSelectionsMap().size() / 30,
+                    0.8f + (float) Math.random() * 0.2f, 0.45f + (float) Math.random() * 0.55f);
+            getItemSelectionsMap().put(graphID, new Pair<>(color, selectedItems));
+        }
+    }
 
     /**
      * Returns the Panel that is viewing this diagram. This allows the view to be repainted.
@@ -109,19 +151,11 @@ public interface TeamDiagram {
      Causes the layout of the graph to be recomputed.
      */
     public void layout();
-    
-    /**
-     * Adds to map that the graph id and node key value.
-     * @param gId graph id
-     * @param n the node from the graph
-     * @return true if key is added and then found to be contained, false otherwise
-     */
-    public boolean addToConnectedClientsMap(String clientGraphId, Node node);
 
     /**
      * gets the graph id
      */
-    public String getGraphId();
+    public String getGraphID();
 
     /**
      * gets the host name
