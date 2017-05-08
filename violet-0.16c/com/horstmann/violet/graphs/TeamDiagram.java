@@ -55,7 +55,7 @@ public interface TeamDiagram extends Closeable, AutoCloseable{
 
     /**
      * Gets the map of graphIDs mapped to the items that graph has selected.
-     * @return
+     * @return the map of graphIDs mapped to the items that graph has selected
      */
     public ConcurrentHashMap<String, Pair<Color, Set<UniquelyIdentifiable>>> getItemSelectionsMap();
 
@@ -157,6 +157,7 @@ public interface TeamDiagram extends Closeable, AutoCloseable{
 
     /**
      * gets the graph id
+     * @return the graph id
      */
     public String getClientID();
 

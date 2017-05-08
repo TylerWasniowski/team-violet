@@ -38,7 +38,13 @@ public class ClassDiagramGraph extends Graph
 {
 
    private static final long serialVersionUID = 7089103638372475069L;
-
+   /**
+    * Connects an edge between two points
+    * @param e the edge 
+    * @param p1 the start point
+    * @param p2 the end point
+    * @return Whether the edge was connected
+    */
    public boolean connect(Edge e, Point2D p1, Point2D p2)
    {
       Node n1 = findNode(p1);
@@ -46,12 +52,18 @@ public class ClassDiagramGraph extends Graph
       // if (n1 == n2) return false;
       return super.connect(e, p1, p2);
    }
-
+   /**
+    * Gets the Node prototypes for Class Diagrams
+    * @return the node prototypes
+    */
    public Node[] getNodePrototypes()
    {
       return NODE_PROTOTYPES;
    }
-
+   /**
+    * Gets the Edge prototypes for Class Diagrams
+    * @return the edge prototypes
+    */
    public Edge[] getEdgePrototypes()
    {
       return EDGE_PROTOTYPES;

@@ -65,13 +65,14 @@
    
    <target name="all" depends="jar,jnlp,checkstyle" />
 
-      <target name="checkstyle" description="runs checkstyle">
+   <target name="checkstyle" description="runs checkstyle">
       <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
-           classpath="${checkstyle.home}"/>
+         classpath="${checkstyle.home}"/>
       <checkstyle config="${basedir}/checkstyle.xml">
-            <fileset dir="com/horstmann/violet" includes="**/*.java" />
-            <formatter type="plain" />
-        </checkstyle>
+         <fileset dir="com/horstmann/violet" includes="**/*.java" />
+         <formatter type="plain" />
+      </checkstyle>
+      <echo message="Checkstyle completed."/>
    </target>
    
    <target name="clean" depends="init" description="Clean everything.">

@@ -45,7 +45,12 @@ import com.horstmann.violet.nodes.NoteNode;
 public class SequenceDiagramGraph extends Graph
 {
    private static final long serialVersionUID = -3922943337339918566L;
-
+   /**
+    * Adds a node to the Sequence diagram
+    * @param n the node to add
+    * @param p the point location to place the node
+    * @return if the node was added
+    */
    public boolean add(Node n, Point2D p)
    {
       if (n instanceof CallNode) // must be inside an object
@@ -71,14 +76,21 @@ public class SequenceDiagramGraph extends Graph
 
       return true;
    }
-
+   /**
+    * Removes the given edge from the graph
+    * @param e the edge to remove
+    */
    public void removeEdge(Edge e)
    {
       super.removeEdge(e);
       if (e instanceof CallEdge && e.getEnd().getChildren().size() == 0)
          removeNode(e.getEnd());
    }
- 
+   /**
+    * Prepares the graph for display
+    * @param g2 the graphics context
+    * @param grid the grid to layout the nodes and edges on
+    */
    public void layout(Graphics2D g2, Grid grid)
    {
       super.layout(g2, grid);
@@ -177,7 +189,11 @@ public class SequenceDiagramGraph extends Graph
             b.getWidth(), top - b.getY()));         
       }
    }
-
+   /**
+    * Draws the graph
+    * @param g2 the graphics context
+    * @param g the grid
+    */
    public void draw(Graphics2D g2, Grid g)
    {
       layout(g2, g);
@@ -208,12 +224,18 @@ public class SequenceDiagramGraph extends Graph
          }
       }
    }
-
+   /**
+    * Gets the node prototypes for Sequence Diagrams
+    * @return the node prototypes
+    */
    public Node[] getNodePrototypes()
    {
       return NODE_PROTOTYPES;
    }
-
+   /**
+    * Gets the edge prototypes for Sequence Diagrams
+    * @return the edge prototypes
+    */
    public Edge[] getEdgePrototypes()
    {
       return EDGE_PROTOTYPES;

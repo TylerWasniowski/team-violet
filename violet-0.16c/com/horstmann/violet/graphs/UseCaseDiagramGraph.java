@@ -34,12 +34,18 @@ import com.horstmann.violet.nodes.UseCaseNode;
 */
 public class UseCaseDiagramGraph extends Graph
 {
-
+   /**
+    * Gets the node prototypes for Use Case diagrams
+    * @return the node prototypes
+    */
    public Node[] getNodePrototypes()
    {
       return NODE_PROTOTYPES;
    }
-
+   /**
+    * Gets the edge prototypes for Use Case diagrams
+    * @return the edge prototypes
+    */
    public Edge[] getEdgePrototypes()
    {
       return EDGE_PROTOTYPES;

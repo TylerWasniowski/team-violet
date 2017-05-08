@@ -31,7 +31,10 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
 
     // A map connecting graphIDs to the items that the graph is selecting
     private ConcurrentHashMap<String, Pair<Color, Set<UniquelyIdentifiable>>> graphIDsToItemSelections;
-
+    /**
+     * Creates the Team Diagram and starts the connection with the server
+     * @throws JMSException If there are issues connecting to server
+     */
     public TeamSequenceDiagramGraph() throws JMSException {
         super();
 

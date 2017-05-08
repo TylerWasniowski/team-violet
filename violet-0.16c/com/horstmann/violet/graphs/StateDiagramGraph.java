@@ -35,11 +35,18 @@ import com.horstmann.violet.nodes.StateNode;
 */
 public class StateDiagramGraph extends Graph
 {
+   /**
+    * Gets the node prototypes for state diagrams
+    * @return the node prototypes
+    */
    public Node[] getNodePrototypes()
    {
       return NODE_PROTOTYPES;
    }
-
+   /**
+    * Gets the edge prototypes for state diagrams
+    * @return the edge prototypes
+    */
    public Edge[] getEdgePrototypes()
    {
       return EDGE_PROTOTYPES;
