@@ -8,37 +8,18 @@ version.number=0.16c
 jdk.home=/Library/Java/JavaVirtualMachines/jdk1.8.x.jdk/Contents/Home
 javaws.jar=${jdk.home}/jre/lib/javaws.jar
 activemq.jar=lib/apache-activemq-5.14.5/activemq-all-5.14.5.jar
+checkstyle.home=/your/path/to/checkstyle-7.5.1/checkstyle-7.5.1-all.jar
 jnlp.codebase=http://horstmann.com/violet/
 
 ```
 
-Change jdk.home to the proper path to your jdk.
+Change jdk.home and checkstyle.home to their proper paths for your machine.
 
 
-### Building without checkstyle ###
+### Building the project ###
 With build.properties properly configured you can simply run
-
 ```
 #!bash
 ant
-```
-
-in the directory with build.xml, this will not run the checkstyle script.
-
-### Building with checkstyle ###
-If you wish to run checkstyle after building the project you can configure the bash script 'build', which is found in the violet-0.16c directory. 
-
-Simply modify the following line of the script to the location of your checkstyle.
-
-```
-#!bash
-CHECKSTYLE_HOME=~/checkstyle-7.5.1
-```
-
-You can then build the project by running the command 
-```
-#!bash
-bash build
-
 ```
 in the violet-0.16c directory.
