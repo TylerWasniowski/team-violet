@@ -52,7 +52,10 @@ public class ClassNode extends RectangularNode
       midHeight = DEFAULT_COMPARTMENT_HEIGHT;
       botHeight = DEFAULT_COMPARTMENT_HEIGHT;
    }
-
+   /**
+    * Draws the node
+    * @param g2 the graphics context
+    */
    public void draw(Graphics2D g2)
    {
       super.draw(g2);
@@ -70,7 +73,12 @@ public class ClassNode extends RectangularNode
       g2.draw(bot);
       methods.draw(g2, bot);
    }
-
+   /**
+    * Prepares the node to be displayed
+    * @param g the graph that contains the node
+    * @param g2 the grpahics context
+    * @param grid the grid that contains the node
+    */
    public void layout(Graph g, Graphics2D g2, Grid grid)
    {
       Rectangle2D min = new Rectangle2D.Double(0, 0,
@@ -104,7 +112,12 @@ public class ClassNode extends RectangularNode
       grid.snap(b);
       setBounds(b);
    }
-
+   /**
+    * Adds the node at the given point
+    * @param n the node to add
+    * @param p the location to place the node
+    * @return if the node is a PointNode
+    */
    public boolean addNode(Node n, Point2D p)
    {
       return n instanceof PointNode;
@@ -163,7 +176,10 @@ public class ClassNode extends RectangularNode
    {
       return methods;
    }
-
+   /**
+    * Clones the object
+    * @return the clone of the object
+    */
    public Object clone() throws CloneNotSupportedException
    {
       ClassNode cloned = (ClassNode)super.clone();

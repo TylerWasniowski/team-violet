@@ -46,7 +46,12 @@ public class ActorNode extends RectangularNode
       setBounds(new Rectangle2D.Double(0, 0,
          DEFAULT_WIDTH, DEFAULT_HEIGHT));
    }
-   
+   /**
+    * Prepares the node for display
+    * @param g the graph to layout the node on
+    * @param g2 the graphics context
+    * @param grid the grid
+    */
    public void layout(Graph g, Graphics2D g2, Grid grid)
    {
       Rectangle2D top = new Rectangle2D.Double(0, 0,
@@ -59,7 +64,10 @@ public class ActorNode extends RectangularNode
       grid.snap(b);
       setBounds(b);
    }
-      
+   /**   
+    * Draws the actor node
+    * @param g2 the graphics context
+    */
    public void draw(Graphics2D g2)
    {
       Rectangle2D bounds = getBounds();
@@ -113,13 +121,16 @@ public class ActorNode extends RectangularNode
 
    /**
       Gets the name property value.
-      @param the actor name
+      @return the actor name
    */
    public MultiLineString getName()
    {
       return name;
    }
-
+   /**
+    * Clones the node
+    * @return the clone of the node
+    */
    public Object clone() throws CloneNotSupportedException
    {
       ActorNode cloned = (ActorNode) super.clone();

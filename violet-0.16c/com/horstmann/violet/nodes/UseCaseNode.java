@@ -45,14 +45,20 @@ public class UseCaseNode extends RectangularNode
       setBounds(new Rectangle2D.Double(0, 0,
          DEFAULT_WIDTH, DEFAULT_HEIGHT));
    }
-
+   /**
+    * Draws the node
+    * @param g2 the graphics context
+    */
    public void draw(Graphics2D g2)
    {
       super.draw(g2);      
       g2.draw(getShape());
       name.draw(g2, getBounds());
    }
-   
+   /**
+    * Gets the node as a shape
+    * @return the node as a shape
+    */
    public Shape getShape()
    {
       return new Ellipse2D.Double(
@@ -71,13 +77,16 @@ public class UseCaseNode extends RectangularNode
 
    /**
       Gets the name property value.
-      @param the use case name
+      @return the use case name
    */
    public MultiLineString getName()
    {
       return name;
    }
-
+   /**
+    * Clones the object
+    * @return the clone of the object
+    */
    public Object clone() throws CloneNotSupportedException
    {
       UseCaseNode cloned = (UseCaseNode) super.clone();

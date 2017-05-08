@@ -47,21 +47,32 @@ public class StateNode extends RectangularNode
       setBounds(new Rectangle2D.Double(0, 0, 
          DEFAULT_WIDTH, DEFAULT_HEIGHT));
    }
-
+   /**
+    * Draws the node
+    * @param g2 the graphics context
+    */
    public void draw(Graphics2D g2)
    {
       super.draw(g2);
       g2.draw(getShape());
       name.draw(g2, getBounds());
    }
-   
+   /**
+    * Gets the node as a shape
+    * @return the node as a shape
+    */
    public Shape getShape()
    {       
       return new RoundRectangle2D.Double(getBounds().getX(),
          getBounds().getY(), getBounds().getWidth(), 
          getBounds().getHeight(), ARC_SIZE, ARC_SIZE);
    }
-
+   /**
+    * Prepares the node to be displayed
+    * @param g the graph that contains the node
+    * @param g2 the graphics context
+    * @param grid the grid that contains the node
+    */
    public void layout(Graph g, Graphics2D g2, Grid grid)
    {
       Rectangle2D b = name.getBounds(g2);
@@ -85,13 +96,16 @@ public class StateNode extends RectangularNode
 
    /**
       Gets the name property value.
-      @param the state name
+      @return the state name
    */
    public MultiLineString getName()
    {
       return name;
    }
-
+   /**
+    * Clones the object
+    * @return the clone of the object
+    */
    public Object clone() throws CloneNotSupportedException
    {
       StateNode cloned = (StateNode)super.clone();

@@ -40,7 +40,9 @@ import com.horstmann.violet.framework.RectangularNode;
 public class FieldNode extends RectangularNode
 {
    private static final long serialVersionUID = 1434565809710223792L;
-
+   /**
+    * Creates a Field Node
+    */
    public FieldNode()
    {
       name = new MultiLineString();
@@ -49,7 +51,10 @@ public class FieldNode extends RectangularNode
       setBounds(new Rectangle2D.Double(0, 0, 
          DEFAULT_WIDTH, DEFAULT_HEIGHT));
    }
-
+   /**
+    * Draws the field node
+    * @param g2 the graphics context
+    */
    public void draw(Graphics2D g2)
    {
       super.draw(g2);
@@ -80,7 +85,13 @@ public class FieldNode extends RectangularNode
       value.draw(g2, valueBounds);
       if (boxedValue) g2.draw(valueBounds);
    }
-
+   /**
+    * Tries to add the edge between the nodes at the given points
+    * @param e the edge to add
+    * @param p1 the start point
+    * @param p2 the end point
+    * @return whether the edge was added
+    */
    public boolean addEdge(Edge e, Point2D p1, Point2D p2)
    {
       if (e instanceof ObjectReferenceEdge
@@ -91,12 +102,21 @@ public class FieldNode extends RectangularNode
       }
       return false;
    }
-
+   /**
+    * Adds the node 
+    * @param n the node to add
+    * @param p the location to place the node
+    * @return whether the node was added
+    */
    public boolean addNode(Node n, Point2D p)
    {
       return n instanceof PointNode;
    }
-
+   /**
+    * Gets the connection point for the node
+    * @param d the direction of the edge
+    * @return the connection point
+    */
    public Point2D getConnectionPoint(Direction d)
    {
       Rectangle2D b = getBounds();
@@ -104,7 +124,12 @@ public class FieldNode extends RectangularNode
          (b.getMaxX() + b.getX() + axisX) / 2,
          b.getCenterY());
    }
-
+   /**
+    * Prepares the node to be displayed
+    * @param g the graph that contains the node
+    * @param g2 the graphics context
+    * @param grid the grid that contains the node
+    */
    public void layout(Graph g, Graphics2D g2, Grid grid)
    {
       nameBounds = name.getBounds(g2); 
@@ -191,7 +216,10 @@ public class FieldNode extends RectangularNode
    {
       return boxedValue;
    }
-
+   /**
+    * Clones the object
+    * @return the clone of the object
+    */
    public Object clone() throws CloneNotSupportedException
    {
       FieldNode cloned = (FieldNode)super.clone();
@@ -209,7 +237,10 @@ public class FieldNode extends RectangularNode
    {
       return axisX;
    }
-   
+   /**
+    * Gets the node as a shape
+    * @return the node as a shape
+    */
    public Shape getShape()
    {
       if (boxedValue) return valueBounds; else return null;

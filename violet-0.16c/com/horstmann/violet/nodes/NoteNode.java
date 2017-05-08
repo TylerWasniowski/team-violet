@@ -50,7 +50,13 @@ public class NoteNode extends RectangularNode
       text.setJustification(MultiLineString.LEFT);
       color = DEFAULT_COLOR;
    }
-
+   /**
+    * Adds an edge between the nodes at the given points
+    * @param e the edge to add
+    * @param p1 the start point
+    * @param p2 the end point
+    * @return whether the edge was added
+    */
    public boolean addEdge(Edge e, Point2D p1, Point2D p2)
    {
       PointNode end = new PointNode();
@@ -58,12 +64,21 @@ public class NoteNode extends RectangularNode
       e.connect(this, end);
       return super.addEdge(e, p1, p2);
    }
-
+   /**
+    * Removes the edge from the node
+    * @param g the graph that contains the node and edge
+    * @param e the edge to remove
+    */
    public void removeEdge(Graph g, Edge e)
    {
       if (e.getStart() == this) g.removeNode(e.getEnd());
    }
-
+   /**
+    * Prepares the node to be displayed
+    * @param g the graph that contains the node
+    * @param g2 the graphics context 
+    * @param grid the grid that contains the node
+    */
    public void layout(Graph g, Graphics2D g2, Grid grid)
    {
       Rectangle2D b = text.getBounds(g2); // getMultiLineBounds(name, g2);
@@ -111,7 +126,10 @@ public class NoteNode extends RectangularNode
    {
       color = newValue;
    }
-   
+   /**
+    * Draws the node
+    * @param g2 the graphics context
+    */
    public void draw(Graphics2D g2)
    {
       super.draw(g2);
@@ -137,7 +155,10 @@ public class NoteNode extends RectangularNode
       
       text.draw(g2, getBounds());
    }
-   
+   /**
+    * Gets the node as a shape
+    * @return the node as a shape
+    */
    public Shape getShape()
    {
       Rectangle2D bounds = getBounds();
@@ -150,7 +171,10 @@ public class NoteNode extends RectangularNode
       path.closePath();
       return path;
    }
-
+   /**
+    * Clones the object
+    * @return the clone of the object
+    */
    public Object clone() throws CloneNotSupportedException
    {
       NoteNode cloned = (NoteNode)super.clone();

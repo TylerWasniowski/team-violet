@@ -54,7 +54,10 @@ public class PackageNode extends RectangularNode
       top = new Rectangle2D.Double(0, 0, DEFAULT_TOP_WIDTH, DEFAULT_TOP_HEIGHT);
       bot = new Rectangle2D.Double(0, DEFAULT_TOP_HEIGHT, DEFAULT_WIDTH, DEFAULT_HEIGHT - DEFAULT_TOP_HEIGHT);
    }
-
+   /**
+    * Draws the node
+    * @param g2 the graphics context
+    */
    public void draw(Graphics2D g2)
    {
       super.draw(g2);
@@ -77,7 +80,10 @@ public class PackageNode extends RectangularNode
       g2.draw(bot);
       contents.draw(g2, bot);
    }
-   
+   /**
+    * Gets the node as a shape
+    * @return the node as a shape
+    */
    public Shape getShape()
    {
       GeneralPath path = new GeneralPath();
@@ -85,7 +91,12 @@ public class PackageNode extends RectangularNode
       path.append(bot, false);
       return path;
    }
-
+   /**
+    * Prepares the node to be displayed
+    * @param g the graph that contains the node
+    * @param g2 the graphics context
+    * @param grid the grid that contains the node
+    */
    public void layout(Graph g, Graphics2D g2, Grid grid)
    {
       Rectangle2D bounds = getBounds();
@@ -171,14 +182,22 @@ public class PackageNode extends RectangularNode
    {
       return contents;
    }
-
+   /**
+    * Clones the object
+    * @return the clone of the object
+    */
    public Object clone() throws CloneNotSupportedException
    {
       PackageNode cloned = (PackageNode)super.clone();
       cloned.contents = (MultiLineString)contents.clone();
       return cloned;
    }
-
+   /**
+    * Adds the node
+    * @param n the node to add
+    * @param p the location of the node
+    * @return whether the node was added
+    */
    public boolean addNode(Node n, Point2D p)
    {
       if (n instanceof ClassNode || n instanceof InterfaceNode || n instanceof PackageNode)

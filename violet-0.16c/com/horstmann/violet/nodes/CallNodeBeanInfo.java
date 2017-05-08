@@ -29,6 +29,10 @@ import java.beans.SimpleBeanInfo;
 */
 public class CallNodeBeanInfo extends SimpleBeanInfo
 {
+   /**
+    * Gets the property descriptors for this node
+    * @return an array of the property descriptors
+    */
    public PropertyDescriptor[] getPropertyDescriptors()
    {
       try

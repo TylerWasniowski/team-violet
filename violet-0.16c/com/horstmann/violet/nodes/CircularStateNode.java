@@ -44,12 +44,18 @@ public class CircularStateNode extends RectangularNode
       setBounds(new Rectangle2D.Double(0, 0,
             DEFAULT_DIAMETER, DEFAULT_DIAMETER));      
    }
-   
+   /**
+    * Gets the final state
+    * @return the final state
+    */
    public boolean isFinal()
    {
       return finalState; 
    }
-   
+   /**
+    * Sets the final state
+    * @param newValue the new value of final state
+    */
    public void setFinal(boolean newValue)
    {
       finalState = newValue;
@@ -65,7 +71,11 @@ public class CircularStateNode extends RectangularNode
          setBounds(new Rectangle2D.Double(x + DEFAULT_GAP, y + DEFAULT_GAP,
                DEFAULT_DIAMETER, DEFAULT_DIAMETER));
    }
-   
+   /**
+    * Gets the connection point on the node
+    * @param d the direction of the attaching edge
+    * @return the connection point
+    */
    public Point2D getConnectionPoint(Direction d)
    {
       Rectangle2D bounds = getBounds();
@@ -86,7 +96,10 @@ public class CircularStateNode extends RectangularNode
          return new Point2D.Double(cx, cy);
       }
    }    
-
+   /**
+    * Draws the node
+    * @param g2 the graphics context
+    */
    public void draw(Graphics2D g2)
    {
       super.draw(g2);
@@ -110,7 +123,10 @@ public class CircularStateNode extends RectangularNode
       else
          g2.fill(circle);      
    }
-   
+   /**
+    * Gets the node as a shape
+    * @return the node as a shape
+    */
    public Shape getShape()
    {
       return new Ellipse2D.Double(

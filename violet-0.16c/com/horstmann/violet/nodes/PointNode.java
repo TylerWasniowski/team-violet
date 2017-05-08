@@ -44,33 +44,54 @@ public class PointNode extends AbstractNode
    {
       point = new Point2D.Double();
    }
-
+   /**
+    * Draws the node
+    * @param g2 the graphics context
+    */
    public void draw(Graphics2D g2)
    {
    }
-
+   /**
+    * Moves the node
+    * @param dx the amount to move in the x direction
+    * @param dy the amount to move in the y direction
+    */
    public void translate(double dx, double dy)
    {
       point.setLocation(point.getX() + dx,
          point.getY() + dy);
    }
-
+   /**
+    * Checks if the node conatains the given point
+    * @param p the the point to test for
+    * @return if the point is within the threshold of the node
+    */
    public boolean contains(Point2D p)
    {
       final double THRESHOLD = 5;
       return point.distance(p) < THRESHOLD;
    }
-
+   /**
+    * Gets the bounding rectangle of the node
+    * @return the bounding rectangle
+    */
    public Rectangle2D getBounds()
    {
       return new Rectangle2D.Double(point.getX(), 
          point.getY(), 0, 0);
    }
-
+   /**
+    * Sets the bounding rectangle of the node
+    * @param rect the new bounding rectangle
+    */
    public void setBounds(Rectangle rect) {
 
    }
-
+   /**
+    * Gets the connection point of the node
+    * @param d the direction of the edge
+    * @return the connection point
+    */
    public Point2D getConnectionPoint(Direction d)
    {
       return point;

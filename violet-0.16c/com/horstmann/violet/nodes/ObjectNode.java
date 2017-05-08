@@ -51,7 +51,10 @@ public class ObjectNode extends RectangularNode
       name.setSize(MultiLineString.LARGE);
       setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
    }
-
+   /**
+    * Draws the node
+    * @param g2 the graphics context
+    */
    public void draw(Graphics2D g2)
    {
       super.draw(g2);
@@ -71,12 +74,22 @@ public class ObjectNode extends RectangularNode
       return new Rectangle2D.Double(getBounds().getX(),
          getBounds().getY(), getBounds().getWidth(), topHeight);
    }
-
+   /**
+    * Adds an edge between the given points
+    * @param e the edge to add
+    * @param p1 the start point
+    * @param p2 the end point
+    * @return whether the edge was added
+    */
    public boolean addEdge(Edge e, Point2D p1, Point2D p2)
    {
       return e instanceof ClassRelationshipEdge && e.getEnd() != null;
    }
-
+   /**
+    * Gets the connection point for the node
+    * @param d the direction of the edge
+    * @return the conenction point
+    */
    public Point2D getConnectionPoint(Direction d)
    {
       if (d.getX() > 0)
@@ -86,7 +99,12 @@ public class ObjectNode extends RectangularNode
          return new Point2D.Double(getBounds().getX(),
             getBounds().getMinY() + topHeight / 2);
    }
-
+   /**
+    * Prepares the node to be displayed
+    * @param g the graph that contains the node
+    * @param g2 the grpahics context
+    * @param grid the grid the contains the node
+    */
    public void layout(Graph g, Graphics2D g2, Grid grid)
    {
       Rectangle2D b = name.getBounds(g2); 
@@ -131,7 +149,7 @@ public class ObjectNode extends RectangularNode
 
    /**
       Sets the name property value.
-      @param newValue the new object name
+      @param n the new object name
    */
    public void setName(MultiLineString n)
    {
@@ -140,20 +158,28 @@ public class ObjectNode extends RectangularNode
 
    /**
       Gets the name property value.
-      @param the object name
+      @return the object name
    */
    public MultiLineString getName()
    {
       return name;
    }
-
+   /**
+    * Clones the object
+    * @return the clone of the object
+    */
    public Object clone() throws CloneNotSupportedException
    {
       ObjectNode cloned = (ObjectNode)super.clone();
       cloned.name = (MultiLineString)name.clone();
       return cloned;
    }
-
+   /**
+    * Adds the node at the given point
+    * @param n the node to add
+    * @param p the location to place the node
+    * @return whether the node was added
+    */
    public boolean addNode(Node n, Point2D p)
    {
       List fields = getChildren();
@@ -181,7 +207,8 @@ public class ObjectNode extends RectangularNode
    */
    /**
       This is a patch to ensure that object diagrams can
-      be read back in correctly. 
+      be read back in correctly.
+      @param n the node to add 
    */
    public void addChild(Node n)
    {

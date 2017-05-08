@@ -54,7 +54,10 @@ public class CallNode extends RectangularNode
    {
       setBounds(new Rectangle2D.Double(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT));
    }
-
+   /**
+    * Draws the node
+    * @param g2 the grpahics context
+    */
    public void draw(Graphics2D g2)
    {
       super.draw(g2);
@@ -104,7 +107,11 @@ public class CallNode extends RectangularNode
    {
       implicitParameter = newValue;
    }
-
+   /**
+    * Gets the connection point of the node
+    * @param d the direction of the edge
+    * @return the connection point
+    */
    public Point2D getConnectionPoint(Direction d)
    {
       if (d.getX() > 0)
@@ -114,7 +121,13 @@ public class CallNode extends RectangularNode
          return new Point2D.Double(getBounds().getX(),
             getBounds().getMinY());
    }
-
+   /**
+    * Adds the edge to the nodes at the given points
+    * @param e the edge to add
+    * @param p1 the start point
+    * @param p2 the end point
+    * @return whether the edge was added
+    */
    public boolean addEdge(Edge e, Point2D p1, Point2D p2)
    {
       Node end = e.getEnd();
@@ -169,19 +182,33 @@ public class CallNode extends RectangularNode
       addChild(i, n);
       return true;
    }
-
+   /**
+    * Removes the edge from the node
+    * @param g the graph that the node is in
+    * @param e the edge to remove
+    */
    public void removeEdge(Graph g, Edge e)
    {
       if (e.getStart() == this)
          removeChild(e.getEnd());
    }
-
+   /**
+    * Removes the node from the graph
+    * @param g the graph that contains the node
+    * @param n the node to remove
+    */
    public void removeNode(Graph g, Node n)
    {
       if (n == getParent() || n == implicitParameter)
          g.removeNode(this);
    }
-   
+   /**
+    * Finds the edge, if it exist, that goes from the start to end node
+    * @param g the graph that contains the nodes
+    * @param start the start node
+    * @param end the end node
+    * @return the edge to find
+    */
    private static Edge findEdge(Graph g, Node start, Node end)
    {
       Collection edges = g.getEdges();
@@ -193,7 +220,12 @@ public class CallNode extends RectangularNode
       }
       return null;
    }
-
+   /**
+    * Prepares the node to be displayed
+    * @param g the graph that contains the node
+    * @param g2 the graphics context
+    * @param grid the grid that the node is attached to
+    */
    public void layout(Graph g, Graphics2D g2, Grid grid)
    {
       
@@ -248,7 +280,12 @@ public class CallNode extends RectangularNode
       setBounds(new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), 
             Math.max(minHeight, ytop - b.getY())));
    }
-
+   /**
+    * Adds the node at the given point
+    * @param n the node to add
+    * @param p the location to place the node
+    * @return whether the node is a PointNode or not
+    */
    public boolean addNode(Node n, Point2D p)
    {
       return n instanceof PointNode;

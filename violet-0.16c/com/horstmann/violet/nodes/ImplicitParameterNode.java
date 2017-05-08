@@ -54,14 +54,21 @@ public class ImplicitParameterNode extends RectangularNode
                    DEFAULT_WIDTH, DEFAULT_HEIGHT));
       topHeight = DEFAULT_TOP_HEIGHT;
    }
-
+   /**
+    * Checks whether the point is within the node
+    * @param p the point to check for
+    * @return whether the point is within the node
+    */
    public boolean contains(Point2D p)
    {
       Rectangle2D bounds = getBounds();
       return bounds.getX() <= p.getX() &&
          p.getX() <= bounds.getX() + bounds.getWidth();
    }
-
+   /**
+    * Draws the node
+    * @param g2 the graphics context
+    */
    public void draw(Graphics2D g2)
    {
       super.draw(g2);
@@ -90,14 +97,27 @@ public class ImplicitParameterNode extends RectangularNode
       return new Rectangle2D.Double(getBounds().getX(),
          getBounds().getY(), getBounds().getWidth(), topHeight);
    }
-
+   /**
+    * Gets the node as a shape
+    * @return the node as a shape
+    */
    public Shape getShape() { return getTopRectangle(); }
-   
+   /**
+    * Adds an edge to the node
+    * @param e the edge to add
+    * @param p1 the start point
+    * @param p2 the end point
+    * @return whether the edge was added
+    */
    public boolean addEdge(Edge e, Point2D p1, Point2D p2)
    {
       return false;
    }
-
+   /**
+    * Gets the correct connection point for an edge on this node
+    * @param d the direction of the edge
+    * @return the connection point
+    */
    public Point2D getConnectionPoint(Direction d)
    {
       if (d.getX() > 0)
@@ -107,7 +127,12 @@ public class ImplicitParameterNode extends RectangularNode
          return new Point2D.Double(getBounds().getX(),
             getBounds().getMinY() + topHeight / 2);
    }
-
+   /**
+    * Prepares the node to be displayed
+    * @param g the graph that contains the node
+    * @param g2 the graphics context
+    * @param grid the grid that contains the node
+    */
    public void layout(Graph g, Graphics2D g2, Grid grid)
    {
       Rectangle2D b = name.getBounds(g2); 
@@ -125,7 +150,7 @@ public class ImplicitParameterNode extends RectangularNode
 
    /**
       Sets the name property value.
-      @param newValue the name of this object
+      @param n newValue the name of this object
    */
    public void setName(MultiLineString n)
    {
@@ -140,7 +165,10 @@ public class ImplicitParameterNode extends RectangularNode
    {
       return name;
    }
-
+   /**
+    * Clones the object
+    * @return the clone of the object
+    */
    public Object clone() throws CloneNotSupportedException
    {
       ImplicitParameterNode cloned 
@@ -148,7 +176,12 @@ public class ImplicitParameterNode extends RectangularNode
       cloned.name = (MultiLineString)name.clone();
       return cloned;
    }
-
+   /**
+    * Adds the node at the given point
+    * @param n the node to add
+    * @param p the location to place the node
+    * @return whether the node was added
+    */
    public boolean addNode(Node n, Point2D p)
    {
       return n instanceof CallNode || n instanceof PointNode;
