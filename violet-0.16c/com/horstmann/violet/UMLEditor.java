@@ -51,7 +51,10 @@ import com.horstmann.violet.graphs.*;
 public class UMLEditor extends JApplet
 {
     private static final long serialVersionUID = 7672410892827376431L;
-
+    /**
+     * Displays the main frame of the application
+     * @param args Command Line arguments
+     */
     public static void main(String[] args)
    {
       VersionChecker checker = new VersionChecker();
@@ -69,7 +72,10 @@ public class UMLEditor extends JApplet
       frame.setVisible(true);
       frame.readArgs(args);
    }
-   
+   /**
+    * Initializes the frame but does not make it visible.
+    * Used in java.beans
+    */
    public void init()
    {
       EditorFrame frame = makeFrame();
@@ -87,7 +93,10 @@ public class UMLEditor extends JApplet
             ex.printStackTrace();
          }
    }
-
+   /**
+    * Creates an editor frame instance and adds the graph types
+    * @return An Editor Frame with graph types added
+    */
    public static EditorFrame makeFrame()
    {
       EditorFrame frame = new EditorFrame(UMLEditor.class);

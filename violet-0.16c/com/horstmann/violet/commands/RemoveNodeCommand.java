@@ -13,7 +13,10 @@ public class RemoveNodeCommand implements Command {
     private static final long serialVersionUID = -6116885171081680050L;
 
     private String idOfNodeToRemove;
-
+    /**
+     * Creates a new RemoveNodeCommand
+     * @param idOfNodeToRemove id of node to remove
+     */
     public RemoveNodeCommand(String idOfNodeToRemove) {
         this.idOfNodeToRemove = idOfNodeToRemove;
     }

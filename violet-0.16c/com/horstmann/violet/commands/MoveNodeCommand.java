@@ -14,7 +14,11 @@ public class MoveNodeCommand implements Command {
 
     private String idOfNodeToMove;
     private Point2D newLocation;
-
+    /**
+     * Creates a new MoveNodeCommand
+     * @param idOfNodeToMove the id of the node to move
+     * @param newLocation the location where the node is moved to
+     */
     public MoveNodeCommand(String idOfNodeToMove, Point2D newLocation) {
         this.idOfNodeToMove = idOfNodeToMove;
         this.newLocation = newLocation;

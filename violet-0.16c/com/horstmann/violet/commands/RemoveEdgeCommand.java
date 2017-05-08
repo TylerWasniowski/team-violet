@@ -13,7 +13,10 @@ public class RemoveEdgeCommand implements Command {
     private static final long serialVersionUID = 5533608612833602004L;
 
     private String idOfEdgeToRemove;
-
+    /**
+     * Creates a new RemoveEdgeCommand
+     * @param idOfEdgeToRemove id of edge to remove
+     */
     public RemoveEdgeCommand(String idOfEdgeToRemove) {
         this.idOfEdgeToRemove = idOfEdgeToRemove;
     }

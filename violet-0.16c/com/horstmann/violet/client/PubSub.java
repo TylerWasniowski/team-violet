@@ -20,7 +20,10 @@ import org.apache.activemq.advisory.DestinationSource;
 import org.apache.activemq.command.ActiveMQObjectMessage;
 import com.horstmann.violet.commands.Command;
 import org.apache.activemq.command.ActiveMQTopic;
-
+/**
+ * Creates connection to server with ActiveMQ and 
+ * handles the sending/receiving of commands between team members.
+ */
 public class PubSub implements MessageListener, Closeable, AutoCloseable {
     private static final String BROKER_HOST = "tcp://35.185.243.162:%d";
     private static final int BROKER_PORT = 61616;
@@ -31,7 +34,10 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
     private MessageConsumer messageConsumer;
     private MessageProducer messageProducer;
     private TeamDiagram teamDiagram;
-
+    /**
+     * PubSub constructor 
+     * @param teamDiagram the diagram that commands will be executed on.
+     */
     public PubSub(TeamDiagram teamDiagram) {
         this.teamDiagram = teamDiagram;
     }
@@ -105,13 +111,20 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
             }
         }
     }
-
+    /**
+     * Creates a JMS message with the command object, then sends it to the server.
+     * @param command the command to send to the server
+     * @throws JMSException if problem with JMS
+     * @throws InterruptedException thrown if thread is interrupted
+     */
     public void sendCommand(Command command) throws JMSException, InterruptedException {
         ObjectMessage msg = session.createObjectMessage();
         msg.setObject(command);
         messageProducer.send(msg);
     }
-
+    /**
+     * Tries to close the ActiveMQ connection
+     */
     public void close() {
         if (connection != null) {
             try {

@@ -16,7 +16,11 @@ public class AddNodeCommand implements Command {
 
     private Node node;
     private Point2D point;
-
+    /**
+     * Creates an AddNodeCommand that consists of the node and it's position.
+     * @param node the node to add
+     * @param point the position of the node
+     */
     public AddNodeCommand(Node node, Point2D point) {
         this.node = node;
         this.point = point;

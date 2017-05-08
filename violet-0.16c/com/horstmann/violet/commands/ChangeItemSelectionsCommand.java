@@ -15,7 +15,11 @@ public class ChangeItemSelectionsCommand implements Command {
     private static final long serialVersionUID = -5173365451099251363L;
     private String clientGraphID;
     private Set<String> idsOfSelectedItems;
-    
+    /**
+     * Creates a ChangeItemSelectionsCommand
+     * @param clientGraphID the id of the graph
+     * @param selectedItems the items that are currently selected
+     */
     public ChangeItemSelectionsCommand(String clientGraphID, Set<UniquelyIdentifiable> selectedItems) {
         this.clientGraphID = clientGraphID;
 

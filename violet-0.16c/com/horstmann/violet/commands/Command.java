@@ -16,6 +16,7 @@ public interface Command extends Serializable {
 
     /**
      * Carries out the command
+     * @param graphToExecuteCommandOn the graph on which the command will be executed
      * @return true if command was executed, false if it wasn't executed
      */
     public boolean execute(TeamDiagram graphToExecuteCommandOn);

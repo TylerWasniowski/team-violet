@@ -22,7 +22,12 @@ public class ChangePropertyCommand implements Command {
     private String idOfObject;
     private String nameOfPropertyInObject;
     private Object newProperty;
-
+    /**
+     * Creates a ChangePropertyCommand
+     * @param idOfObject id of the object whose properties changed
+     * @param nameOfPropertyInObject the name of property that got changed
+     * @param newProperty the new property to write into the object
+     */
     public ChangePropertyCommand(String idOfObject, String nameOfPropertyInObject, Object newProperty) {
         this.idOfObject = idOfObject;
         this.nameOfPropertyInObject = nameOfPropertyInObject;
