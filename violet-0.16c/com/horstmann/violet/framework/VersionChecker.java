@@ -62,7 +62,12 @@ public class VersionChecker
          System.exit(1);
       }
    }
-
+   /**
+    * Compares the given version strings
+    * @param v1 a version
+    * @param v2 another version
+    * @return -1 if v1 is less than v2, 0 if they are the same, 1 if v1 is greater than v2
+    */
    public static int versionCompare(String v1, 
       String v2)
    {

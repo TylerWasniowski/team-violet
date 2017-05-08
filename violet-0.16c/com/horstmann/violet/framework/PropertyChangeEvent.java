@@ -22,7 +22,10 @@ public class PropertyChangeEvent extends ChangeEvent {
         super(source);
         this.propertyName = propertyName;
     }
-
+    /**
+     * Gets the property name
+     * @return the property name
+     */
     public String getPropertyName() {
         return propertyName;
     }

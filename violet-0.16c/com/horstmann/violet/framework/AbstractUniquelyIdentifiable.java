@@ -17,7 +17,9 @@ public abstract class AbstractUniquelyIdentifiable implements UniquelyIdentifiab
 
     // Counts number of objects of each class
     private static Map<String, Integer> classNameToNumberOfObjects = new HashMap<>();
-
+    /**
+     * Increments the objects count in the Map and initializes the clientID to the empty string
+     */
     public AbstractUniquelyIdentifiable() {
         incrementCountInMap();
         assignClientID("");

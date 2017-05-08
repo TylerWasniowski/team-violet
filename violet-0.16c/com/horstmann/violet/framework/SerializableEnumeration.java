@@ -53,7 +53,10 @@ public class SerializableEnumeration implements Serializable
          throw new ObjectStreamException("No matching field") {};
       return this;
    }
-
+   /**
+    * Yields the name of the Enumeration
+    * @return the name of the enumeration
+    */
    public String toString()
    {
       if (name != null) return getClass().getName() + "." + name;

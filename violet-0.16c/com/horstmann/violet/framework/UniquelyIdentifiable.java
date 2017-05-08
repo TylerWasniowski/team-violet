@@ -24,7 +24,11 @@ public interface UniquelyIdentifiable extends Cloneable, Serializable {
      * @param graphID the ID of the graph that this edge belongs to
      */
     void assignClientID(String graphID);
-
+    /**
+     * Clones the object
+     * @return the clone of the object
+     * @throws CloneNotSupportedException If unable to clone
+     */
     Object clone() throws CloneNotSupportedException;
 
 }

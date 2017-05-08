@@ -98,7 +98,7 @@ public class EditorFrame extends JFrame {
    /**
     * Constructs a blank frame with a desktop pane but no graph windows.
     * 
-    * @param appClassName
+    * @param appClass
     *           the fully qualified app class name. It is expected that the
     *           resources are appClassName + "Strings" and appClassName +
     *           "Version" (the latter for version-specific resources)
@@ -739,7 +739,9 @@ public class EditorFrame extends JFrame {
          }
       }
    }
-
+   /**
+    * Tries to save the current graph
+    */
    public void save() {
       GraphFrame frame = (GraphFrame) desktop.getSelectedFrame();
       if (frame == null)

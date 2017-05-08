@@ -36,28 +36,45 @@ import java.util.Objects;
 public abstract class AbstractEdge extends AbstractUniquelyIdentifiable implements Edge
 {
    private static final long serialVersionUID = 9000165480500528416L;
-
+   /**
+    * Clones the object
+    * @return a clon of the object
+    */
    public Object clone() throws CloneNotSupportedException
    {
       return super.clone();
    }
-
+   /**
+    * Connects two nodes
+    * @param s the first node
+    * @param e the second node
+    */
    public void connect(Node s, Node e)
    {  
       start = s;
       end = e;
    }
-
+   /**
+    * Gets the start node
+    * @return the start node
+    */
    public Node getStart()
    {
       return start;
    }
-
+   /**
+    * Gets the ends node
+    * @return the end node
+    */
    public Node getEnd()
    {
       return end;
    }
-
+   /**
+    * Gets bounding rectangle of the edge
+    * @param g2 the graphics context
+    * @return the bounding rectangle of the edge
+    */
    public Rectangle2D getBounds(Graphics2D g2)
    {
       Line2D conn = getConnectionPoints();      
@@ -66,7 +83,10 @@ public abstract class AbstractEdge extends AbstractUniquelyIdentifiable implemen
          conn.getX2(), conn.getY2());
       return r;
    }
-
+   /**
+    * Gets the line from the start to end point
+    * @return the line from start point to end point
+    */
    public Line2D getConnectionPoints()
    {
       Rectangle2D startBounds = start.getBounds();

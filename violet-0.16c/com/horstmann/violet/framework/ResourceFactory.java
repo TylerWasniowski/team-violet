@@ -30,19 +30,35 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-
+/**
+ * Helpful methods for creating commonly used GUI components
+ * using the strings from the .properties files
+ */
 public class ResourceFactory
 {
+   /**
+    * Creates a new ResourceFactory
+    * @param bundle the bundle that contains the .properties files
+    */
    public ResourceFactory(ResourceBundle bundle)
    {
       this.bundle = bundle;
    }
-
+   /**
+    * Gets the resource bundle
+    * @return the bundle
+    */
    public ResourceBundle getBundle()
    {
       return bundle;
    }
-
+   /**
+    * Creates a JMenuItem 
+    * @param prefix the prefix of the resource string
+    * @param target the object that will perform the action
+    * @param methodName name of the method that uses the target object
+    * @return the JMenuItem
+    */
    public JMenuItem createMenuItem(String prefix, 
       Object target, String methodName)
    {
@@ -50,7 +66,12 @@ public class ResourceFactory
          (ActionListener) EventHandler.create(
             ActionListener.class, target, methodName));
    }
-
+   /**
+    * Creates a JMenuItem with the specified action listener
+    * @param prefix the prefix of the resource string
+    * @param listener the action listener for the menu item
+    * @return the JMenuItem
+    */
    public JMenuItem createMenuItem(String prefix, 
       ActionListener listener)
    {
@@ -58,7 +79,12 @@ public class ResourceFactory
       JMenuItem menuItem = new JMenuItem(text);
       return configure(menuItem, prefix, listener);
    }
-
+   /**
+    * Creates a check box menu item
+    * @param prefix the prefix of the resource string
+    * @param listener the action listener
+    * @return the JMenuItem
+    */
    public JMenuItem createCheckBoxMenuItem(String prefix, 
       ActionListener listener)
    {
@@ -66,7 +92,13 @@ public class ResourceFactory
       JMenuItem menuItem = new JCheckBoxMenuItem(text);
       return configure(menuItem, prefix, listener);
    }
-
+   /**
+    * Modifies the given JMenuItem
+    * @param menuItem the menu item to modify
+    * @param prefix the prefix of the resource string
+    * @param listener the action listener
+    * @return the modifed JMenuItem
+    */
    public JMenuItem configure(JMenuItem menuItem, 
       String prefix, ActionListener listener)
    {      
@@ -102,7 +134,11 @@ public class ResourceFactory
       }
       return menuItem;
    }
-   
+   /**
+    * Creates a JMenu 
+    * @param prefix the prefix of the resource string
+    * @return the new JMenu
+    */
    public JMenu createMenu(String prefix)
    {
       String text = bundle.getString(prefix + ".text");
@@ -128,7 +164,11 @@ public class ResourceFactory
       }
       return menu;
    }
-      
+   /**
+    * Creates a JButton   
+    * @param prefix the prefix of the resource string
+    * @return the JButton
+    */
    public JButton createButton(String prefix)
    {
       String text = bundle.getString(prefix + ".text");
@@ -155,7 +195,12 @@ public class ResourceFactory
       return button;
    }
    
-   
+   /**
+    * Modfies the action
+    * @param prefix the prefix of the resource string
+    * @param action the action the modify
+    * @return the modified action
+    */
    public Action configureAction(String prefix, Action action)
    {
       try

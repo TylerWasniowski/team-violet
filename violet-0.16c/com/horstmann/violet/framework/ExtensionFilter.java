@@ -60,7 +60,11 @@ public class ExtensionFilter
       for (int i = 0; i < this.extensions.length; i++)
          this.extensions[i] = tokenizer.nextToken();
    }
-   
+   /**
+    * Checks whether this ExtensionFilter will accept the file based on its file extension
+    * @param f the file to check
+    * @return whether or not the file is accepted
+    */
    public boolean accept(File f)
    {  
       if (f.isDirectory()) return true;
@@ -70,12 +74,18 @@ public class ExtensionFilter
             return true;
       return false;
    }
-   
+   /**
+    * Gets the description 
+    * @return the description
+    */
    public String getDescription()
    { 
       return description; 
    }
-   
+   /**
+    * Gets the accepted extensions
+    * @return array of the accepted extensions
+    */
    public String[] getExtensions()
    {
       return extensions;

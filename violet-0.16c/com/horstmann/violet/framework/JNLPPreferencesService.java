@@ -21,7 +21,6 @@ public class JNLPPreferencesService extends PreferencesService
 {
    /**
     * Gets an instance of the service, with storage location derived from the JNLP code base.
-    * @return an instance of the service
     */
    public JNLPPreferencesService()
    {
@@ -34,7 +33,13 @@ public class JNLPPreferencesService extends PreferencesService
          ex.printStackTrace();
       }      
    }
-   
+   /**
+    * Tries to get the preference service at the given key
+    * If unable to retrieve the service, just return the given default value
+    * @param key the key of the desired preference service
+    * @param defval the default value to return if unable to get the desired service
+    * @return the preference service
+    */
    public String get(String key, String defval)
    {
       try 
@@ -66,7 +71,11 @@ public class JNLPPreferencesService extends PreferencesService
       }      
       return defval;
    }
-   
+   /**
+    * Tries to write the preference service at the given key
+    * @param key the key for placing the value
+    * @param value the service to write at the given key
+    */
    public void put(String key, String value)
    {
       try 

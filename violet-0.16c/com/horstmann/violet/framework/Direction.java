@@ -59,6 +59,7 @@ public class Direction
    /**
       Turns this direction by an angle.
       @param angle the angle in degrees
+      @return the Direction after the turn
    */
    public Direction turn(double angle)
    {

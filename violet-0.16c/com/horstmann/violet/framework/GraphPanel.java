@@ -378,7 +378,10 @@ public class GraphPanel extends JPanel
       revalidate();
       repaint();
    }
-
+   /**
+    * Paints the graph panel
+    * @param g the graphics context
+    */
    public void paintComponent(Graphics g)
    {
       super.paintComponent(g);
@@ -496,7 +499,10 @@ public class GraphPanel extends JPanel
       g2.fill(new Rectangle2D.Double(x - SIZE / 2, y - SIZE / 2, SIZE, SIZE));
       g2.setColor(oldColor);
    }
-
+   /**
+    * Gets the correct size of the graph panel
+    * @return the size of the graph panel as a Dimension
+    */
    public Dimension getPreferredSize()
    {
       Rectangle2D bounds = graph.getBounds((Graphics2D) getGraphics());
@@ -540,7 +546,11 @@ public class GraphPanel extends JPanel
       graph.layout();
       repaint();
    }
-
+   /**
+    * Selects the next selectable item based on it's 
+    * location on the graph.
+    * @param n number of items to skip over in list of selectable items
+    */
    public void selectNext(int n)
    {
       List<UniquelyIdentifiable> selectables = new ArrayList<>();

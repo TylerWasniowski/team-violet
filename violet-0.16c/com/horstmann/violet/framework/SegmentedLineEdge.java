@@ -271,7 +271,11 @@ public abstract class SegmentedLineEdge extends ShapeEdge
       Point2D a = getAttachmentPoint(g2, p, q, arrow, d, center);
       return new Rectangle2D.Double(a.getX(), a.getY(), d.getWidth(), d.getHeight());
    }
-
+   /**
+    * Gets the bounding rectangle of the edge
+    * @param g2 the graphics context
+    * @return the bounding rectangle
+    */
    public Rectangle2D getBounds(Graphics2D g2)
    {
       ArrayList points = getPoints();
@@ -289,7 +293,10 @@ public abstract class SegmentedLineEdge extends ShapeEdge
                endArrowHead, endLabel, false));
       return r;
    }
-
+   /**
+    * Gets the edge as a shape
+    * @return the edge as a shape
+    */
    public Shape getShape()
    {
       GeneralPath path = getSegmentPath();
@@ -300,7 +307,10 @@ public abstract class SegmentedLineEdge extends ShapeEdge
             (Point2D)points.get(points.size() - 1)), false);
       return path;
    }
-
+   /**
+    * Gets the edge as a path
+    * @return the path
+    */
    private GeneralPath getSegmentPath()
    {
       ArrayList points = getPoints();
@@ -315,7 +325,10 @@ public abstract class SegmentedLineEdge extends ShapeEdge
       }
       return path;
    }
-   
+   /**
+    * Gets the line from the start point to the end point
+    * @return the line from start to end
+    */
    public Line2D getConnectionPoints()
    {
       ArrayList points = getPoints();

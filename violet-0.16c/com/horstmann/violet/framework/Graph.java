@@ -61,6 +61,7 @@ public abstract class Graph implements Serializable
       @param e the edge to add
       @param p1 a point in the starting node
       @param p2 a point in the ending node
+      @return whether the connection was successful
    */
    public boolean connect(Edge e, Point2D p1, Point2D p2)
    {
@@ -86,6 +87,7 @@ public abstract class Graph implements Serializable
       the bounding rectangle is at the given point.
       @param n the node to add
       @param p the desired location
+      @return whether the node was added
    */
    public boolean add(Node n, Point2D p)
    {
@@ -144,6 +146,7 @@ public abstract class Graph implements Serializable
    /**
       Draws the graph
       @param g2 the graphics context
+      @param g the grid
    */
    public void draw(Graphics2D g2, Grid g)
    {
@@ -344,6 +347,7 @@ public abstract class Graph implements Serializable
       @param e the edge to add
       @param start the start node of the edge
       @param end the end node of the edge
+      @return whether the edge was connected
    */
    public boolean connect(Edge e, Node start, Node end)
    {

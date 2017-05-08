@@ -36,14 +36,21 @@ import java.io.ObjectOutputStream;
 public abstract class RectangularNode extends AbstractNode
 {
    private static final long serialVersionUID = -4483825085278940812L;
-
+   /**
+    * Clones the object
+    * @return the clone of the object
+    */
    public Object clone() throws CloneNotSupportedException
    {
       RectangularNode cloned = (RectangularNode)super.clone();
       cloned.bounds = (Rectangle2D)bounds.clone();
       return cloned;
    }
-
+   /**
+    * Moves the node by the given values
+    * @param dx movement in x direction
+    * @param dy movement in y direction
+    */
    public void translate(double dx, double dy)
    {
       bounds.setFrame(bounds.getX() + dx,
@@ -52,27 +59,46 @@ public abstract class RectangularNode extends AbstractNode
          bounds.getHeight());
       super.translate(dx, dy);
    }
-
+   /**
+    * Checks whether the point is in the nodes bounding rectangle
+    * @param p the point to test
+    * @return whether the point is within the node
+    */
    public boolean contains(Point2D p)
    {
       return bounds.contains(p);
    }
-
+   /**
+    * Gets the bounding rectangle of the node
+    * @return the bounding rectangle of the node
+    */
    public Rectangle2D getBounds()
    {
       return (Rectangle2D)bounds.clone();
    }
-
+   /**
+    * Sets the bound of the node
+    * @param newBounds the new bounding rectangle
+    */
    public void setBounds(Rectangle2D newBounds)
    {
       bounds = newBounds;
    }
-
+   /**
+    * Prepares the node to be displayed
+    * @param g the graph where the node is displayed
+    * @param g2 the graphics context
+    * @param grid the grid
+    */
    public void layout(Graph g, Graphics2D g2, Grid grid)
    {
       grid.snap(bounds);
    }
-
+   /**
+    * Gets the point where an edge would attach to the node
+    * @param d the direction of the edge
+    * @return the connection point
+    */
    public Point2D getConnectionPoint(Direction d)
    {
       double slope = bounds.getHeight() / bounds.getWidth();
@@ -111,7 +137,12 @@ public abstract class RectangularNode extends AbstractNode
       }
       return new Point2D.Double(x, y);
    }
-
+   /**
+    * Writes all non static and non transisent fields of
+    * this class to the output stream
+    * @param out the output stream
+    * @throws IOException if there is a problem with the IO
+    */
    private void writeObject(ObjectOutputStream out)
       throws IOException
    {
@@ -136,7 +167,12 @@ public abstract class RectangularNode extends AbstractNode
       out.writeDouble(s.getWidth());
       out.writeDouble(s.getHeight());
    }
-
+   /**
+    * Reads the non staic fields of this class from the input stream
+    * @param in the input stream
+    * @throws IOException if there is a problem with IO
+    * @throws ClassNotFoundException if the object in the input stream does not match the fields of this class
+    */
    private void readObject(ObjectInputStream in)
       throws IOException, ClassNotFoundException
    {
@@ -162,7 +198,10 @@ public abstract class RectangularNode extends AbstractNode
       double height = in.readDouble();
       s.setFrame(x, y, width, height);
    }
-
+   /**
+    * Gets this node as a shape
+    * @return this node as a shape
+    */
    public Shape getShape()
    {
       return bounds;

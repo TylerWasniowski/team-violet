@@ -77,9 +77,10 @@ public interface Node extends Serializable, Cloneable, UniquelyIdentifiable
 
    /**
       Adds an edge that originates at this node.
-      @param p the point that the user selected as
+      @param p1 the point that the user selected as
       the starting point. This may be used as a hint if 
       edges are ordered.
+      @param p2 the end point
       @param e the edge to add
       @return true if the edge was added
    */
@@ -147,6 +148,9 @@ public interface Node extends Serializable, Cloneable, UniquelyIdentifiable
       @param node the child to remove.
    */
    void removeChild(Node node);
-
+   /**
+    * Clones the object
+    * @return the clone of the object
+    */
    Object clone() throws CloneNotSupportedException;
 }

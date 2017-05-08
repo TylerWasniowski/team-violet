@@ -40,12 +40,19 @@ import javax.swing.event.DocumentListener;
    A property editor for the MultiLineString type.
 */
 public class MultiLineStringEditor extends PropertyEditorSupport
-{
+{  
+   /**
+    * Checks whether the Editor supports custom editors
+    * @return always returns true
+    */
    public boolean supportsCustomEditor()
    {
       return true;
    }
-
+   /**
+    * Creates a JScrollPane with the multi string in a JTextArea
+    * @return the JScrollPane
+    */
    public Component getCustomEditor()
    {
       final MultiLineString value = (MultiLineString)getValue();

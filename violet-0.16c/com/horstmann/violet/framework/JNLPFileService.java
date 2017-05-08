@@ -20,6 +20,9 @@ import javax.jnlp.UnavailableServiceException;
  * available until after the file has been written.
  */
 public class JNLPFileService extends FileService {
+   /**
+    * Creates a new JNLPFileService 
+    */
    public JNLPFileService() {
       try {
          openService = (FileOpenService) ServiceManager.lookup("javax.jnlp.FileOpenService");
@@ -28,7 +31,13 @@ public class JNLPFileService extends FileService {
          ex.printStackTrace();
       }
    }
-
+   /**
+    * Gets the default File Open dialog
+    * @param defaultDirectory the directory to open the dialog at
+    * @param defaultFile the file to open the dialog at
+    * @param filter the ExtensionFilter to use when displaying files
+    * @return the default file service dialog 
+    */
    public FileService.Open open(String defaultDirectory, String defaultFile, ExtensionFilter filter)
          throws IOException {
       if (defaultDirectory == null)
@@ -44,7 +53,15 @@ public class JNLPFileService extends FileService {
          }
       };
    }
-
+   /**
+    * Gets the default File Save dialog
+    * @param defaultDirectory the directory to open the dialog at
+    * @param defaultFile the file to open the dialog at
+    * @param filter the ExtensionFilter to use when displaying files
+    * @param removeExtension extension to be removed
+    * @param addExtension the extension to add or multiple extensions separated by |
+    * @return the default file service dialog 
+    */
    public FileService.Save save(final String defaultDirectory, final String defaultFile, final ExtensionFilter filter,
          final String removeExtension, final String addExtension) throws IOException {
       return new FileService.Save() {
@@ -79,7 +96,10 @@ public class JNLPFileService extends FileService {
          private FileContents contents;
       };
    }
-
+   /**
+    * Checks whether the FileService is using Java Web Start
+    * @return always returns true
+    */
    public boolean isWebStart() {
       return true;
    }

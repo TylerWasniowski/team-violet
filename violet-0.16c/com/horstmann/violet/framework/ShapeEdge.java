@@ -47,12 +47,21 @@ public abstract class ShapeEdge extends AbstractEdge
       @return a path along the edge
    */
    public abstract Shape getShape();
-
+   /**
+    * Gets the bounding rectangle of the edge
+    * @param g2 the graphics context
+    * @return the bounding rectangle
+    */
    public Rectangle2D getBounds(Graphics2D g2)
    {
       return getShape().getBounds();
    }
-
+   /**
+    * Checks whether the point is on the 
+    * fat stroke of the edge.
+    * @param aPoint the point to test for
+    * @return whether the edge contain the point
+    */
    public boolean contains(Point2D aPoint)
    {
       final double MAX_DIST = 3;

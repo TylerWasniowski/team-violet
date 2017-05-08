@@ -91,12 +91,17 @@ public class MultiLineString implements Cloneable, Serializable
       @return the size, one of SMALL, NORMAL, LARGE
    */
    public int getSize() { return size; }
-   
+   /**
+    * Gets the text of the string but newlines are replaced with |
+    * @return the string text
+    */
    public String toString()
    {
       return text.replace('\n', '|');
    }
-
+   /**
+    * Sets the text of the JLabel by adding html tags to the string first.
+    */
    private void setLabelText()
    {
       StringBuffer prefix = new StringBuffer();
@@ -181,7 +186,10 @@ public class MultiLineString implements Cloneable, Serializable
       label.paint(g2);
       g2.translate(-r.getX(), -r.getY());        
    }
-
+   /**
+    * Clones the object
+    * @return the clone of the object
+    */
    public Object clone()
    {
       try

@@ -57,6 +57,7 @@ public class ToolBar extends JPanel
 
    /**
       Constructs a tool bar with no icons.
+      @param graph the graph to create a ToolBar for
    */
    public ToolBar(Graph graph)
    {
@@ -197,7 +198,12 @@ public class ToolBar extends JPanel
             });
       popup.add(item);
    }
-
+   /**
+    * Displays the popup menu
+    * @param panel the panel to have the menu display in 
+    * @param p where to place the popup menu
+    * @param listener the action listener for the popup menu
+    */
    public void showPopup(final GraphPanel panel, final Point2D p, final ActionListener listener) 
    {
       /*
@@ -228,7 +234,7 @@ public class ToolBar extends JPanel
    
    /**
       Adds an edge to the tool bar.
-      @param n the node to add
+      @param e the edge to add
       @param tip the tool tip
    */
    public void add(final Edge e, String tip)

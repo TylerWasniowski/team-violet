@@ -38,7 +38,7 @@ public class PropertySheet extends JPanel
    /**
       Constructs a property sheet that shows the editable
       properties of a given object.
-      @param object the object whose properties are being edited
+      @param bean the object whose properties are being edited
       @param parent the parent component
    */
    public PropertySheet(Object bean, Component parent)
@@ -311,7 +311,10 @@ public class PropertySheet extends JPanel
    
    private static Map editors;
    
-   // workaround for Web Start bug
+   /**
+    * workaround for Web Start bug
+    *
+    */
    public static class StringEditor extends PropertyEditorSupport
    {
       public String getAsText() { return (String) getValue(); }

@@ -39,6 +39,9 @@ import javax.swing.JComboBox;
 */
 public class ColorEditor extends PropertyEditorSupport
 {
+   /**
+    * Creates a new ColorEditor
+    */
    public ColorEditor()
    {
       combo = new JComboBox(colors);
@@ -52,11 +55,18 @@ public class ColorEditor extends PropertyEditorSupport
                }
             });
    }
+   /**
+    * Checks if the object supports custom editors
+    * @return currently always returns true
+    */
    public boolean supportsCustomEditor()
    {
       return true;
    }
-
+   /**
+    * Gets the custom property editor
+    * @return the JComboBox with the correct component selected
+    */
    public Component getCustomEditor()
    {
       final ColorIcon value = new ColorIcon((Color) getValue());
@@ -65,7 +75,10 @@ public class ColorEditor extends PropertyEditorSupport
       combo.setSelectedIndex(i);
       return combo;
    }
-   
+   /**
+    * ColorIcon is an Icon the fills with a specified color
+    *
+    */
    static class ColorIcon implements Icon
    {
       public ColorIcon(Color color) { this.color = color; }
@@ -244,7 +257,9 @@ public class ColorEditor extends PropertyEditorSupport
       
       Arrays.sort(colors, new ColorComparator());
    }
-   
+   /**
+    * Compares objects based on their color
+    */
    static class ColorComparator implements Comparator
    {
       public int compare(Object obj1, Object obj2)

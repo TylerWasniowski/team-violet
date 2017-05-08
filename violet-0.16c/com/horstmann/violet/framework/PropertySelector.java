@@ -39,12 +39,18 @@ public class PropertySelector extends PropertyEditorSupport
       names = n;
       values = v;
    }
-
+   /**
+    * Gets the names of all the objects on the property sheet
+    * @return an array of the names
+    */
    public String[] getTags()
    {
       return names;
    }
-
+   /**
+    * Gets the value from the property sheet
+    * @return the value from the property sheet
+    */
    public String getAsText()
    {
       for (int i = 0; i < values.length; i++) {
@@ -52,7 +58,10 @@ public class PropertySelector extends PropertyEditorSupport
       }
       return null;
    }
-
+   /**
+    * Sets the value at the corresponding name
+    * @param s the name of the property to set
+    */
    public void setAsText(String s)
    {
       for (int i = 0; i < names.length; i++)

@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-/*
+/**
  * This class produces common file open and file save dialogs for normal operation and for Java Web Start.
  * Note that the JNLP service is loaded lazily: the JNLP library need not be present for local execution. 
  */
@@ -20,7 +20,7 @@ public abstract class FileService {
    /**
     * Gets a service that is appropriate for the mode in which this program
     * works.
-    * 
+    * @param initialDirectory the directory to start at for the file dialog
     * @return a service for local dialogs or for Java Web Start
     */
    public static synchronized FileService getInstance(File initialDirectory) {
@@ -187,7 +187,10 @@ public abstract class FileService {
 
          return new Save(null);
       }
-
+      /**
+       * Contains methods for opening files
+       *
+       */
       public class Open implements FileService.Open {
          public Open(File f) throws FileNotFoundException {
             if (f != null) {
@@ -207,7 +210,10 @@ public abstract class FileService {
          private String name;
          private InputStream in;
       }
-
+      /**
+       * Contains methods for saving files
+       *
+       */
       public class Save implements FileService.Save {
          public Save(File f) throws FileNotFoundException {
             if (f != null) {
