@@ -29,6 +29,10 @@ import java.beans.SimpleBeanInfo;
 */
 public class CallEdgeBeanInfo extends SimpleBeanInfo
 {
+   /**
+    * Gets the property descriptors of the CallEdge
+    * @return an array of the property descriptors
+    */
    public PropertyDescriptor[] getPropertyDescriptors()
    {
       try

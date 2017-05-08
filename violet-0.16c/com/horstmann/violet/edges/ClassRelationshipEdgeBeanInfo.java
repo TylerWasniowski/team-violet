@@ -29,6 +29,10 @@ import java.beans.SimpleBeanInfo;
 */
 public class ClassRelationshipEdgeBeanInfo extends SimpleBeanInfo
 {
+   /**
+    * Gets the property descriptors of the ClassRelationshipEdge
+    * @return an array of the property descriptors
+    */
    public PropertyDescriptor[] getPropertyDescriptors()
    {
       return descriptors;

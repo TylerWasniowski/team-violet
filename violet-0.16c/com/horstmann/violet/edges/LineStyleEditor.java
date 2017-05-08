@@ -27,6 +27,9 @@ import com.horstmann.violet.framework.PropertySelector;
 */
 public class LineStyleEditor extends PropertySelector
 {
+   /**
+    * Creates a new LineStyleEditor
+    */
    public LineStyleEditor()
    {
       super(names, values);

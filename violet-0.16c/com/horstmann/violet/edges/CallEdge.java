@@ -36,7 +36,9 @@ import com.horstmann.violet.nodes.PointNode;
 public class CallEdge extends SegmentedLineEdge
 {
    private static final long serialVersionUID = 2640004413418817563L;
-
+   /**
+    * Creates a new CallEdge
+    */
    public CallEdge()
    {
       setSignal(false);
@@ -60,7 +62,10 @@ public class CallEdge extends SegmentedLineEdge
       else
          setEndArrowHead(ArrowHead.V);
    }
-
+   /**
+    * Gets the starting and ending points of the edge
+    * @return an ArrayList of the start/end points
+    */
    public ArrayList getPoints()
    {
       ArrayList a = new ArrayList();

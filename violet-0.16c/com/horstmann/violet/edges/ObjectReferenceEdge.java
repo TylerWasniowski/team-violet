@@ -37,7 +37,10 @@ import com.horstmann.violet.framework.ShapeEdge;
 public class ObjectReferenceEdge extends ShapeEdge
 {
    private static final long serialVersionUID = -2013032578969977304L;
-
+   /**
+    * Draws the ObjectReferenceEdge
+    * @param g2 the graphics context to draw in
+    */
    public void draw(Graphics2D g2)
    {
       g2.draw(getShape());
@@ -52,7 +55,10 @@ public class ObjectReferenceEdge extends ShapeEdge
       ArrowHead.BLACK_TRIANGLE.draw(g2, new Point2D.Double(x1, y),
          new Point2D.Double(x2, y));      
    }
-
+   /**
+    * Gets the edge as a shape
+    * @return the edge as a shape
+    */
    public Shape getShape()
    {
       Line2D line = getConnectionPoints();
@@ -85,7 +91,10 @@ public class ObjectReferenceEdge extends ShapeEdge
       }
       return p;
    }
-
+   /**
+    * Gets the line from the start point to end point
+    * @return the line from start point to end point
+    */
    public Line2D getConnectionPoints()
    {
       Rectangle2D b = getEnd().getBounds();

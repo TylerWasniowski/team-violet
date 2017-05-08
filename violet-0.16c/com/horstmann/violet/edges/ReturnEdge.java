@@ -34,13 +34,18 @@ import com.horstmann.violet.nodes.PointNode;
 public class ReturnEdge extends SegmentedLineEdge
 {
    private static final long serialVersionUID = -4321907366561159737L;
-
+   /**
+    * Creates a new ReturnEdge
+    */
    public ReturnEdge()
    {
       setEndArrowHead(ArrowHead.V);
       setLineStyle(LineStyle.DOTTED);
    }
-
+   /**
+    * Gets the starting and ending points
+    * @return an ArrayList of the start and end points
+    */
    public ArrayList getPoints()
    {
       ArrayList a = new ArrayList();

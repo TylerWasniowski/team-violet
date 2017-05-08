@@ -57,7 +57,10 @@ public class StateTransitionEdge extends ShapeEdge
    {
       return labelText;
    }
-
+   /**
+    * Draws the StateTransitionEdge
+    * @param g2 the graphics context to draw in
+    */
    public void draw(Graphics2D g2)
    {
       g2.draw(getShape());
@@ -128,7 +131,10 @@ public class StateTransitionEdge extends ShapeEdge
          (line.getX1() + line.getX2()) / 2 + t * dy,
          (line.getY1() + line.getY2()) / 2 - t * dx);         
    }
-   
+   /**
+    * Gets the edge as a shape
+    * @return the edge as a shape
+    */
    public Shape getShape()
    {
       Line2D line = getConnectionPoints();
@@ -138,14 +144,21 @@ public class StateTransitionEdge extends ShapeEdge
       p.quadTo((float)control.getX(), (float)control.getY(), (float)line.getX2(), (float)line.getY2());      
       return p;
    }
-
+   /**
+    * Gets the bounding rectangle of the edge
+    * @param g2 the graphics context
+    * @return the bounding rectangle of the edge
+    */
    public Rectangle2D getBounds(Graphics2D g2)
    {
       Rectangle2D r = super.getBounds(g2);
       r.add(getLabelBounds(g2));
       return r;
    }
-   
+   /**
+    * Gets line from the start and end points of the edge
+    * @return the line from start to end point
+    */
    public Line2D getConnectionPoints()
    {
       Direction d1;

@@ -26,7 +26,10 @@ import com.horstmann.violet.framework.PropertySelector;
    A property editor for the BentStyle type.
 */
 public class BentStyleEditor extends PropertySelector
-{
+{  
+   /**
+    * Creates a new BentStyleEditor
+    */
    public BentStyleEditor()
    {
       super(names, values);

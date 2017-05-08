@@ -50,7 +50,10 @@ public class ClassRelationshipEdge extends SegmentedLineEdge
       @return the bent style
    */
    public BentStyle getBentStyle() { return bentStyle; }
-   
+   /**
+    * Gets the start and end points of the edge
+    * @return an ArrayList of the start and ending points
+    */
    public ArrayList getPoints()
    {
       return bentStyle.getPath(getStart().getBounds(),

@@ -27,6 +27,9 @@ import com.horstmann.violet.framework.PropertySelector;
 */
 public class ArrowHeadEditor extends PropertySelector
 {
+   /**
+    * Creates a new ArrowHeadEditor
+    */
    public ArrowHeadEditor()
    {
       super(names, values);

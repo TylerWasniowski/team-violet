@@ -37,7 +37,10 @@ import com.horstmann.violet.framework.ShapeEdge;
 public class NoteEdge extends ShapeEdge
 {
    private static final long serialVersionUID = -7756290730620392535L;
-
+   /**
+    * Draws the edge from the note to attachment
+    * @param g2 the graphics context to draw in
+    */
    public void draw(Graphics2D g2)
    {
       Stroke oldStroke = g2.getStroke();
@@ -45,7 +48,10 @@ public class NoteEdge extends ShapeEdge
       g2.draw(getConnectionPoints());
       g2.setStroke(oldStroke);
    }
-
+   /**
+    * Gets the line from the start and end points of the NoteEdge
+    * @return the line from start point to end point
+    */
    public Line2D getConnectionPoints()
    {
       Rectangle2D start = getStart().getBounds();
@@ -54,7 +60,10 @@ public class NoteEdge extends ShapeEdge
 
       return new Line2D.Double(getStart().getConnectionPoint(d), getEnd().getConnectionPoint(d.turn(180)));
    }
-
+   /**
+    * Gets the NoteEdge as a Shape
+    * @return the NoteEdge as a Shape
+    */
    public Shape getShape()
    {
       GeneralPath path = new GeneralPath();
