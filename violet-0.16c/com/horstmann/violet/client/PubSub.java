@@ -33,7 +33,6 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
     private static final Boolean NON_TRANSACTED = false;
     private ActiveMQConnection connection;
     private Session session;
-    private Set<ActiveMQTopic> topics;
     private MessageConsumer messageConsumer;
     private MessageProducer messageProducer;
     private TeamDiagram teamDiagram;
@@ -141,29 +140,18 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
      * fetches topics on server
      * @return array list of topic strings
      */
-    public ArrayList<String> fetchTopics() {
+    public ArrayList<String> fetchTopics() throws JMSException {
         ArrayList<String> tops = new ArrayList<String>();
-        try {
-            ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", BROKER_URL);
-            connectionFactory.setTrustAllPackages(true);
-            connection = (ActiveMQConnection) connectionFactory.createConnection();
-            connection.start();
-            DestinationSource dSource = connection.getDestinationSource();
-            Set<ActiveMQTopic> topics = dSource.getTopics();
-            Iterator<ActiveMQTopic> itr = topics.iterator();
-            while(itr.hasNext())
-                tops.add(itr.next().getTopicName());
-        } catch (JMSException e) {
-            e.printStackTrace();
-            JOptionPane jOptionPane = new JOptionPane("Could not start connection with ActiveMQ." +
-                    " Is ActiveMQ running on the server?", JOptionPane.WARNING_MESSAGE);
-            JDialog jDialog = jOptionPane.createDialog("Error");
-            jDialog.setAlwaysOnTop(true);
-            jDialog.setVisible(true);
-        } finally {
-            if(connection != null)
-                this.close();
-        }
+        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", BROKER_URL);
+        connectionFactory.setTrustAllPackages(true);
+        connection = (ActiveMQConnection) connectionFactory.createConnection();
+        connection.start();
+        DestinationSource dSource = connection.getDestinationSource();
+        Set<ActiveMQTopic> topics = dSource.getTopics();
+        Iterator<ActiveMQTopic> itr = topics.iterator();
+        while(itr.hasNext())
+            tops.add(itr.next().getTopicName());
+        
         return tops;
     }
 }

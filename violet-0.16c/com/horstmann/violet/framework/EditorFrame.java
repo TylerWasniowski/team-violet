@@ -24,7 +24,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -65,6 +64,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDesktopPane;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -76,7 +76,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -85,7 +84,6 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-
 import com.horstmann.violet.client.PubSub;
 import com.horstmann.violet.edges.ArrowHead;
 import com.horstmann.violet.edges.BentStyle;
@@ -164,9 +162,9 @@ public class EditorFrame extends JFrame {
       fileMenu.add(newMenu);
 
       newMenu.add(factory.createMenuItem("file.team_seq_diagram", new ActionListener() {
-        @SuppressWarnings("unchecked")
         public void actionPerformed(ActionEvent event) {
             try {
+               boolean exception = false;
                JButton newProjButton = new JButton("Create New Team");
                newProjButton.addActionListener(new ActionListener() {
                   public void actionPerformed(ActionEvent event) {
@@ -191,10 +189,17 @@ public class EditorFrame extends JFrame {
                newProjButton.setMargin(new Insets(5, 5, 5, 5));
                ArrayList<String> tStrings = new ArrayList<String>();
                try {
-                   tStrings = (ArrayList<String>) PubSub.class.getDeclaredMethod("fetchTopics").
-                           invoke(PubSub.class.newInstance());
+                   PubSub p = new PubSub();
+                   tStrings = p.fetchTopics();
+                   p.close();
                } catch (Exception e) {
                    e.printStackTrace();
+                   exception = true;
+                   JOptionPane jOptionPane = new JOptionPane("Could not start connection with ActiveMQ." +
+                           " Is ActiveMQ running on the server?", JOptionPane.WARNING_MESSAGE);
+                   JDialog jDialog = jOptionPane.createDialog("Error");
+                   jDialog.setAlwaysOnTop(true);
+                   jDialog.setVisible(true);
                }
                JList<String> currentProjectsList = new JList<String>(tStrings.stream().toArray(String[]::new));
                currentProjectsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -219,19 +224,21 @@ public class EditorFrame extends JFrame {
                     }
                   }
                });
-               existingProjButton.setMargin(new Insets(5, 5, 5, 5));
-               JInternalFrame frm = new JInternalFrame("Project Selection Prompt", false, true, false);
-               frm.setLayout(new BorderLayout(10, 10));
-               JPanel buttons = new JPanel();
-               buttons.add(existingProjButton);
-               buttons.add(newProjButton);
-               frm.add(buttons, BorderLayout.SOUTH);
-               frm.add(scrollList, BorderLayout.CENTER);
-               desktop.add(frm);
-               desktop.revalidate();
-               frm.setLocation(screenWidth / 3, screenHeight / 3);
-               frm.pack();
-               frm.show();
+               if(!exception) {
+                   existingProjButton.setMargin(new Insets(5, 5, 5, 5));
+                   JInternalFrame frm = new JInternalFrame("Project Selection Prompt", false, true, false);
+                   frm.setLayout(new BorderLayout(10, 10));
+                   JPanel buttons = new JPanel();
+                   buttons.add(existingProjButton);
+                   buttons.add(newProjButton);
+                   frm.add(buttons, BorderLayout.SOUTH);
+                   frm.add(scrollList, BorderLayout.CENTER);
+                   desktop.add(frm);
+                   desktop.revalidate();
+                   frm.setLocation(screenWidth / 3, screenHeight / 3);
+                   frm.pack();
+                   frm.show();
+               }
             } catch (Exception ex) {
                ex.printStackTrace();
             }
