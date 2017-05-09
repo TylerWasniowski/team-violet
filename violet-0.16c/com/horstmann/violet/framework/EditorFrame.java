@@ -52,6 +52,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.text.MessageFormat;
@@ -84,6 +85,8 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+
+import com.horstmann.violet.client.PubSub;
 import com.horstmann.violet.edges.ArrowHead;
 import com.horstmann.violet.edges.BentStyle;
 import com.horstmann.violet.edges.LineStyle;
@@ -161,7 +164,8 @@ public class EditorFrame extends JFrame {
       fileMenu.add(newMenu);
 
       newMenu.add(factory.createMenuItem("file.team_seq_diagram", new ActionListener() {
-         public void actionPerformed(ActionEvent event) {
+        @SuppressWarnings("unchecked")
+        public void actionPerformed(ActionEvent event) {
             try {
                JButton newProjButton = new JButton("Create New Team");
                newProjButton.addActionListener(new ActionListener() {
@@ -186,16 +190,29 @@ public class EditorFrame extends JFrame {
                   }
                });
                newProjButton.setMargin(new Insets(5, 5, 5, 5));
-               // TODO query the server to populate the list
-               String[] testStrings = { "Dummy Project 1", "Dummy Project 2" };
-               JList<String> currentProjectsList = new JList<String>(testStrings);
+               ArrayList<String> tStrings = new ArrayList<String>();
+               try {
+                   tStrings = (ArrayList<String>) PubSub.class.getDeclaredMethod("fetchTopics").
+                           invoke(PubSub.class.newInstance());
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+               JList<String> currentProjectsList = new JList<String>(tStrings.stream().toArray(String[]::new));
                currentProjectsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                currentProjectsList.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                JScrollPane scrollList = new JScrollPane(currentProjectsList);
                JButton existingProjButton = new JButton("Join Existing Team");
                existingProjButton.addActionListener(new ActionListener() {
                   public void actionPerformed(ActionEvent event) {
-                     // TODO figure out how to join existing projects
+                      try {
+                        GraphFrame eFrame = new GraphFrame((Graph) TeamSequenceDiagramGraph.class.
+                                  getDeclaredConstructor(new Class[] {String.class}).
+                                  newInstance(event.getActionCommand()));
+                        addInternalFrame(eFrame);
+                    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                            | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                        e.printStackTrace();
+                    }
                   }
                });
                existingProjButton.setMargin(new Insets(5, 5, 5, 5));

@@ -38,9 +38,7 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
     public TeamSequenceDiagramGraph(String pName) throws JMSException {
         super();
         
-        setConnectionServer(pName);
-
-        id = connectionToServer.start();
+        setAndStartConnectionServer(pName);
 
         graphIDsToItemSelections = new ConcurrentHashMap<>();
 
@@ -175,7 +173,8 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
      * Sets the connection server
      * @param pName project name
      */
-    public void setConnectionServer(String pName) {
+    public void setAndStartConnectionServer(String pName) {
         connectionToServer = new PubSub(this, pName);
+        id = connectionToServer.start();
     }
 }

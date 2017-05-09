@@ -3,6 +3,8 @@ package com.horstmann.violet.client;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Set;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -25,12 +27,13 @@ import org.apache.activemq.command.ActiveMQTopic;
  * handles the sending/receiving of commands between team members.
  */
 public class PubSub implements MessageListener, Closeable, AutoCloseable {
-    private static final String BROKER_HOST = "tcp://35.185.226.253:%d";
+    private static final String BROKER_HOST = "tcp://104.199.123.169:%d";
     private static final int BROKER_PORT = 61616;
     private static final String BROKER_URL = String.format(BROKER_HOST, BROKER_PORT);
     private static final Boolean NON_TRANSACTED = false;
     private ActiveMQConnection connection;
     private Session session;
+    private Set<ActiveMQTopic> topics;
     private MessageConsumer messageConsumer;
     private MessageProducer messageProducer;
     private TeamDiagram teamDiagram;
@@ -42,6 +45,12 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
     public PubSub(TeamDiagram teamDiagram, String pName) {
         this.teamDiagram = teamDiagram;
         this.projectName = pName;
+    }
+    
+    /**
+     * PubSub empty constructor 
+     */
+    public PubSub() {
     }
 
     /**
@@ -55,20 +64,9 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
             connection = (ActiveMQConnection) connectionFactory.createConnection();
             connection.start();
             session = connection.createSession(NON_TRANSACTED, Session.AUTO_ACKNOWLEDGE);
-
-            DestinationSource destinationSource = connection.getDestinationSource();
-            Set<ActiveMQTopic> topics = destinationSource.getTopics();
-            System.out.println(topics);
-            System.out.println();
-
             messageConsumer = session.createConsumer(session.createTopic(projectName));
             messageProducer = session.createProducer(session.createTopic(projectName));
             messageConsumer.setMessageListener(this);
-
-            topics = destinationSource.getTopics();
-            System.out.println(topics);
-            System.out.println();
-
             return connection.getClientID();
         } catch (JMSException e) {
             try {
@@ -137,5 +135,35 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
         }
 
         connection = null;
+    }
+    
+    /**
+     * fetches topics on server
+     * @return array list of topic strings
+     */
+    public ArrayList<String> fetchTopics() {
+        ArrayList<String> tops = new ArrayList<String>();
+        ActiveMQConnection tConnection = null;
+        try {
+            ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", BROKER_URL);
+            connectionFactory.setTrustAllPackages(true);
+            tConnection = (ActiveMQConnection) connectionFactory.createConnection();
+            tConnection.start();
+            DestinationSource dSource = tConnection.getDestinationSource();
+            Set<ActiveMQTopic> topics = dSource.getTopics();
+            Iterator<ActiveMQTopic> itr = topics.iterator();
+            while(itr.hasNext())
+                tops.add(itr.next().getTopicName());
+        } catch (JMSException e) {
+            e.printStackTrace();
+        } finally {
+            if(tConnection != null)
+                try {
+                    tConnection.close();
+                } catch (JMSException e) {
+                    e.printStackTrace();
+                }
+        }
+        return tops;
     }
 }
