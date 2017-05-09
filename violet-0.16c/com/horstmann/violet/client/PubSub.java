@@ -143,26 +143,26 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
      */
     public ArrayList<String> fetchTopics() {
         ArrayList<String> tops = new ArrayList<String>();
-        ActiveMQConnection tConnection = null;
         try {
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", BROKER_URL);
             connectionFactory.setTrustAllPackages(true);
-            tConnection = (ActiveMQConnection) connectionFactory.createConnection();
-            tConnection.start();
-            DestinationSource dSource = tConnection.getDestinationSource();
+            connection = (ActiveMQConnection) connectionFactory.createConnection();
+            connection.start();
+            DestinationSource dSource = connection.getDestinationSource();
             Set<ActiveMQTopic> topics = dSource.getTopics();
             Iterator<ActiveMQTopic> itr = topics.iterator();
             while(itr.hasNext())
                 tops.add(itr.next().getTopicName());
         } catch (JMSException e) {
             e.printStackTrace();
+            JOptionPane jOptionPane = new JOptionPane("Could not start connection with ActiveMQ." +
+                    " Is ActiveMQ running on the server?", JOptionPane.WARNING_MESSAGE);
+            JDialog jDialog = jOptionPane.createDialog("Error");
+            jDialog.setAlwaysOnTop(true);
+            jDialog.setVisible(true);
         } finally {
-            if(tConnection != null)
-                try {
-                    tConnection.close();
-                } catch (JMSException e) {
-                    e.printStackTrace();
-                }
+            if(connection != null)
+                this.close();
         }
         return tops;
     }

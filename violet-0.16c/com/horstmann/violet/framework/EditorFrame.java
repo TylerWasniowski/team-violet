@@ -176,9 +176,8 @@ public class EditorFrame extends JFrame {
                      String newProjName = JOptionPane.showInternalInputDialog(desktop, pan, "Create Project GUI",
                            JOptionPane.QUESTION_MESSAGE);
                      if (newProjName == null) {// Checking that they input
-                                               // anything
                         return;
-                     } else {// TODO: store the project names
+                     } else {
                         try {
                            GraphFrame frame = new GraphFrame((Graph) TeamSequenceDiagramGraph.class.
                                    getDeclaredConstructor(new Class[] {String.class}).newInstance(newProjName));
@@ -202,13 +201,18 @@ public class EditorFrame extends JFrame {
                currentProjectsList.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                JScrollPane scrollList = new JScrollPane(currentProjectsList);
                JButton existingProjButton = new JButton("Join Existing Team");
+               if(tStrings.isEmpty())
+                   existingProjButton.setEnabled(false);   
                existingProjButton.addActionListener(new ActionListener() {
                   public void actionPerformed(ActionEvent event) {
                       try {
-                        GraphFrame eFrame = new GraphFrame((Graph) TeamSequenceDiagramGraph.class.
-                                  getDeclaredConstructor(new Class[] {String.class}).
-                                  newInstance(event.getActionCommand()));
-                        addInternalFrame(eFrame);
+                          String selection = currentProjectsList.getSelectedValue();
+                          if(selection != null || selection != "") {
+                              GraphFrame eFrame = new GraphFrame((Graph) TeamSequenceDiagramGraph.class.
+                                      getDeclaredConstructor(new Class[] {String.class}).
+                                      newInstance(currentProjectsList.getSelectedValue()));
+                            addInternalFrame(eFrame);
+                          }
                     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                             | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                         e.printStackTrace();
@@ -216,7 +220,6 @@ public class EditorFrame extends JFrame {
                   }
                });
                existingProjButton.setMargin(new Insets(5, 5, 5, 5));
-
                JInternalFrame frm = new JInternalFrame("Project Selection Prompt", false, true, false);
                frm.setLayout(new BorderLayout(10, 10));
                JPanel buttons = new JPanel();
