@@ -73,7 +73,7 @@ public interface TeamDiagram extends Closeable, AutoCloseable{
             synchronized (getItemSelectionsMap()) {
                 // This graphID has not given a color to the given graphID yet, make one
                 // Use the number of graphIDs in the map as the seed for the hue
-                Color color = Color.getHSBColor((((float) getItemSelectionsMap().size() % 9) / 8f), 1f, 0.55f);
+                Color color = Color.getHSBColor((((float) getItemSelectionsMap().size() % 9) / 8f), 1f, 0.68f);
                 getItemSelectionsMap().put(graphID, new Pair<>(color, selectedItems));
             }
         }
