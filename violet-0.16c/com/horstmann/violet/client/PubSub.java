@@ -25,7 +25,7 @@ import org.apache.activemq.command.ActiveMQTopic;
  * handles the sending/receiving of commands between team members.
  */
 public class PubSub implements MessageListener, Closeable, AutoCloseable {
-    private static final String BROKER_HOST = "tcp://35.185.243.162:%d";
+    private static final String BROKER_HOST = "tcp://35.185.226.253:%d";
     private static final int BROKER_PORT = 61616;
     private static final String BROKER_URL = String.format(BROKER_HOST, BROKER_PORT);
     private static final Boolean NON_TRANSACTED = false;
@@ -34,12 +34,14 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
     private MessageConsumer messageConsumer;
     private MessageProducer messageProducer;
     private TeamDiagram teamDiagram;
+    private String projectName;
     /**
      * PubSub constructor 
      * @param teamDiagram the diagram that commands will be executed on.
      */
-    public PubSub(TeamDiagram teamDiagram) {
+    public PubSub(TeamDiagram teamDiagram, String pName) {
         this.teamDiagram = teamDiagram;
+        this.projectName = pName;
     }
 
     /**
@@ -59,8 +61,8 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
             System.out.println(topics);
             System.out.println();
 
-            messageConsumer = session.createConsumer(session.createTopic("VIOLET.TOPIC"));
-            messageProducer = session.createProducer(session.createTopic("VIOLET.TOPIC"));
+            messageConsumer = session.createConsumer(session.createTopic(projectName));
+            messageProducer = session.createProducer(session.createTopic(projectName));
             messageConsumer.setMessageListener(this);
 
             topics = destinationSource.getTopics();

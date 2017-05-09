@@ -176,7 +176,8 @@ public class EditorFrame extends JFrame {
                         return;
                      } else {// TODO: store the project names
                         try {
-                           GraphFrame frame = new GraphFrame((Graph) TeamSequenceDiagramGraph.class.newInstance());
+                           GraphFrame frame = new GraphFrame((Graph) TeamSequenceDiagramGraph.class.
+                                   getDeclaredConstructor(new Class[] {String.class}).newInstance(newProjName));
                            addInternalFrame(frame);
                         } catch (Exception ex) {
                            ex.printStackTrace();

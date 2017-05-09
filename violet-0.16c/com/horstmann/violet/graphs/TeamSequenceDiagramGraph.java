@@ -35,10 +35,10 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
      * Creates the Team Diagram and starts the connection with the server
      * @throws JMSException If there are issues connecting to server
      */
-    public TeamSequenceDiagramGraph() throws JMSException {
+    public TeamSequenceDiagramGraph(String pName) throws JMSException {
         super();
-
-        connectionToServer = new PubSub(this);
+        
+        setConnectionServer(pName);
 
         id = connectionToServer.start();
 
@@ -169,5 +169,13 @@ public class TeamSequenceDiagramGraph extends SequenceDiagramGraph implements Te
     @Override
     public String getClientID() {
         return id;
+    }
+    
+    /**
+     * Sets the connection server
+     * @param pName project name
+     */
+    public void setConnectionServer(String pName) {
+        connectionToServer = new PubSub(this, pName);
     }
 }
