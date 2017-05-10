@@ -394,12 +394,17 @@ public class GraphPanel extends JPanel
             Math.max(bounds.getMaxY() / zoom, graphBounds.getMaxY())));
       graph.draw(g2, grid);
 
-      selectedItems.stream()
-              .filter((UniquelyIdentifiable selectedItem) ->
-                      (!graph.getNodes().contains(selectedItem)
-                              && !graph.getEdges().contains(selectedItem)))
-              .forEach(this::removeSelectedItem);
-
+      Iterator iter = selectedItems.iterator();
+      while (iter.hasNext()){
+         UniquelyIdentifiable i = (UniquelyIdentifiable)iter.next();
+         if (!graph.getNodes().contains(i) && !graph.getEdges().contains(i)){
+            iter.remove();
+            if (i == lastSelected){
+               lastSelected = null;
+            }
+            sendSelectionChangeToServer();
+         }
+      }
       drawItemSelections(g2, selectedItems);
 
       // Draw selections of all of the other clients
