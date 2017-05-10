@@ -50,7 +50,6 @@ import com.horstmann.violet.graphs.*;
  */
 public class UMLEditor extends JApplet
 {
-    private static final long serialVersionUID = 7672410892827376431L;
     /**
      * Displays the main frame of the application
      * @param args Command Line arguments
