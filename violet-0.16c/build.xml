@@ -41,6 +41,7 @@
       <jar jarfile="${jarfile}">
          <manifest>
             <attribute name="Main-Class" value="com.horstmann.violet.UMLEditor" />
+            <attribute name="Class-Path" value="${activemq.jar}"/>
             <attribute name="permissions" value="sandbox"/>
          </manifest>
          <fileset dir="${basedir}">
