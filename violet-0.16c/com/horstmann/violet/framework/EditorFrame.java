@@ -167,7 +167,7 @@ public class EditorFrame extends JFrame {
         public void actionPerformed(ActionEvent event) {
             try {
                boolean exception = false;
-               JButton newProjButton = new JButton("Create New Team");
+               JButton newProjButton = new JButton("Create New Project");
                newProjButton.addActionListener(new ActionListener() {
                   public void actionPerformed(ActionEvent event) {
                      JPanel pan = new JPanel(new BorderLayout(5, 5));
@@ -207,7 +207,7 @@ public class EditorFrame extends JFrame {
                currentProjectsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                currentProjectsList.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                JScrollPane scrollList = new JScrollPane(currentProjectsList);
-               JButton existingProjButton = new JButton("Join Existing Team");
+               JButton existingProjButton = new JButton("Join Existing Project");
                if(tStrings.isEmpty())
                    existingProjButton.setEnabled(false);   
                existingProjButton.addActionListener(new ActionListener() {
@@ -273,20 +273,23 @@ public class EditorFrame extends JFrame {
                  pan.add(lbl, BorderLayout.WEST);
                  String ipString = JOptionPane.showInternalInputDialog(desktop, pan, "Settings",
                        JOptionPane.QUESTION_MESSAGE);
+                System.out.println(ipString);
                  if(ipString != null || ipString != "") {
                      if(Pattern.compile(IPADDRESS_PATTERN).matcher(ipString).matches()) {
-                         Properties props = new Properties();
-                         String path = "com/horstmann/violet/client/teamActiveMQ.properties";
-                         FileInputStream configStream = new FileInputStream(path);
-                         props.load(configStream);
-                         configStream.close();
-                         props.setProperty("serverIP", ipString);
-                         FileOutputStream output = new FileOutputStream(path);
-                         props.store(output, null);
-                         output.close();
-                     }  
+                        Properties props = new Properties();
+                        String path = "com/horstmann/violet/client/teamActiveMQ.properties";
+                        FileInputStream configStream = new FileInputStream(path);
+                        props.load(configStream);
+                        configStream.close();
+                        props.setProperty("serverIP", ipString);
+                        FileOutputStream output = new FileOutputStream(path);
+                        props.store(output, null);
+                        output.close();
+                        PubSub.reloadIPFromSettings();
+                     }
                  }
              } catch (IOException ex) {
+                ex.printStackTrace();
              }
           }
        }));

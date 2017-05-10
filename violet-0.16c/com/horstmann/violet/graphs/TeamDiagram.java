@@ -60,21 +60,25 @@ public interface TeamDiagram extends Closeable, AutoCloseable{
     public ConcurrentHashMap<String, Pair<Color, Set<UniquelyIdentifiable>>> getItemSelectionsMap();
 
     /**
-     * Maps the given graphID to the given set of items that graph is selecting.
-     * @param graphID the ID of the graph selecting the given items
-     * @param selectedItems the items the graph with the given graphID is selecting
+     * Maps the given clientID to the given set of items that graph is selecting.
+     * @param clientID the ID of the graph selecting the given items
+     * @param selectedItems the items the graph with the given clientID is selecting
      */
-    public default void putItemSelections(String graphID, Set<UniquelyIdentifiable> selectedItems) {
-        Pair<Color, Set<UniquelyIdentifiable>> colorItemSelectionsPair = getItemSelectionsMap().get(graphID);
+    public default void putItemSelections(String clientID, Set<UniquelyIdentifiable> selectedItems) {
+        // Make sure we don't add our graph into the map for no reason
+        if (clientID.equals(getClientID()))
+            return;
+
+        Pair<Color, Set<UniquelyIdentifiable>> colorItemSelectionsPair = getItemSelectionsMap().get(clientID);
         if (colorItemSelectionsPair != null) {
-            // Given graphID has a color assigned to it, don't change it
-            getItemSelectionsMap().put(graphID, new Pair<>(colorItemSelectionsPair.getKey(), selectedItems));
+            // Given clientID has a color assigned to it, don't change it
+            getItemSelectionsMap().put(clientID, new Pair<>(colorItemSelectionsPair.getKey(), selectedItems));
         } else {
             synchronized (getItemSelectionsMap()) {
-                // This graphID has not given a color to the given graphID yet, make one
+                // This clientID has not given a color to the given clientID yet, make one
                 // Use the number of graphIDs in the map as the seed for the hue
                 Color color = Color.getHSBColor((((float) getItemSelectionsMap().size() % 9) / 8f), 1f, 0.68f);
-                getItemSelectionsMap().put(graphID, new Pair<>(color, selectedItems));
+                getItemSelectionsMap().put(clientID, new Pair<>(color, selectedItems));
             }
         }
     }

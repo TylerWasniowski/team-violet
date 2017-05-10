@@ -30,8 +30,9 @@ import org.apache.activemq.command.ActiveMQTopic;
 public class PubSub implements MessageListener, Closeable, AutoCloseable {
     private static final String BROKER_HOST = "tcp://%s:%d";
     private static final int BROKER_PORT = 61616;
-    ResourceBundle rb = ResourceBundle.getBundle("com.horstmann.violet.client.teamActiveMQ");
     private static final Boolean NON_TRANSACTED = false;
+    private static final String RESOURCE_BUNDLE_NAME = "com.horstmann.violet.client.teamActiveMQ";
+    private static ResourceBundle rb = ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME);
     private ActiveMQConnection connection;
     private Session session;
     private MessageConsumer messageConsumer;
@@ -91,27 +92,25 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
     }
 
     @Override
-    public void onMessage(Message message) {
-        synchronized (this) {
-            try {
-                Serializable obj;
-                ActiveMQObjectMessage mq = (ActiveMQObjectMessage) message;
-                obj = mq.getObject();
-                if (obj instanceof Command) {
-                    Command command = (Command) obj;
-                    if (!command.execute(teamDiagram))
-                        System.out.println(command.getClass() + " failed on graph with ID: " + teamDiagram.getClientID());
-                    // or command.execute(projectIDToTeamDiagram.get("Project 1"));
+    public synchronized void onMessage(Message message) {
+        try {
+            Serializable obj;
+            ActiveMQObjectMessage mq = (ActiveMQObjectMessage) message;
+            obj = mq.getObject();
+            if (obj instanceof Command) {
+                Command command = (Command) obj;
+                if (!command.execute(teamDiagram))
+                    System.out.println(command.getClass() + " failed on graph with ID: " + teamDiagram.getClientID());
+                // or command.execute(projectIDToTeamDiagram.get("Project 1"));
 
-                    teamDiagram.layout();
-                    if (teamDiagram.getJPanel() != null) {
-                        teamDiagram.getJPanel().revalidate();
-                        teamDiagram.getJPanel().repaint();
-                    }
+                teamDiagram.layout();
+                if (teamDiagram.getJPanel() != null) {
+                    teamDiagram.getJPanel().revalidate();
+                    teamDiagram.getJPanel().repaint();
                 }
-            } catch (JMSException e) {
-                e.printStackTrace();
             }
+        } catch (JMSException e) {
+            e.printStackTrace();
         }
     }
     /**
@@ -120,24 +119,10 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
      * @throws JMSException if problem with JMS
      * @throws InterruptedException thrown if thread is interrupted
      */
-    public void sendCommand(Command command) throws JMSException, InterruptedException {
+    public synchronized void sendCommand(Command command) throws JMSException, InterruptedException {
         ObjectMessage msg = session.createObjectMessage();
         msg.setObject(command);
         messageProducer.send(msg);
-    }
-    /**
-     * Tries to close the ActiveMQ connection
-     */
-    public void close() {
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (JMSException e) {
-                e.printStackTrace();
-            }
-        }
-
-        connection = null;
     }
     
     /**
@@ -158,5 +143,27 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
             tops.add(itr.next().getTopicName());
         
         return tops;
+    }
+
+    /**
+     * Reloads IP from settings
+     */
+    public static void reloadIPFromSettings() {
+        rb = ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME);
+    }
+
+    /**
+     * Tries to close the ActiveMQ connection
+     */
+    public void close() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (JMSException e) {
+                e.printStackTrace();
+            }
+        }
+
+        connection = null;
     }
 }

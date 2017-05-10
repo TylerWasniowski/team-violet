@@ -382,7 +382,7 @@ public class GraphPanel extends JPanel
     * Paints the graph panel
     * @param g the graphics context
     */
-   public void paintComponent(Graphics g)
+   public synchronized void paintComponent(Graphics g)
    {
       super.paintComponent(g);
       Graphics2D g2 = (Graphics2D) g;
@@ -394,17 +394,17 @@ public class GraphPanel extends JPanel
             Math.max(bounds.getMaxY() / zoom, graphBounds.getMaxY())));
       graph.draw(g2, grid);
 
-      Iterator iter = selectedItems.iterator();
-      while (iter.hasNext()){
-         UniquelyIdentifiable i = (UniquelyIdentifiable)iter.next();
-         if (!graph.getNodes().contains(i) && !graph.getEdges().contains(i)){
-            iter.remove();
-            if (i == lastSelected){
-               lastSelected = null;
-            }
-            sendSelectionChangeToServer();
-         }
+      // Remove any selectedItems that don't exist in the graph
+      synchronized (selectedItems) {
+         Set<UniquelyIdentifiable> itemsToBeRemoved = new HashSet<>();
+         selectedItems.stream()
+                 .filter((UniquelyIdentifiable selectedItem) ->
+                         (!graph.getNodes().contains(selectedItem) && !graph.getEdges().contains(selectedItem)))
+                 .forEach(itemsToBeRemoved::add);
+
+         itemsToBeRemoved.stream().forEach(this::removeSelectedItem);
       }
+
       drawItemSelections(g2, selectedItems);
 
       // Draw selections of all of the other clients
@@ -416,6 +416,17 @@ public class GraphPanel extends JPanel
 
                Pair<Color, Set<UniquelyIdentifiable>> colorItemSelectionsPair =
                        ((TeamDiagram) graph).getItemSelectionsMap().get(graphID);
+
+               // Remove any node from the selection map if it was already deleted
+               Iterator<UniquelyIdentifiable> selectedItemsIterator = colorItemSelectionsPair.getValue().iterator();
+               UniquelyIdentifiable selectedItem;
+               while (selectedItemsIterator.hasNext()) {
+                  selectedItem = selectedItemsIterator.next();
+                  if (((TeamDiagram) graph).findItemFromID(selectedItem.getID()) == null)
+                     selectedItemsIterator.remove();
+
+               }
+
                drawItemSelections(g2, colorItemSelectionsPair.getValue(), colorItemSelectionsPair.getKey(), graphID);
             }
 
@@ -441,7 +452,7 @@ public class GraphPanel extends JPanel
                Math.min(y1, y2), Math.abs(x1 - x2) , Math.abs(y1 - y2));
          g2.draw(lasso);
          g2.setColor(oldColor);
-      }      
+      }
    }
 
    private static void drawItemSelections(Graphics2D g2, Set<UniquelyIdentifiable> selectedItems) {
@@ -449,7 +460,6 @@ public class GraphPanel extends JPanel
    }
 
    private static void drawItemSelections(Graphics2D g2, Set<UniquelyIdentifiable> selectedItems, Color color, String nameOfSelector) {
-
       FontMetrics fontMetrics = g2.getFontMetrics();
 
       Color oldColor = g2.getColor();
