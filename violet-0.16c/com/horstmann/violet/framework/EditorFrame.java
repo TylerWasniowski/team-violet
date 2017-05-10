@@ -167,6 +167,7 @@ public class EditorFrame extends JFrame {
         public void actionPerformed(ActionEvent event) {
             try {
                boolean exception = false;
+               JInternalFrame frm = new JInternalFrame("Project Selection Prompt", false, true, false);
                JButton newProjButton = new JButton("Create New Project");
                newProjButton.addActionListener(new ActionListener() {
                   public void actionPerformed(ActionEvent event) {
@@ -182,6 +183,7 @@ public class EditorFrame extends JFrame {
                            GraphFrame frame = new GraphFrame((Graph) TeamSequenceDiagramGraph.class.
                                    getDeclaredConstructor(new Class[] {String.class}).newInstance(newProjName));
                            addInternalFrame(frame);
+                           frm.dispose();
                         } catch (Exception ex) {
                            ex.printStackTrace();
                         }
@@ -219,6 +221,7 @@ public class EditorFrame extends JFrame {
                                       getDeclaredConstructor(new Class[] {String.class}).
                                       newInstance(currentProjectsList.getSelectedValue()));
                             addInternalFrame(eFrame);
+                            frm.dispose();
                           }
                     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                             | InvocationTargetException | NoSuchMethodException | SecurityException e) {
@@ -228,7 +231,6 @@ public class EditorFrame extends JFrame {
                });
                if(!exception) {
                    existingProjButton.setMargin(new Insets(5, 5, 5, 5));
-                   JInternalFrame frm = new JInternalFrame("Project Selection Prompt", false, true, false);
                    frm.setLayout(new BorderLayout(10, 10));
                    JPanel buttons = new JPanel();
                    buttons.add(existingProjButton);
