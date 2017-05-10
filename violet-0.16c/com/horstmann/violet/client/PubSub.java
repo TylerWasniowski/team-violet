@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ResourceBundle;
 import java.util.Set;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -27,9 +28,9 @@ import org.apache.activemq.command.ActiveMQTopic;
  * handles the sending/receiving of commands between team members.
  */
 public class PubSub implements MessageListener, Closeable, AutoCloseable {
-    private static final String BROKER_HOST = "tcp://104.199.123.169:%d";
+    private static final String BROKER_HOST = "tcp://%s:%d";
     private static final int BROKER_PORT = 61616;
-    private static final String BROKER_URL = String.format(BROKER_HOST, BROKER_PORT);
+    ResourceBundle rb = ResourceBundle.getBundle("com.horstmann.violet.client.teamActiveMQ");
     private static final Boolean NON_TRANSACTED = false;
     private ActiveMQConnection connection;
     private Session session;
@@ -37,9 +38,11 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
     private MessageProducer messageProducer;
     private TeamDiagram teamDiagram;
     private String projectName;
+    
     /**
      * PubSub constructor 
      * @param teamDiagram the diagram that commands will be executed on.
+     * @param pName the project/topic name.
      */
     public PubSub(TeamDiagram teamDiagram, String pName) {
         this.teamDiagram = teamDiagram;
@@ -58,7 +61,8 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
      */
     public String start() {
         try {
-            ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", BROKER_URL);
+            ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin",
+                    String.format(BROKER_HOST, rb.getString("serverIP"), BROKER_PORT));
             connectionFactory.setTrustAllPackages(true);
             connection = (ActiveMQConnection) connectionFactory.createConnection();
             connection.start();
@@ -142,7 +146,8 @@ public class PubSub implements MessageListener, Closeable, AutoCloseable {
      */
     public ArrayList<String> fetchTopics() throws JMSException {
         ArrayList<String> tops = new ArrayList<String>();
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", BROKER_URL);
+        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin",
+                String.format(BROKER_HOST, rb.getString("serverIP"), BROKER_PORT));
         connectionFactory.setTrustAllPackages(true);
         connection = (ActiveMQConnection) connectionFactory.createConnection();
         connection.start();

@@ -57,7 +57,9 @@ import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -244,7 +246,7 @@ public class EditorFrame extends JFrame {
             }
          }
       }));
-
+      
       JMenuItem fileOpenItem = factory.createMenuItem("file.open", this, "openFile");
       fileMenu.add(fileOpenItem);
 
@@ -262,6 +264,32 @@ public class EditorFrame extends JFrame {
 
       JMenuItem filePrintItem = factory.createMenuItem("file.print", this, "print");
       fileMenu.add(filePrintItem);
+      
+      fileMenu.add(factory.createMenuItem("file.settings", new ActionListener() {
+          public void actionPerformed(ActionEvent event) {
+             try {
+                 JPanel pan = new JPanel(new BorderLayout(5, 5));
+                 JLabel lbl = new JLabel("Server IP Address");
+                 pan.add(lbl, BorderLayout.WEST);
+                 String ipString = JOptionPane.showInternalInputDialog(desktop, pan, "Settings",
+                       JOptionPane.QUESTION_MESSAGE);
+                 if(ipString != null || ipString != "") {
+                     if(Pattern.compile(IPADDRESS_PATTERN).matcher(ipString).matches()) {
+                         Properties props = new Properties();
+                         String path = "com/horstmann/violet/client/teamActiveMQ.properties";
+                         FileInputStream configStream = new FileInputStream(path);
+                         props.load(configStream);
+                         configStream.close();
+                         props.setProperty("serverIP", ipString);
+                         FileOutputStream output = new FileOutputStream(path);
+                         props.store(output, null);
+                         output.close();
+                     }  
+                 }
+             } catch (IOException ex) {
+             }
+          }
+       }));
 
       JMenuItem fileExitItem = factory.createMenuItem("file.exit", this, "exit");
       fileMenu.add(fileExitItem);
@@ -1017,7 +1045,11 @@ public class EditorFrame extends JFrame {
    private ArrayList recentFiles;
    private JMenu recentFilesMenu;
    private int maxRecentFiles = DEFAULT_MAX_RECENT_FILES;
-
+   private static final String IPADDRESS_PATTERN =
+           "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+           "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+           "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+           "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
    private ExtensionFilter violetFilter;
    private ExtensionFilter exportFilter;
 
