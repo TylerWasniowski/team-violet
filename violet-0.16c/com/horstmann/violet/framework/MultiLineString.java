@@ -167,7 +167,10 @@ public class MultiLineString implements Cloneable, Serializable
    public Rectangle2D getBounds(Graphics2D g2)
    {
       if (text.length() == 0) return new Rectangle2D.Double();
-      // setLabelText();
+      if (label == null) {
+         label = new JLabel();
+         setLabelText();
+      }
       Dimension dim = label.getPreferredSize();       
       return new Rectangle2D.Double(0, 0, dim.getWidth(), dim.getHeight());
    }
@@ -179,6 +182,10 @@ public class MultiLineString implements Cloneable, Serializable
    */
    public void draw(Graphics2D g2, Rectangle2D r)
    {
+      if (label == null) {
+         label = new JLabel();
+         setLabelText();
+      }
 
       label.setFont(g2.getFont());
       label.setBounds(0, 0, (int) r.getWidth(), (int) r.getHeight());
@@ -219,5 +226,5 @@ public class MultiLineString implements Cloneable, Serializable
    private int size;
    private boolean underlined;
    
-   private JLabel label = new JLabel();
+   private transient JLabel label = new JLabel();
 }

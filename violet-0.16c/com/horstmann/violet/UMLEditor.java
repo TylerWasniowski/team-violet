@@ -50,12 +50,12 @@ import com.horstmann.violet.graphs.*;
  */
 public class UMLEditor extends JApplet
 {
+
     /**
      * Displays the main frame of the application
      * @param args Command Line arguments
      */
-    public static void main(String[] args)
-   {
+    public static void main(String[] args) {
       VersionChecker checker = new VersionChecker();
       checker.check(JAVA_VERSION);
       try
