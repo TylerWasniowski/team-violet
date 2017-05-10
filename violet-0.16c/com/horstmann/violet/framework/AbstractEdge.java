@@ -101,6 +101,6 @@ public abstract class AbstractEdge extends AbstractUniquelyIdentifiable implemen
          end.getConnectionPoint(toEnd.turn(180)));
    }
 
-   private Node start;
-   private Node end;
+   private transient Node start;
+   private transient Node end;
 }
